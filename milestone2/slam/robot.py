@@ -27,9 +27,9 @@ class Robot:
             self.state[1] += np.sin(self.state[2]) * linear_velocity * dt
         else:
             th = self.state[2]
-            self.state[0] += linear_velocity / angular_velocity * (np.sin(th+dt*angular_velocity) - np.sin(th))
-            self.state[1] += -linear_velocity / angular_velocity * (np.cos(th+dt*angular_velocity) - np.cos(th))
-            self.state[2] += dt*angular_velocity
+            self.state[0] += linear_velocity / angular_velocity * (np.sin(th+dt*angular_velocity) - np.sin(th)) #x
+            self.state[1] += -linear_velocity / angular_velocity * (np.cos(th+dt*angular_velocity) - np.cos(th)) #y
+            self.state[2] += dt*angular_velocity #angle theta
 
     def measure(self, markers, idx_list):
         # Markers are 2d landmarks in a 2xn structure where there are n landmarks.
@@ -52,7 +52,7 @@ class Robot:
     
     def convert_wheel_speeds(self, left_speed, right_speed):
         # Convert to m/s
-        left_speed_m = left_speed * self.wheels_scale
+        left_speed_m = left_speed * self.wheels_scale #note that left_speed and right_speed are tick/s
         right_speed_m = right_speed * self.wheels_scale
 
         # Compute the linear and angular velocity
@@ -77,6 +77,15 @@ class Robot:
         th = self.state[2]
         
         # TODO: add your codes here to compute DFx using lin_vel, ang_vel, dt, and th
+        R = lin_vel/ang_vel
+
+        if ang_vel == 0:
+            DFx[0,2] = -lin_vel *np.sin(th) * dt
+            DFx[1,2] = lin_vel *np.cos(th) * dt
+        else:
+            DFx[0,2] = R*(-np.cos(th) + np.cos(th + ang_vel*dt))
+            DFx[1,2] = R*(-np.sin(th) + np.sin(th + ang_vel*dt))
+
 
         return DFx
 
@@ -125,6 +134,15 @@ class Robot:
         Jac2 = np.zeros((3,2))
         
         # TODO: add your codes here to compute Jac2 using lin_vel, ang_vel, dt, th, and th2
+        if ang_vel == 0:
+            Jac2[0,1] = np.cos(th) * dt
+            Jac2[1,1] = np.sin(th) * dt
+        else:
+            Jac2[0,0] = 1/ang_vel(-np.sin(th) + np.sin(th2))
+            Jac2[1,0] = 1/ang_vel(np.cos(th) - np.cos(th2))
+            Jac2[0,1] = (- lin_vel/ang_vel**2) * (np.sin(th2) - np.sin(th) ) + lin_vel/ang_vel *np.cos( th2) *dt
+            Jac2[1,1] = (- lin_vel/ang_vel**2) * (np.cos(th) - np.cos(th2) ) + lin_vel/ang_vel *np.sin( th2) *dt
+            Jac2[2,1] = dt
 
         # Derivative of x,y,theta w.r.t. left_speed, right_speed
         Jac = Jac2 @ Jac1
