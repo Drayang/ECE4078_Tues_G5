@@ -46,8 +46,9 @@ class EKF:
     def get_state_vector(self):
         state = np.concatenate(
             (self.robot.state, np.reshape(self.markers, (-1,1), order='F')), axis=0)
-        return state
+        return state # return SLAM state
     
+    # update the state vector property(?) to "robot" state or "marker"
     def set_state_vector(self, state):
         self.robot.state = state[0:3,:]
         self.markers = np.reshape(state[3:,:], (2,-1), order='F')
@@ -87,10 +88,27 @@ class EKF:
     # the prediction step of EKF
     def predict(self, raw_drive_meas):
 
-        F = self.state_transition(raw_drive_meas)
-        x = self.get_state_vector()
+        F = self.state_transition(raw_drive_meas) # return matrix A (in lecture note)
+        x = self.get_state_vector() #get current robot state = slam state
 
         # TODO: add your codes here to compute the predicted x
+         # compute robot's state given the control input
+        self.robot.drive(raw_drive_meas)
+        x = self.get_state_vector()
+
+        # Get model noise(covariance) using predict_covariance()
+        sigma_Q = self.predict_covariance(raw_drive_meas)
+
+         # Update robot's uncertainty and update robot's state
+        self.P = F @ self.P @ F.T + sigma_Q #Update robot's uncertainty 
+
+        '''
+        # Need to see how the lab different with practical
+        x = F @ x # predicted state,x
+         self.P = self.predict_covariance(raw_drive_meas) # predcited covariance   
+        # Update robot's uncertainty and update robot's state
+        self.set_state_vector(x) # update slam state vector
+        '''
 
     # the update step of EKF
     def update(self, measurements):
@@ -105,16 +123,27 @@ class EKF:
         z = np.concatenate([lm.position.reshape(-1,1) for lm in measurements], axis=0)
         R = np.zeros((2*len(measurements),2*len(measurements)))
         for i in range(len(measurements)):
-            R[2*i:2*i+2,2*i:2*i+2] = measurements[i].covariance
+            R[2*i:2*i+2,2*i:2*i+2] = measurements[i].covariance # noise in measurement
 
         # Compute own measurements
-        z_hat = self.robot.measure(self.markers, idx_list)
+        z_hat = self.robot.measure(self.markers, idx_list) # z_hat = predicted measurement (zk_hat = h(xk))
         z_hat = z_hat.reshape((-1,1),order="F")
         H = self.robot.derivative_measure(self.markers, idx_list)
 
         x = self.get_state_vector()
 
         # TODO: add your codes here to compute the updated x
+        '''
+        update_slam() in operate.py step
+        1. self.predict() - return predicted covariance and predicted state
+        2. self.add_landmarks() - return slam vector with update size (new marker position is append to SLAM vector)
+        3. self.update() - return corrected covariance and corrected state
+        '''
+        K = self.P @ H.T @ np.linalg.inv(H @ self.P @ H.T + R) # Kalman gain
+        x = x + K @ (z - z_hat) # corrected state 
+        self.P = (np.eye(x.shape[0]) - K @ H) @ self.P # corrected covariance matrix
+        self.set_state_vector(x)
+
 
 
     def state_transition(self, raw_drive_meas):
@@ -150,8 +179,8 @@ class EKF:
             self.markers = np.concatenate((self.markers, lm_inertial), axis=1)
 
             # Create a simple, large covariance to be fixed by the update step
-            self.P = np.concatenate((self.P, np.zeros((2, self.P.shape[1]))), axis=0)
-            self.P = np.concatenate((self.P, np.zeros((self.P.shape[0], 2))), axis=1)
+            self.P = np.concatenate((self.P, np.zeros((2, self.P.shape[1]))), axis=0) #update row size
+            self.P = np.concatenate((self.P, np.zeros((self.P.shape[0], 2))), axis=1) #update col size
             self.P[-2,-2] = self.init_lm_cov**2
             self.P[-1,-1] = self.init_lm_cov**2
 
