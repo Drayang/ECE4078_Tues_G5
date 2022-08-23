@@ -77,14 +77,13 @@ class Robot:
         th = self.state[2]
         
         # TODO: add your codes here to compute DFx using lin_vel, ang_vel, dt, and th
-        R = lin_vel/ang_vel
 
         if ang_vel == 0:
             DFx[0,2] = -lin_vel *np.sin(th) * dt
             DFx[1,2] = lin_vel *np.cos(th) * dt
         else:
-            DFx[0,2] = R*(-np.cos(th) + np.cos(th + ang_vel*dt))
-            DFx[1,2] = R*(-np.sin(th) + np.sin(th + ang_vel*dt))
+            DFx[0,2] = lin_vel/ang_vel*(-np.cos(th) + np.cos(th + ang_vel*dt))
+            DFx[1,2] = lin_vel/ang_vel*(-np.sin(th) + np.sin(th + ang_vel*dt))
 
 
         return DFx
@@ -138,8 +137,8 @@ class Robot:
             Jac2[0,1] = np.cos(th) * dt
             Jac2[1,1] = np.sin(th) * dt
         else:
-            Jac2[0,0] = 1/ang_vel(-np.sin(th) + np.sin(th2))
-            Jac2[1,0] = 1/ang_vel(np.cos(th) - np.cos(th2))
+            Jac2[0,0] = 1/ang_vel*(-np.sin(th) + np.sin(th2))
+            Jac2[1,0] = 1/ang_vel*(np.cos(th) - np.cos(th2))
             Jac2[0,1] = (- lin_vel/ang_vel**2) * (np.sin(th2) - np.sin(th) ) + lin_vel/ang_vel *np.cos( th2) *dt
             Jac2[1,1] = (- lin_vel/ang_vel**2) * (np.cos(th) - np.cos(th2) ) + lin_vel/ang_vel *np.sin( th2) *dt
             Jac2[2,1] = dt
