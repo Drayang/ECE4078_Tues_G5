@@ -201,10 +201,10 @@ class Operate:
                 self.command['motion']= [-2,0]
             # turn left
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
-                self.command['motion']= [0,2.5]
+                self.command['motion']= [0,2]
             # drive right
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-                self.command['motion']= [0,-2.5]
+                self.command['motion']= [0,-2]
             ####################################################
             # stop
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
