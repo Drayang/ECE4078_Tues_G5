@@ -61,6 +61,7 @@ def get_image_info(base_dir, file_path, image_poses):
 def estimate_pose(base_dir, camera_matrix, completed_img_dict):
     camera_matrix = camera_matrix
     focal_length = camera_matrix[0][0]
+    
     # actual sizes of targets [For the simulation models]
     # You need to replace these values for the real world objects
     target_dimensions = []
@@ -89,13 +90,17 @@ def estimate_pose(base_dir, camera_matrix, completed_img_dict):
         # TODO: compute pose of the target based on bounding box info and robot's pose
         # This is the default code which estimates every pose to be (0,0)
         target_pose = {'x': 0.0, 'y': 0.0}
-        # dist = focal_length*
-        dist = focal_length * true_height/box[3][0]
-        target_pose['x'] = robot_pose[0][0] + dist*np.cos(robot_pose[2][0]) 
-        target_pose['y'] = robot_pose[1][0] + dist*np.sin(robot_pose[2][0])
+        X_OC = camera_matrix[0][2] #x-pixel coordinate of Optix center
+        Z = focal_length * true_height / box[3][0]
+        X = true_height * (box[0][0] - X_OC) / box[3][0]
+        target_pose['x'] = robot_pose[0][0] + Z*np.cos(robot_pose[2][0]) + X*np.sin(robot_pose[2][0])
+        target_pose['y'] = robot_pose[1][0] + Z*np.sin(robot_pose[2][0]) - X*np.cos(robot_pose[2][0])
+        
         target_pose_dict[target_list[target_num-1]] = target_pose
         ###########################################
     
+        # This is the default code which estimates every pose to be (0,0)
+
     return target_pose_dict
 
 # merge the estimations of the targets so that there are at most 1 estimate for each target type
@@ -133,53 +138,53 @@ def merge_estimations(target_map):
     if len(capsicum_est) > num_per_target:
         capsicum_est = capsicum_est[0:num_per_target]
 
-    if len(redapple_est) > num_per_target:
-        x = 0
-        y = 0
-        for i in range(len(redapple_est)):
-            x += redapple_est[i][0]
-            y += redapple_est[i][1]
-        x = x/len(redapple_est)
-        y = y/len(redapple_est)
-        redapple_est = [np.array([x,y], dtype=float)]
-    if len(greenapple_est) > num_per_target:
-        x = 0
-        y = 0
-        for i in range(len(greenapple_est)):
-            x += greenapple_est[i][0]
-            y += greenapple_est[i][1]
-        x = x/len(greenapple_est)
-        y = y/len(greenapple_est)    
-        greenapple_est = [np.array([x,y], dtype=float)]
+    # if len(redapple_est) > num_per_target:
+    #     x = 0
+    #     y = 0
+    #     for i in range(len(redapple_est)):
+    #         x += redapple_est[i][0]
+    #         y += redapple_est[i][1]
+    #     x = x/len(redapple_est)
+    #     y = y/len(redapple_est)
+    #     redapple_est = [np.array([x,y], dtype=float)]
+    # if len(greenapple_est) > num_per_target:
+    #     x = 0
+    #     y = 0
+    #     for i in range(len(greenapple_est)):
+    #         x += greenapple_est[i][0]
+    #         y += greenapple_est[i][1]
+    #     x = x/len(greenapple_est)
+    #     y = y/len(greenapple_est)    
+    #     greenapple_est = [np.array([x,y], dtype=float)]
 
-    if len(orange_est) > num_per_target:
-        x = 0
-        y = 0
-        for i in range(len(orange_est)):
-            x += orange_est[i][0]
-            y += orange_est[i][1]
-        x = x/len(orange_est)
-        y = y/len(orange_est)
-        orange_est = [np.array([x,y], dtype=float)]  
-        print(orange_est)
-    if len(mango_est) > num_per_target:
-        x = 0
-        y = 0
-        for i in range(len(mango_est)):
-            x += mango_est[i][0]
-            y += mango_est[i][1]
-        x = x/len(mango_est)
-        y = y/len(mango_est)
-        mango_est = [np.array([x,y], dtype=float)]  
-    if len(capsicum_est) > num_per_target:
-        x = 0
-        y = 0
-        for i in range(len(capsicum_est)):
-            x += capsicum_est[i][0]
-            y += capsicum_est[i][1]
-        x = x/len(capsicum_est)
-        y = y/len(capsicum_est)  
-        capsicum_est = [np.array([x,y], dtype=float)]
+    # if len(orange_est) > num_per_target:
+    #     x = 0
+    #     y = 0
+    #     for i in range(len(orange_est)):
+    #         x += orange_est[i][0]
+    #         y += orange_est[i][1]
+    #     x = x/len(orange_est)
+    #     y = y/len(orange_est)
+    #     orange_est = [np.array([x,y], dtype=float)]  
+    #     print(orange_est)
+    # if len(mango_est) > num_per_target:
+    #     x = 0
+    #     y = 0
+    #     for i in range(len(mango_est)):
+    #         x += mango_est[i][0]
+    #         y += mango_est[i][1]
+    #     x = x/len(mango_est)
+    #     y = y/len(mango_est)
+    #     mango_est = [np.array([x,y], dtype=float)]  
+    # if len(capsicum_est) > num_per_target:
+    #     x = 0
+    #     y = 0
+    #     for i in range(len(capsicum_est)):
+    #         x += capsicum_est[i][0]
+    #         y += capsicum_est[i][1]
+    #     x = x/len(capsicum_est)
+    #     y = y/len(capsicum_est)  
+    #     capsicum_est = [np.array([x,y], dtype=float)]
 
     for i in range(num_per_target):
         try:
