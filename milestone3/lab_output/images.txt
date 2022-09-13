@@ -1,5 +1,11 @@
-{"pose": [[0.0], [0.0], [-0.7]], "imgfname": "lab_output/pred_0.png"}
-{"pose": [[0.0], [0.0], [-1.5]], "imgfname": "lab_output/pred_1.png"}
-{"pose": [[0.0], [0.0], [-2.2]], "imgfname": "lab_output/pred_2.png"}
-{"pose": [[0.0], [0.0], [2.2]], "imgfname": "lab_output/pred_3.png"}
-{"pose": [[0.0], [0.0], [1.5]], "imgfname": "lab_output/pred_4.png"}
+{"pose": [[-0.4], [-0.8], [0]], "imgfname": "lab_output/pred_0.png"}
+{"pose": [[-0.4], [-0.4], [-0.7853981633974483]], "imgfname": "lab_output/pred_1.png"}
+{"pose": [[0.4], [-0.8], [3.141592653589793]], "imgfname": "lab_output/pred_2.png"}
+{"pose": [[0.8], [-0.4], [0]], "imgfname": "lab_output/pred_3.png"}
+{"pose": [[1.2], [0.0], [-1.5707963267948966]], "imgfname": "lab_output/pred_4.png"}
+{"pose": [[1.2], [0.0], [2.356194490192345]], "imgfname": "lab_output/pred_5.png"}
+{"pose": [[0.4], [0.0], [0.7853981633974483]], "imgfname": "lab_output/pred_6.png"}
+{"pose": [[0.0], [0.4], [3.141592653589793]], "imgfname": "lab_output/pred_7.png"}
+{"pose": [[-0.4], [0.0], [1.5707963267948966]], "imgfname": "lab_output/pred_8.png"}
+{"pose": [[-0.8], [0.0], [1.5707963267948966]], "imgfname": "lab_output/pred_9.png"}
+{"pose": [[-0.8], [1.2], [-1.5707963267948966]], "imgfname": "lab_output/pred_10.png"}
