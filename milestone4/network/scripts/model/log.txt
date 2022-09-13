@@ -1,0 +1,5730 @@
+Net Architecture:
+Resnet18Skip(
+  (res18_backbone): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU(inplace=True)
+    (3): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  )
+  (conv2_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv3_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv4_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv5_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (top_conv): Sequential(
+    (0): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv1): Sequential(
+    (0): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv2): Sequential(
+    (0): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv3): Sequential(
+    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (segmentation_conv): Sequential(
+    (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU()
+    (2): Conv2d(64, 6, kernel_size=(1, 1), stride=(1, 1))
+  )
+  (criterion): CrossEntropyLoss()
+)
+Loss Function: CrossEntropyLoss
+
+===========================================================
+==================== Hyper-parameters =====================
+n_classes: 5
+lr: 0.001
+epochs: 40
+batch_size: 64
+weight_decay: 0.0001
+scheduler_step: 5
+scheduler_gamma: 0.5
+model_dir: model
+load_best: 0
+log_freq: 20
+dataset_dir: dataset
+===========================================================
+============= Epoch 0 | 2022-09-02 16:41:03 ===============
+=> Current Lr: 0.001
+[0/99]: 1.7258
+[20/99]: 0.5339
+[40/99]: 0.4107
+[60/99]: 0.3828Net Architecture:
+Resnet18Skip(
+  (res18_backbone): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU(inplace=True)
+    (3): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  )
+  (conv2_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv3_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv4_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv5_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (top_conv): Sequential(
+    (0): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv1): Sequential(
+    (0): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv2): Sequential(
+    (0): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv3): Sequential(
+    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (segmentation_conv): Sequential(
+    (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU()
+    (2): Conv2d(64, 6, kernel_size=(1, 1), stride=(1, 1))
+  )
+  (criterion): CrossEntropyLoss()
+)
+Loss Function: CrossEntropyLoss
+
+===========================================================
+==================== Hyper-parameters =====================
+n_classes: 5
+lr: 0.001
+epochs: 40
+batch_size: 64
+weight_decay: 0.0001
+scheduler_step: 5
+scheduler_gamma: 0.5
+model_dir: model
+load_best: 0
+log_freq: 20
+dataset_dir: dataset
+===========================================================
+============= Epoch 0 | 2022-09-02 17:05:09 ===============
+=> Current Lr: 0.001Net Architecture:
+Resnet18Skip(
+  (res18_backbone): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU(inplace=True)
+    (3): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  )
+  (conv2_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv3_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv4_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv5_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (top_conv): Sequential(
+    (0): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv1): Sequential(
+    (0): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv2): Sequential(
+    (0): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv3): Sequential(
+    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (segmentation_conv): Sequential(
+    (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU()
+    (2): Conv2d(64, 6, kernel_size=(1, 1), stride=(1, 1))
+  )
+  (criterion): CrossEntropyLoss()
+)
+Loss Function: CrossEntropyLoss
+
+===========================================================
+==================== Hyper-parameters =====================
+n_classes: 5
+lr: 0.001
+epochs: 40
+batch_size: 64
+weight_decay: 0.0001
+scheduler_step: 5
+scheduler_gamma: 0.5
+model_dir: model
+load_best: 0
+log_freq: 20
+dataset_dir: dataset
+===========================================================
+============= Epoch 0 | 2022-09-02 17:08:05 ===============
+=> Current Lr: 0.001Net Architecture:
+Resnet18Skip(
+  (res18_backbone): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU(inplace=True)
+    (3): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  )
+  (conv2_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv3_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv4_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv5_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (top_conv): Sequential(
+    (0): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv1): Sequential(
+    (0): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv2): Sequential(
+    (0): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv3): Sequential(
+    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (segmentation_conv): Sequential(
+    (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU()
+    (2): Conv2d(64, 6, kernel_size=(1, 1), stride=(1, 1))
+  )
+  (criterion): CrossEntropyLoss()
+)
+Loss Function: CrossEntropyLoss
+
+===========================================================
+==================== Hyper-parameters =====================
+n_classes: 5
+lr: 0.001
+epochs: 40
+batch_size: 64
+weight_decay: 0.0001
+scheduler_step: 5
+scheduler_gamma: 0.5
+model_dir: model
+load_best: 0
+log_freq: 20
+dataset_dir: dataset
+===========================================================
+============= Epoch 0 | 2022-09-02 17:09:48 ===============
+=> Current Lr: 0.001Net Architecture:
+Resnet18Skip(
+  (res18_backbone): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU(inplace=True)
+    (3): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  )
+  (conv2_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv3_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv4_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv5_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (top_conv): Sequential(
+    (0): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv1): Sequential(
+    (0): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv2): Sequential(
+    (0): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv3): Sequential(
+    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (segmentation_conv): Sequential(
+    (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU()
+    (2): Conv2d(64, 6, kernel_size=(1, 1), stride=(1, 1))
+  )
+  (criterion): CrossEntropyLoss()
+)
+Loss Function: CrossEntropyLoss
+
+===========================================================
+==================== Hyper-parameters =====================
+n_classes: 5
+lr: 0.001
+epochs: 40
+batch_size: 64
+weight_decay: 0.0001
+scheduler_step: 5
+scheduler_gamma: 0.5
+model_dir: model
+load_best: 0
+log_freq: 20
+dataset_dir: dataset
+===========================================================
+============= Epoch 0 | 2022-09-02 17:11:48 ===============
+=> Current Lr: 0.001Net Architecture:
+Resnet18Skip(
+  (res18_backbone): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU(inplace=True)
+    (3): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  )
+  (conv2_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv3_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv4_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv5_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (top_conv): Sequential(
+    (0): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv1): Sequential(
+    (0): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv2): Sequential(
+    (0): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv3): Sequential(
+    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (segmentation_conv): Sequential(
+    (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU()
+    (2): Conv2d(64, 6, kernel_size=(1, 1), stride=(1, 1))
+  )
+  (criterion): CrossEntropyLoss()
+)
+Loss Function: CrossEntropyLoss
+
+===========================================================
+==================== Hyper-parameters =====================
+n_classes: 5
+lr: 0.001
+epochs: 40
+batch_size: 32
+weight_decay: 0.0001
+scheduler_step: 5
+scheduler_gamma: 0.5
+model_dir: model
+load_best: 0
+log_freq: 20
+dataset_dir: dataset
+===========================================================
+============= Epoch 0 | 2022-09-02 17:14:51 ===============
+=> Current Lr: 0.001
+[0/198]: 1.7823
+[20/198]: 0.4969
+[40/198]: 0.3907
+[60/198]: 0.3648
+[80/198]: 0.3308
+[100/198]: 0.2856
+[120/198]: 0.3505
+[140/198]: 0.3313
+[160/198]: 0.2342
+[180/198]: 0.2854
+=> Training Loss: 0.3640, Evaluation Loss 0.3567
+
+============= Epoch 1 | 2022-09-02 17:16:08 ===============
+=> Current Lr: 0.001
+[0/198]: 0.3424
+[20/198]: 0.3452
+[40/198]: 0.1853
+[60/198]: 0.1855
+[80/198]: 0.2176
+[100/198]: 0.2198
+[120/198]: 0.2286
+[140/198]: 0.1916
+[160/198]: 0.1554
+[180/198]: 0.2107
+=> Training Loss: 0.2204, Evaluation Loss 0.1851
+
+============= Epoch 2 | 2022-09-02 17:17:13 ===============
+=> Current Lr: 0.001
+[0/198]: 0.1795
+[20/198]: 0.2041
+[40/198]: 0.1273
+[60/198]: 0.1516
+[80/198]: 0.1407
+[100/198]: 0.1687
+[120/198]: 0.1342
+[140/198]: 0.1053
+[160/198]: 0.2110
+[180/198]: 0.1795
+=> Training Loss: 0.1617, Evaluation Loss 0.1246
+
+============= Epoch 3 | 2022-09-02 17:18:18 ===============
+=> Current Lr: 0.001
+[0/198]: 0.1095
+[20/198]: 0.1429
+[40/198]: 0.0899
+[60/198]: 0.2014
+[80/198]: 0.1095
+[100/198]: 0.1341
+[120/198]: 0.2523
+[140/198]: 0.2816
+[160/198]: 0.1707
+[180/198]: 0.0914
+=> Training Loss: 0.1297, Evaluation Loss 0.0939
+
+============= Epoch 4 | 2022-09-02 17:19:23 ===============
+=> Current Lr: 0.001
+[0/198]: 0.0511
+[20/198]: 0.2043
+[40/198]: 0.0850
+[60/198]: 0.1207
+[80/198]: 0.0553
+[100/198]: 0.1111
+[120/198]: 0.0679
+[140/198]: 0.0630
+[160/198]: 0.1440
+[180/198]: 0.1031
+=> Training Loss: 0.0980, Evaluation Loss 0.1003
+
+============= Epoch 5 | 2022-09-02 17:20:32 ===============
+=> Current Lr: 0.0005
+[0/198]: 0.1365
+[20/198]: 0.0537
+[40/198]: 0.1546
+[60/198]: 0.0454
+[80/198]: 0.0755
+[100/198]: 0.0671
+[120/198]: 0.0538
+[140/198]: 0.0988
+[160/198]: 0.1335
+[180/198]: 0.0545
+=> Training Loss: 0.0648, Evaluation Loss 0.0561
+
+============= Epoch 6 | 2022-09-02 17:21:41 ===============
+=> Current Lr: 0.0005
+[0/198]: 0.0694
+[20/198]: 0.0672
+[40/198]: 0.0347
+[60/198]: 0.0609
+[80/198]: 0.0326
+[100/198]: 0.0881
+[120/198]: 0.0881
+[140/198]: 0.0454
+[160/198]: 0.0493
+[180/198]: 0.0690
+=> Training Loss: 0.0567, Evaluation Loss 0.0706
+
+============= Epoch 7 | 2022-09-02 17:22:51 ===============
+=> Current Lr: 0.0005
+[0/198]: 0.0363
+[20/198]: 0.0361
+[40/198]: 0.0524
+[60/198]: 0.0190
+[80/198]: 0.0333
+[100/198]: 0.0365
+[120/198]: 0.0413
+[140/198]: 0.0504
+[160/198]: 0.0373
+[180/198]: 0.0448
+=> Training Loss: 0.0559, Evaluation Loss 0.0388
+
+============= Epoch 8 | 2022-09-02 17:23:58 ===============
+=> Current Lr: 0.0005
+[0/198]: 0.0302
+[20/198]: 0.0572
+[40/198]: 0.0853
+[60/198]: 0.0638
+[80/198]: 0.0775
+[100/198]: 0.0638
+[120/198]: 0.0586
+[140/198]: 0.0404
+[160/198]: 0.0232
+[180/198]: 0.0513
+=> Training Loss: 0.0492, Evaluation Loss 0.0561
+
+============= Epoch 9 | 2022-09-02 17:25:04 ===============
+=> Current Lr: 0.0005
+[0/198]: 0.0415
+[20/198]: 0.0554
+[40/198]: 0.0577
+[60/198]: 0.2038
+[80/198]: 0.0575
+[100/198]: 0.0430
+[120/198]: 0.0321
+[140/198]: 0.0742
+[160/198]: 0.0450
+[180/198]: 0.0422
+=> Training Loss: 0.0459, Evaluation Loss 0.0433
+
+============= Epoch 10 | 2022-09-02 17:26:11 ==============
+=> Current Lr: 0.00025
+[0/198]: 0.0591
+============= Epoch 10 | 2022-09-02 17:45:12 ==============
+=> Current Lr: 0.00025
+[0/198]: 0.0215
+[20/198]: 0.0293
+[40/198]: 0.0202
+[60/198]: 0.0531
+[80/198]: 0.0180
+[100/198]: 0.0378
+[120/198]: 0.0290
+[140/198]: 0.0221
+[160/198]: 0.0143
+[180/198]: 0.0182
+=> Training Loss: 0.0337, Evaluation Loss 0.0262
+
+============= Epoch 11 | 2022-09-02 17:46:48 ==============
+=> Current Lr: 0.00025
+[0/198]: 0.0401
+[20/198]: 0.0205
+[40/198]: 0.0122
+[60/198]: 0.0277
+[80/198]: 0.0194
+[100/198]: 0.0332
+[120/198]: 0.0168
+[140/198]: 0.0349
+[160/198]: 0.0334
+[180/198]: 0.0212
+=> Training Loss: 0.0258, Evaluation Loss 0.0240
+
+============= Epoch 12 | 2022-09-02 17:48:14 ==============
+=> Current Lr: 0.00025
+[0/198]: 0.0228
+[20/198]: 0.0405
+[40/198]: 0.0516
+[60/198]: 0.0440
+[80/198]: 0.0170
+[100/198]: 0.0147
+[120/198]: 0.0281
+[140/198]: 0.0185
+[160/198]: 0.0200
+[180/198]: 0.0327
+=> Training Loss: 0.0269, Evaluation Loss 0.0220
+
+============= Epoch 13 | 2022-09-02 17:49:39 ==============
+=> Current Lr: 0.00025
+[0/198]: 0.0137
+[20/198]: 0.0204
+[40/198]: 0.0180
+[60/198]: 0.0625
+[80/198]: 0.0176
+[100/198]: 0.0140
+[120/198]: 0.0163
+[140/198]: 0.0366
+[160/198]: 0.0190
+[180/198]: 0.0140
+=> Training Loss: 0.0290, Evaluation Loss 0.0272
+
+============= Epoch 14 | 2022-09-02 17:51:05 ==============
+=> Current Lr: 0.00025
+[0/198]: 0.0141
+[20/198]: 0.0242
+[40/198]: 0.0356
+[60/198]: 0.0209
+[80/198]: 0.0165
+[100/198]: 0.0211
+[120/198]: 0.0278
+[140/198]: 0.0246
+[160/198]: 0.0154
+[180/198]: 0.0327
+=> Training Loss: 0.0285, Evaluation Loss 0.0253
+
+============= Epoch 15 | 2022-09-02 17:52:30 ==============
+=> Current Lr: 0.000125
+[0/198]: 0.0111
+[20/198]: 0.0398
+[40/198]: 0.0130
+[60/198]: 0.0125
+[80/198]: 0.0168
+[100/198]: 0.0145
+[120/198]: 0.0152
+[140/198]: 0.0173
+[160/198]: 0.0144
+[180/198]: 0.0409
+=> Training Loss: 0.0184, Evaluation Loss 0.0160
+
+============= Epoch 16 | 2022-09-02 17:53:56 ==============
+=> Current Lr: 0.000125
+[0/198]: 0.0310
+[20/198]: 0.0174
+[40/198]: 0.0110
+[60/198]: 0.0612
+[80/198]: 0.0340
+[100/198]: 0.0118
+[120/198]: 0.0189
+[140/198]: 0.0093
+[160/198]: 0.0212
+[180/198]: 0.0199
+=> Training Loss: 0.0162, Evaluation Loss 0.0160
+
+============= Epoch 17 | 2022-09-02 17:55:22 ==============
+=> Current Lr: 0.000125
+[0/198]: 0.0109
+[20/198]: 0.0150
+[40/198]: 0.0219
+[60/198]: 0.0158
+[80/198]: 0.0107
+[100/198]: 0.0098
+[120/198]: 0.0319
+[140/198]: 0.0323
+[160/198]: 0.0098
+[180/198]: 0.0123
+=> Training Loss: 0.0159, Evaluation Loss 0.0137
+
+============= Epoch 18 | 2022-09-02 17:56:48 ==============
+=> Current Lr: 0.000125
+[0/198]: 0.0117
+[20/198]: 0.0124
+[40/198]: 0.0115
+[60/198]: 0.0117
+[80/198]: 0.0106
+[100/198]: 0.0191
+[120/198]: 0.0104
+[140/198]: 0.0132
+[160/198]: 0.0107
+[180/198]: 0.0522
+=> Training Loss: 0.0144, Evaluation Loss 0.0139
+
+============= Epoch 19 | 2022-09-02 17:58:14 ==============
+=> Current Lr: 0.000125
+[0/198]: 0.0172
+[20/198]: 0.0104
+[40/198]: 0.0121
+[60/198]: 0.0109
+[80/198]: 0.0103
+[100/198]: 0.0248
+[120/198]: 0.0111
+[140/198]: 0.0111
+[160/198]: 0.0122
+[180/198]: 0.0134
+=> Training Loss: 0.0147, Evaluation Loss 0.0146
+
+============= Epoch 20 | 2022-09-02 17:59:39 ==============
+=> Current Lr: 6.25e-05
+[0/198]: 0.0433
+[20/198]: 0.0118
+[40/198]: 0.0162
+[60/198]: 0.0095
+[80/198]: 0.0097
+[100/198]: 0.0111
+[120/198]: 0.0086
+[140/198]: 0.0131
+[160/198]: 0.0114
+[180/198]: 0.0097
+=> Training Loss: 0.0133, Evaluation Loss 0.0110
+
+============= Epoch 21 | 2022-09-02 18:01:06 ==============
+=> Current Lr: 6.25e-05
+[0/198]: 0.0106
+[20/198]: 0.0106
+[40/198]: 0.0121
+[60/198]: 0.0109
+[80/198]: 0.0185
+[100/198]: 0.0101
+[120/198]: 0.0109
+[140/198]: 0.0102
+[160/198]: 0.0144
+[180/198]: 0.0129
+=> Training Loss: 0.0114, Evaluation Loss 0.0112
+
+============= Epoch 22 | 2022-09-02 18:02:29 ==============
+=> Current Lr: 6.25e-05
+[0/198]: 0.0107
+[20/198]: 0.0101
+[40/198]: 0.0101
+[60/198]: 0.0267
+[80/198]: 0.0095
+[100/198]: 0.0091
+[120/198]: 0.0147
+[140/198]: 0.0154
+[160/198]: 0.0331
+[180/198]: 0.0108
+=> Training Loss: 0.0113, Evaluation Loss 0.0106
+
+============= Epoch 23 | 2022-09-02 18:03:57 ==============
+=> Current Lr: 6.25e-05
+[0/198]: 0.0092
+[20/198]: 0.0112
+[40/198]: 0.0108
+[60/198]: 0.0229
+[80/198]: 0.0280
+[100/198]: 0.0138
+[120/198]: 0.0108
+[140/198]: 0.0095
+[160/198]: 0.0082
+[180/198]: 0.0124
+=> Training Loss: 0.0107, Evaluation Loss 0.0097
+
+============= Epoch 24 | 2022-09-02 18:05:24 ==============
+=> Current Lr: 6.25e-05
+[0/198]: 0.0088
+[20/198]: 0.0100
+[40/198]: 0.0092
+[60/198]: 0.0088
+[80/198]: 0.0100
+[100/198]: 0.0091
+[120/198]: 0.0091
+[140/198]: 0.0102
+[160/198]: 0.0089
+[180/198]: 0.0108
+=> Training Loss: 0.0106, Evaluation Loss 0.0110
+
+============= Epoch 25 | 2022-09-02 18:06:51 ==============
+=> Current Lr: 3.125e-05
+[0/198]: 0.0098
+[20/198]: 0.0125
+[40/198]: 0.0112
+[60/198]: 0.0125
+[80/198]: 0.0099
+[100/198]: 0.0096
+[120/198]: 0.0091
+[140/198]: 0.0104
+[160/198]: 0.0118
+[180/198]: 0.0110
+=> Training Loss: 0.0107, Evaluation Loss 0.0106
+
+============= Epoch 26 | 2022-09-02 18:08:16 ==============
+=> Current Lr: 3.125e-05
+[0/198]: 0.0115
+[20/198]: 0.0103
+[40/198]: 0.0092
+[60/198]: 0.0099
+[80/198]: 0.0087
+[100/198]: 0.0078
+[120/198]: 0.0084
+[140/198]: 0.0091
+[160/198]: 0.0088
+[180/198]: 0.0094
+=> Training Loss: 0.0100, Evaluation Loss 0.0095
+
+============= Epoch 27 | 2022-09-02 18:09:43 ==============
+=> Current Lr: 3.125e-05
+[0/198]: 0.0108
+[20/198]: 0.0084
+[40/198]: 0.0126
+[60/198]: 0.0099
+[80/198]: 0.0092
+[100/198]: 0.0114
+[120/198]: 0.0089
+[140/198]: 0.0231
+[160/198]: 0.0094
+[180/198]: 0.0096
+=> Training Loss: 0.0103, Evaluation Loss 0.0093
+
+============= Epoch 28 | 2022-09-02 18:11:08 ==============
+=> Current Lr: 3.125e-05
+[0/198]: 0.0117
+[20/198]: 0.0104
+[40/198]: 0.0090
+[60/198]: 0.0088
+[80/198]: 0.0107
+[100/198]: 0.0092
+[120/198]: 0.0094
+[140/198]: 0.0095
+[160/198]: 0.0102
+[180/198]: 0.0092
+=> Training Loss: 0.0100, Evaluation Loss 0.0094
+
+============= Epoch 29 | 2022-09-02 18:12:32 ==============
+=> Current Lr: 3.125e-05
+[0/198]: 0.0081
+[20/198]: 0.0099
+============= Epoch 29 | 2022-09-02 21:24:37 ==============
+=> Current Lr: 3.125e-05
+[0/1188]: 0.5942
+[20/1188]: 0.1280
+[40/1188]: 0.0738
+[60/1188]: 0.0588
+[80/1188]: 0.0621
+[100/1188]: 0.0591
+[120/1188]: 0.0489
+[140/1188]: 0.0506
+[160/1188]: 0.0417
+[180/1188]: 0.0481
+[200/1188]: 0.0358
+[220/1188]: 0.0448
+[240/1188]: 0.0378
+[260/1188]: 0.0292
+[280/1188]: 0.0403
+[300/1188]: 0.0331
+[320/1188]: 0.0341
+[340/1188]: 0.0340
+[360/1188]: 0.0332
+[380/1188]: 0.0415
+[400/1188]: 0.0329
+[420/1188]: 0.0371
+[440/1188]: 0.0390
+[460/1188]: 0.0342
+[480/1188]: 0.0316
+[500/1188]: 0.0249
+[520/1188]: 0.0269
+[540/1188]: 0.0347
+[560/1188]: 0.0391
+[580/1188]: 0.0373
+[600/1188]: 0.0312
+[620/1188]: 0.0332
+[640/1188]: 0.0245
+[660/1188]: 0.0307
+[680/1188]: 0.0249
+[700/1188]: 0.0291
+[720/1188]: 0.0258
+[740/1188]: 0.0283
+[760/1188]: 0.0409
+[780/1188]: 0.0358
+[800/1188]: 0.0236
+[820/1188]: 0.0386
+[840/1188]: 0.0195
+[860/1188]: 0.0208
+[880/1188]: 0.0244
+[900/1188]: 0.0716
+[920/1188]: 0.0242
+[940/1188]: 0.0279
+[960/1188]: 0.0235
+[980/1188]: 0.0362
+[1000/1188]: 0.0367
+[1020/1188]: 0.0188
+[1040/1188]: 0.0219
+[1060/1188]: 0.0164
+[1080/1188]: 0.0234
+[1100/1188]: 0.0239
+[1120/1188]: 0.0287
+[1140/1188]: 0.0244
+[1160/1188]: 0.0223
+[1180/1188]: 0.0287
+=> Training Loss: 0.0398, Evaluation Loss 0.0229
+
+============= Epoch 30 | 2022-09-02 21:32:59 ==============
+=> Current Lr: 1.5625e-05
+[0/1188]: 0.0204
+[20/1188]: 0.0322
+[40/1188]: 0.0201
+[60/1188]: 0.0135
+[80/1188]: 0.0208
+[100/1188]: 0.0298
+[120/1188]: 0.0159
+[140/1188]: 0.0219
+[160/1188]: 0.0193
+[180/1188]: 0.0269
+[200/1188]: 0.0270
+[220/1188]: 0.0351
+[240/1188]: 0.0203
+[260/1188]: 0.0434
+[280/1188]: 0.0206
+[300/1188]: 0.0314
+[320/1188]: 0.0122
+[340/1188]: 0.0210
+[360/1188]: 0.0194
+[380/1188]: 0.0173
+[400/1188]: 0.0180
+[420/1188]: 0.0340
+[440/1188]: 0.0203
+[460/1188]: 0.0340
+[480/1188]: 0.0212
+[500/1188]: 0.0201
+[520/1188]: 0.0168
+[540/1188]: 0.0147
+[560/1188]: 0.0241
+[580/1188]: 0.0276
+[600/1188]: 0.0254
+[620/1188]: 0.0132
+[640/1188]: 0.0225
+[660/1188]: 0.0131
+[680/1188]: 0.0160
+[700/1188]: 0.0154
+[720/1188]: 0.0194
+[740/1188]: 0.0257
+[760/1188]: 0.0278
+[780/1188]: 0.0181
+[800/1188]: 0.0161
+[820/1188]: 0.0196
+[840/1188]: 0.0203
+[860/1188]: 0.0158
+[880/1188]: 0.0282
+[900/1188]: 0.0168
+[920/1188]: 0.0172
+[940/1188]: 0.0158
+[960/1188]: 0.0147
+[980/1188]: 0.0194
+[1000/1188]: 0.0145
+[1020/1188]: 0.0230
+[1040/1188]: 0.0296
+[1060/1188]: 0.0146
+[1080/1188]: 0.0131
+[1100/1188]: 0.0216
+[1120/1188]: 0.0208
+[1140/1188]: 0.0247
+[1160/1188]: 0.0146
+[1180/1188]: 0.0202
+=> Training Loss: 0.0206, Evaluation Loss 0.0183
+
+============= Epoch 31 | 2022-09-02 21:41:15 ==============
+=> Current Lr: 1.5625e-05
+[0/1188]: 0.0196
+[20/1188]: 0.0148
+[40/1188]: 0.0252
+[60/1188]: 0.0115
+[80/1188]: 0.0206
+[100/1188]: 0.0141
+[120/1188]: 0.0176
+[140/1188]: 0.0200
+[160/1188]: 0.0145
+[180/1188]: 0.0185
+[200/1188]: 0.0129
+[220/1188]: 0.0234
+[240/1188]: 0.0208
+[260/1188]: 0.0098
+[280/1188]: 0.0244
+[300/1188]: 0.0141
+[320/1188]: 0.0186
+[340/1188]: 0.0225
+[360/1188]: 0.0122
+[380/1188]: 0.0094
+[400/1188]: 0.0198
+[420/1188]: 0.0169
+[440/1188]: 0.0152
+[460/1188]: 0.0138
+[480/1188]: 0.0148
+[500/1188]: 0.0210
+[520/1188]: 0.0138
+[540/1188]: 0.0178
+[560/1188]: 0.0123
+[580/1188]: 0.0117
+[600/1188]: 0.0127
+[620/1188]: 0.0144
+[640/1188]: 0.0299
+[660/1188]: 0.0168
+[680/1188]: 0.0196
+[700/1188]: 0.0165
+[720/1188]: 0.0227
+[740/1188]: 0.0180
+[760/1188]: 0.0262
+[780/1188]: 0.0142
+[800/1188]: 0.0141
+[820/1188]: 0.0159
+[840/1188]: 0.0120
+[860/1188]: 0.0107
+[880/1188]: 0.0120
+[900/1188]: 0.0225
+[920/1188]: 0.0207
+[940/1188]: 0.0115
+[960/1188]: 0.0290
+[980/1188]: 0.0164
+[1000/1188]: 0.0147
+[1020/1188]: 0.0193
+[1040/1188]: 0.0211
+[1060/1188]: 0.0112
+[1080/1188]: 0.0132
+[1100/1188]: 0.0116
+[1120/1188]: 0.0086
+[1140/1188]: 0.0199
+[1160/1188]: 0.0286
+[1180/1188]: 0.0134
+=> Training Loss: 0.0177, Evaluation Loss 0.0169
+
+============= Epoch 32 | 2022-09-02 21:49:22 ==============
+=> Current Lr: 1.5625e-05
+[0/1188]: 0.0240
+[20/1188]: 0.0244
+[40/1188]: 0.0207
+[60/1188]: 0.0163
+[80/1188]: 0.0152
+[100/1188]: 0.0322
+[120/1188]: 0.0166
+[140/1188]: 0.0157
+[160/1188]: 0.0247
+[180/1188]: 0.0132
+[200/1188]: 0.0158
+[220/1188]: 0.0157
+[240/1188]: 0.0145
+[260/1188]: 0.0138
+[280/1188]: 0.0116
+[300/1188]: 0.0197
+[320/1188]: 0.0123
+[340/1188]: 0.0184
+[360/1188]: 0.0090
+[380/1188]: 0.0118
+[400/1188]: 0.0201
+[420/1188]: 0.0152
+[440/1188]: 0.0119
+[460/1188]: 0.0119
+[480/1188]: 0.0122
+[500/1188]: 0.0173
+[520/1188]: 0.0162
+[540/1188]: 0.0108
+[560/1188]: 0.0160
+[580/1188]: 0.0154
+[600/1188]: 0.0125
+[620/1188]: 0.0171
+[640/1188]: 0.0122
+[660/1188]: 0.0135
+[680/1188]: 0.0102
+[700/1188]: 0.0124
+[720/1188]: 0.0186
+[740/1188]: 0.0171
+[760/1188]: 0.0134
+[780/1188]: 0.0269
+[800/1188]: 0.0129
+[820/1188]: 0.0107
+[840/1188]: 0.0134
+[860/1188]: 0.0176
+[880/1188]: 0.0087
+[900/1188]: 0.0247
+[920/1188]: 0.0108
+[940/1188]: 0.0123
+[960/1188]: 0.0207
+[980/1188]: 0.0138
+[1000/1188]: 0.0117
+[1020/1188]: 0.0107
+[1040/1188]: 0.0164
+[1060/1188]: 0.0123
+[1080/1188]: 0.0242
+[1100/1188]: 0.0129
+[1120/1188]: 0.0106
+[1140/1188]: 0.0177
+[1160/1188]: 0.0159
+[1180/1188]: 0.0117
+=> Training Loss: 0.0162, Evaluation Loss 0.0147
+
+============= Epoch 33 | 2022-09-02 21:57:34 ==============
+=> Current Lr: 1.5625e-05
+[0/1188]: 0.0096
+[20/1188]: 0.0130
+[40/1188]: 0.0180
+[60/1188]: 0.0197
+[80/1188]: 0.0144
+[100/1188]: 0.0170
+[120/1188]: 0.0169
+[140/1188]: 0.0129
+[160/1188]: 0.0137
+[180/1188]: 0.0086
+[200/1188]: 0.0103
+[220/1188]: 0.0109
+[240/1188]: 0.0138
+[260/1188]: 0.0227
+[280/1188]: 0.0197
+[300/1188]: 0.0121
+[320/1188]: 0.0208
+[340/1188]: 0.0113
+[360/1188]: 0.0184
+[380/1188]: 0.0124
+[400/1188]: 0.0149
+[420/1188]: 0.0145
+[440/1188]: 0.0149
+[460/1188]: 0.0146
+[480/1188]: 0.0133
+[500/1188]: 0.0100
+[520/1188]: 0.0105
+[540/1188]: 0.0141
+[560/1188]: 0.0100
+[580/1188]: 0.0080
+[600/1188]: 0.0119
+[620/1188]: 0.0232
+[640/1188]: 0.0149
+[660/1188]: 0.0108
+[680/1188]: 0.0110
+[700/1188]: 0.0101
+[720/1188]: 0.0158
+[740/1188]: 0.0123
+[760/1188]: 0.0138
+[780/1188]: 0.0167
+[800/1188]: 0.0113
+[820/1188]: 0.0214
+[840/1188]: 0.0156
+[860/1188]: 0.0150
+[880/1188]: 0.0166
+[900/1188]: 0.0163
+[920/1188]: 0.0109
+[940/1188]: 0.0126
+[960/1188]: 0.0104
+[980/1188]: 0.0154
+[1000/1188]: 0.0218
+[1020/1188]: 0.0097
+[1040/1188]: 0.0110
+[1060/1188]: 0.0137
+[1080/1188]: 0.0158
+[1100/1188]: 0.0198
+[1120/1188]: 0.0088
+[1140/1188]: 0.0112
+[1160/1188]: 0.0120
+[1180/1188]: 0.0150
+=> Training Loss: 0.0150, Evaluation Loss 0.0141
+
+============= Epoch 34 | 2022-09-02 22:05:43 ==============
+=> Current Lr: 1.5625e-05
+[0/1188]: 0.0113
+[20/1188]: 0.0133
+[40/1188]: 0.0164
+[60/1188]: 0.0112
+[80/1188]: 0.0120
+[100/1188]: 0.0146
+[120/1188]: 0.0126
+[140/1188]: 0.0096
+[160/1188]: 0.0154
+[180/1188]: 0.0147
+[200/1188]: 0.0189
+[220/1188]: 0.0136
+[240/1188]: 0.0119
+[260/1188]: 0.0097
+[280/1188]: 0.0096
+[300/1188]: 0.0116
+[320/1188]: 0.0117
+[340/1188]: 0.0107
+[360/1188]: 0.0147
+[380/1188]: 0.0124
+[400/1188]: 0.0086
+[420/1188]: 0.0207
+[440/1188]: 0.0148
+[460/1188]: 0.0108
+[480/1188]: 0.0086
+[500/1188]: 0.0075
+[520/1188]: 0.0114
+[540/1188]: 0.0146
+[560/1188]: 0.0084
+[580/1188]: 0.0119
+[600/1188]: 0.0092
+[620/1188]: 0.0132
+[640/1188]: 0.0156
+[660/1188]: 0.0113
+[680/1188]: 0.0081
+[700/1188]: 0.0126
+[720/1188]: 0.0129
+[740/1188]: 0.0107
+[760/1188]: 0.0182
+[780/1188]: 0.0114
+[800/1188]: 0.0175
+[820/1188]: 0.0135
+[840/1188]: 0.0099
+[860/1188]: 0.0107
+[880/1188]: 0.0130
+[900/1188]: 0.0074
+[920/1188]: 0.0108
+[940/1188]: 0.0110
+[960/1188]: 0.0175
+[980/1188]: 0.0104
+[1000/1188]: 0.0145
+[1020/1188]: 0.0236
+[1040/1188]: 0.0115
+[1060/1188]: 0.0093
+[1080/1188]: 0.0186
+[1100/1188]: 0.0201
+[1120/1188]: 0.0112
+[1140/1188]: 0.0131
+[1160/1188]: 0.0121
+[1180/1188]: 0.0132
+=> Training Loss: 0.0139, Evaluation Loss 0.0141
+
+============= Epoch 35 | 2022-09-02 22:13:57 ==============
+=> Current Lr: 7.8125e-06
+[0/1188]: 0.0180
+[20/1188]: 0.0232
+[40/1188]: 0.0124
+[60/1188]: 0.0162
+[80/1188]: 0.0149
+[100/1188]: 0.0096
+[120/1188]: 0.0078
+[140/1188]: 0.0126
+[160/1188]: 0.0195
+[180/1188]: 0.0094
+[200/1188]: 0.0089
+[220/1188]: 0.0131
+[240/1188]: 0.0117
+[260/1188]: 0.0090
+[280/1188]: 0.0100
+[300/1188]: 0.0169
+[320/1188]: 0.0103
+[340/1188]: 0.0113
+[360/1188]: 0.0153
+[380/1188]: 0.0097
+[400/1188]: 0.0085
+[420/1188]: 0.0194
+[440/1188]: 0.0108
+[460/1188]: 0.0192
+[480/1188]: 0.0113
+[500/1188]: 0.0161
+[520/1188]: 0.0066
+[540/1188]: 0.0101
+[560/1188]: 0.0099
+[580/1188]: 0.0126
+[600/1188]: 0.0155
+[620/1188]: 0.0097
+[640/1188]: 0.0141
+[660/1188]: 0.0120
+[680/1188]: 0.0085
+[700/1188]: 0.0188
+[720/1188]: 0.0154
+[740/1188]: 0.0136
+[760/1188]: 0.0093
+[780/1188]: 0.0117
+[800/1188]: 0.0069
+[820/1188]: 0.0073
+[840/1188]: 0.0193
+[860/1188]: 0.0115
+[880/1188]: 0.0094
+[900/1188]: 0.0124
+[920/1188]: 0.0216
+[940/1188]: 0.0153
+[960/1188]: 0.0140
+[980/1188]: 0.0178
+[1000/1188]: 0.0167
+[1020/1188]: 0.0119
+[1040/1188]: 0.0188
+[1060/1188]: 0.0144
+[1080/1188]: 0.0204
+[1100/1188]: 0.0118
+[1120/1188]: 0.0117
+[1140/1188]: 0.0105
+[1160/1188]: 0.0125
+[1180/1188]: 0.0112
+=> Training Loss: 0.0126, Evaluation Loss 0.0123
+
+============= Epoch 36 | 2022-09-02 22:22:01 ==============
+=> Current Lr: 7.8125e-06
+[0/1188]: 0.0136
+[20/1188]: 0.0093
+[40/1188]: 0.0140
+[60/1188]: 0.0115
+[80/1188]: 0.0148
+[100/1188]: 0.0139
+[120/1188]: 0.0130
+[140/1188]: 0.0101
+[160/1188]: 0.0141
+[180/1188]: 0.0110
+[200/1188]: 0.0139
+[220/1188]: 0.0157
+[240/1188]: 0.0151
+[260/1188]: 0.0160
+[280/1188]: 0.0104
+[300/1188]: 0.0124
+[320/1188]: 0.0089
+[340/1188]: 0.0074
+[360/1188]: 0.0141
+[380/1188]: 0.0113
+[400/1188]: 0.0066
+[420/1188]: 0.0198
+[440/1188]: 0.0116
+[460/1188]: 0.0136
+[480/1188]: 0.0071
+[500/1188]: 0.0069
+[520/1188]: 0.0064
+[540/1188]: 0.0109
+[560/1188]: 0.0120
+[580/1188]: 0.0155
+[600/1188]: 0.0124
+[620/1188]: 0.0112
+[640/1188]: 0.0127
+[660/1188]: 0.0114
+[680/1188]: 0.0130
+[700/1188]: 0.0185
+[720/1188]: 0.0080
+[740/1188]: 0.0208
+[760/1188]: 0.0122
+[780/1188]: 0.0099
+[800/1188]: 0.0085
+[820/1188]: 0.0194
+[840/1188]: 0.0124
+[860/1188]: 0.0089
+[880/1188]: 0.0070
+[900/1188]: 0.0118
+[920/1188]: 0.0086
+[940/1188]: 0.0127
+[960/1188]: 0.0118
+[980/1188]: 0.0152
+[1000/1188]: 0.0164
+[1020/1188]: 0.0105
+[1040/1188]: 0.0086
+[1060/1188]: 0.0080
+[1080/1188]: 0.0100
+[1100/1188]: 0.0106
+[1120/1188]: 0.0093
+[1140/1188]: 0.0617
+[1160/1188]: 0.0145
+[1180/1188]: 0.0058
+=> Training Loss: 0.0118, Evaluation Loss 0.0117
+
+============= Epoch 37 | 2022-09-02 22:29:12 ==============
+=> Current Lr: 7.8125e-06
+[0/1188]: 0.0121
+[20/1188]: 0.0081
+[40/1188]: 0.0105
+[60/1188]: 0.0186
+[80/1188]: 0.0114
+[100/1188]: 0.0167
+[120/1188]: 0.0082
+[140/1188]: 0.0113
+[160/1188]: 0.0146
+[180/1188]: 0.0098
+[200/1188]: 0.0098
+[220/1188]: 0.0152
+[240/1188]: 0.0130
+[260/1188]: 0.0131
+[280/1188]: 0.0085
+[300/1188]: 0.0192
+[320/1188]: 0.0133
+[340/1188]: 0.0154
+[360/1188]: 0.0118
+[380/1188]: 0.0082
+[400/1188]: 0.0074
+[420/1188]: 0.0109
+[440/1188]: 0.0110
+[460/1188]: 0.0167
+[480/1188]: 0.0094
+[500/1188]: 0.0078
+[520/1188]: 0.0097
+[540/1188]: 0.0089
+[560/1188]: 0.0087
+[580/1188]: 0.0133
+[600/1188]: 0.0201
+[620/1188]: 0.0085
+[640/1188]: 0.0138
+[660/1188]: 0.0130
+[680/1188]: 0.0122
+[700/1188]: 0.0129
+[720/1188]: 0.0099
+[740/1188]: 0.0182
+[760/1188]: 0.0102
+[780/1188]: 0.0112
+[800/1188]: 0.0218
+[820/1188]: 0.0118
+[840/1188]: 0.0116
+[860/1188]: 0.0132
+[880/1188]: 0.0115
+[900/1188]: 0.0121
+[920/1188]: 0.0143
+[940/1188]: 0.0057
+[960/1188]: 0.0073
+[980/1188]: 0.0067
+[1000/1188]: 0.0161
+[1020/1188]: 0.0211
+[1040/1188]: 0.0075
+[1060/1188]: 0.0113
+[1080/1188]: 0.0089
+[1100/1188]: 0.0104
+[1120/1188]: 0.0057
+[1140/1188]: 0.0105
+[1160/1188]: 0.0080
+[1180/1188]: 0.0113
+=> Training Loss: 0.0117, Evaluation Loss 0.0115
+
+============= Epoch 38 | 2022-09-02 22:35:03 ==============
+=> Current Lr: 7.8125e-06
+[0/1188]: 0.0121
+[20/1188]: 0.0060
+[40/1188]: 0.0076
+[60/1188]: 0.0110
+[80/1188]: 0.0110
+[100/1188]: 0.0120
+[120/1188]: 0.0114
+[140/1188]: 0.0094
+[160/1188]: 0.0179
+[180/1188]: 0.0096
+[200/1188]: 0.0097
+[220/1188]: 0.0200
+[240/1188]: 0.0112
+[260/1188]: 0.0077
+[280/1188]: 0.0132
+[300/1188]: 0.0058
+[320/1188]: 0.0068
+[340/1188]: 0.0084
+[360/1188]: 0.0157
+[380/1188]: 0.0153
+[400/1188]: 0.0081
+[420/1188]: 0.0129
+[440/1188]: 0.0079
+[460/1188]: 0.0090
+[480/1188]: 0.0159
+[500/1188]: 0.0170
+[520/1188]: 0.0147
+[540/1188]: 0.0103
+[560/1188]: 0.0114
+[580/1188]: 0.0099
+[600/1188]: 0.0116
+[620/1188]: 0.0119
+[640/1188]: 0.0107
+[660/1188]: 0.0119
+[680/1188]: 0.0076
+[700/1188]: 0.0087
+[720/1188]: 0.0179
+[740/1188]: 0.0082
+[760/1188]: 0.0122
+[780/1188]: 0.0105
+[800/1188]: 0.0137
+[820/1188]: 0.0066
+[840/1188]: 0.0100
+[860/1188]: 0.0120
+[880/1188]: 0.0105
+[900/1188]: 0.0113
+[920/1188]: 0.0093
+[940/1188]: 0.0099
+[960/1188]: 0.0116
+[980/1188]: 0.0096
+[1000/1188]: 0.0113
+[1020/1188]: 0.0096
+[1040/1188]: 0.0116
+[1060/1188]: 0.0112
+[1080/1188]: 0.0077
+[1100/1188]: 0.0128
+[1120/1188]: 0.0095
+[1140/1188]: 0.0099
+[1160/1188]: 0.0091
+[1180/1188]: 0.0167
+=> Training Loss: 0.0116, Evaluation Loss 0.0112
+
+============= Epoch 39 | 2022-09-02 22:40:53 ==============
+=> Current Lr: 7.8125e-06
+[0/1188]: 0.0094
+[20/1188]: 0.0107
+[40/1188]: 0.0080
+[60/1188]: 0.0084
+[80/1188]: 0.0066
+[100/1188]: 0.0117
+[120/1188]: 0.0129
+[140/1188]: 0.0117
+[160/1188]: 0.0080
+[180/1188]: 0.0098
+[200/1188]: 0.0077
+[220/1188]: 0.0094
+[240/1188]: 0.0098
+[260/1188]: 0.0078
+[280/1188]: 0.0073
+[300/1188]: 0.0123
+[320/1188]: 0.0087
+[340/1188]: 0.0146
+[360/1188]: 0.0130
+[380/1188]: 0.0064
+[400/1188]: 0.0136
+[420/1188]: 0.0078
+[440/1188]: 0.0188
+[460/1188]: 0.0114
+[480/1188]: 0.0087
+[500/1188]: 0.0109
+[520/1188]: 0.0069
+[540/1188]: 0.0077
+[560/1188]: 0.0090
+[580/1188]: 0.0131
+[600/1188]: 0.0183
+[620/1188]: 0.0106
+[640/1188]: 0.0085
+[660/1188]: 0.0199
+[680/1188]: 0.0146
+[700/1188]: 0.0113
+[720/1188]: 0.0099
+[740/1188]: 0.0111
+[760/1188]: 0.0110
+[780/1188]: 0.0116
+[800/1188]: 0.0065
+[820/1188]: 0.0129
+[840/1188]: 0.0130
+[860/1188]: 0.0132
+[880/1188]: 0.0084
+[900/1188]: 0.0122
+[920/1188]: 0.0113
+[940/1188]: 0.0088
+[960/1188]: 0.0095
+[980/1188]: 0.0125
+[1000/1188]: 0.0114
+[1020/1188]: 0.0106
+[1040/1188]: 0.0116
+[1060/1188]: 0.0169
+[1080/1188]: 0.0110
+[1100/1188]: 0.0085
+[1120/1188]: 0.0119
+[1140/1188]: 0.0153
+[1160/1188]: 0.0096
+[1180/1188]: 0.0092
+=> Training Loss: 0.0110, Evaluation Loss 0.0109
+Net Architecture:
+Resnet18Skip(
+  (res18_backbone): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU(inplace=True)
+    (3): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  )
+  (conv2_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv3_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv4_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv5_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (top_conv): Sequential(
+    (0): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv1): Sequential(
+    (0): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv2): Sequential(
+    (0): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv3): Sequential(
+    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (segmentation_conv): Sequential(
+    (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU()
+    (2): Conv2d(64, 6, kernel_size=(1, 1), stride=(1, 1))
+  )
+  (criterion): CrossEntropyLoss()
+)
+Loss Function: CrossEntropyLoss
+
+===========================================================
+==================== Hyper-parameters =====================
+n_classes: 5
+lr: 0.001
+epochs: 40
+batch_size: 32
+weight_decay: 0.0001
+scheduler_step: 5
+scheduler_gamma: 0.5
+model_dir: model
+load_best: 0
+log_freq: 20
+dataset_dir: dataset
+===========================================================
+============= Epoch 0 | 2022-09-02 23:02:35 ===============
+=> Current Lr: 0.001
+[0/1188]: 1.7824
+[20/1188]: 0.2343
+[40/1188]: 0.2125
+[60/1188]: 0.2547
+[80/1188]: 0.2032
+[100/1188]: 0.1969
+[120/1188]: 0.1485
+[140/1188]: 0.2615
+[160/1188]: 0.1697
+[180/1188]: 0.1656
+[200/1188]: 0.1614
+[220/1188]: 0.1391
+[240/1188]: 0.1693
+[260/1188]: 0.1566
+[280/1188]: 0.1283
+[300/1188]: 0.1316
+[320/1188]: 0.1375
+[340/1188]: 0.1244
+[360/1188]: 0.1417
+[380/1188]: 0.0994
+[400/1188]: 0.0842
+[420/1188]: 0.1286
+[440/1188]: 0.0961
+[460/1188]: 0.1021
+[480/1188]: 0.1597
+[500/1188]: 0.0881
+[520/1188]: 0.0984
+[540/1188]: 0.0924
+[560/1188]: 0.1079
+[580/1188]: 0.1070
+[600/1188]: 0.1264
+[620/1188]: 0.1291
+[640/1188]: 0.2239
+[660/1188]: 0.1200
+[680/1188]: 0.0943
+[700/1188]: 0.1167
+[720/1188]: 0.0913
+[740/1188]: 0.1158
+[760/1188]: 0.0822
+[780/1188]: 0.1310
+[800/1188]: 0.0807
+[820/1188]: 0.1132
+[840/1188]: 0.0892
+[860/1188]: 0.1239
+[880/1188]: 0.0774
+[900/1188]: 0.1054
+[920/1188]: 0.0723
+[940/1188]: 0.1189
+[960/1188]: 0.0813
+[980/1188]: 0.1465
+[1000/1188]: 0.1095
+[1020/1188]: 0.1068
+[1040/1188]: 0.0924
+[1060/1188]: 0.0847
+[1080/1188]: 0.1227
+[1100/1188]: 0.0920
+[1120/1188]: 0.0749
+[1140/1188]: 0.0976
+[1160/1188]: 0.1165
+[1180/1188]: 0.1333
+=> Training Loss: 0.1352, Evaluation Loss 0.1041
+
+============= Epoch 1 | 2022-09-02 23:08:41 ===============
+=> Current Lr: 0.001
+[0/1188]: 0.1341
+[20/1188]: 0.0998
+[40/1188]: 0.0838
+[60/1188]: 0.0876
+[80/1188]: 0.0994
+[100/1188]: 0.0850
+[120/1188]: 0.0801
+[140/1188]: 0.1430
+[160/1188]: 0.1196
+[180/1188]: 0.1051
+[200/1188]: 0.1220
+[220/1188]: 0.0691
+[240/1188]: 0.0631
+[260/1188]: 0.0655
+[280/1188]: 0.0896
+[300/1188]: 0.0649
+[320/1188]: 0.0685
+[340/1188]: 0.0864
+[360/1188]: 0.0576
+[380/1188]: 0.0738
+[400/1188]: 0.1333
+[420/1188]: 0.0641
+[440/1188]: 0.0951
+[460/1188]: 0.1232
+[480/1188]: 0.0630
+[500/1188]: 0.1171
+[520/1188]: 0.1029
+[540/1188]: 0.0616
+[560/1188]: 0.0826
+[580/1188]: 0.0827
+[600/1188]: 0.1428
+[620/1188]: 0.0490
+[640/1188]: 0.0821
+[660/1188]: 0.1233
+[680/1188]: 0.0713
+[700/1188]: 0.1080
+[720/1188]: 0.0873
+[740/1188]: 0.0829
+[760/1188]: 0.0680
+[780/1188]: 0.0877
+[800/1188]: 0.0989
+[820/1188]: 0.0442
+[840/1188]: 0.0709
+[860/1188]: 0.1106
+[880/1188]: 0.0935
+[900/1188]: 0.0510
+[920/1188]: 0.0960
+[940/1188]: 0.0887
+[960/1188]: 0.0452
+[980/1188]: 0.0876
+[1000/1188]: 0.0465
+[1020/1188]: 0.0583
+[1040/1188]: 0.0891
+[1060/1188]: 0.1038
+[1080/1188]: 0.0823
+[1100/1188]: 0.0516
+[1120/1188]: 0.0679
+[1140/1188]: 0.0600
+[1160/1188]: 0.0535
+[1180/1188]: 0.1213
+=> Training Loss: 0.0838, Evaluation Loss 0.0850
+
+============= Epoch 2 | 2022-09-02 23:14:39 ===============
+=> Current Lr: 0.001
+[0/1188]: 0.0764
+[20/1188]: 0.0543
+[40/1188]: 0.0551
+[60/1188]: 0.0820
+[80/1188]: 0.0478
+[100/1188]: 0.0577
+[120/1188]: 0.0586
+[140/1188]: 0.0476
+[160/1188]: 0.0437
+[180/1188]: 0.0452
+[200/1188]: 0.0571
+[220/1188]: 0.0773
+[240/1188]: 0.0607
+[260/1188]: 0.0353
+[280/1188]: 0.0509
+[300/1188]: 0.0867
+[320/1188]: 0.0791
+[340/1188]: 0.0709
+[360/1188]: 0.0424
+[380/1188]: 0.0438
+[400/1188]: 0.0866
+[420/1188]: 0.0562
+[440/1188]: 0.0778
+[460/1188]: 0.0577
+[480/1188]: 0.0546
+[500/1188]: 0.0406
+[520/1188]: 0.0766
+[540/1188]: 0.0600
+[560/1188]: 0.0560
+[580/1188]: 0.0708
+[600/1188]: 0.0409
+[620/1188]: 0.0592
+[640/1188]: 0.0670
+[660/1188]: 0.0482
+[680/1188]: 0.0449
+[700/1188]: 0.0487
+[720/1188]: 0.1014
+[740/1188]: 0.0358
+[760/1188]: 0.0423
+[780/1188]: 0.0388
+[800/1188]: 0.0381
+[820/1188]: 0.0341
+[840/1188]: 0.1061
+[860/1188]: 0.0785
+[880/1188]: 0.0806
+[900/1188]: 0.0597
+[920/1188]: 0.0455
+[940/1188]: 0.0420
+[960/1188]: 0.0453
+[980/1188]: 0.0351
+[1000/1188]: 0.1104
+[1020/1188]: 0.1062
+[1040/1188]: 0.0561
+[1060/1188]: 0.0347
+[1080/1188]: 0.0335
+[1100/1188]: 0.0660
+[1120/1188]: 0.0990
+[1140/1188]: 0.0631
+[1160/1188]: 0.1033
+[1180/1188]: 0.0766
+=> Training Loss: 0.0630, Evaluation Loss 0.0599
+
+============= Epoch 3 | 2022-09-02 23:20:35 ===============
+=> Current Lr: 0.001
+[0/1188]: 0.0774
+[20/1188]: 0.0453
+[40/1188]: 0.0802
+[60/1188]: 0.0491
+[80/1188]: 0.0704
+[100/1188]: 0.1075
+[120/1188]: 0.0421
+[140/1188]: 0.0501
+[160/1188]: 0.0651
+[180/1188]: 0.0611
+[200/1188]: 0.0617
+[220/1188]: 0.0515
+[240/1188]: 0.0960
+[260/1188]: 0.0433
+[280/1188]: 0.0732
+[300/1188]: 0.0495
+[320/1188]: 0.0417
+[340/1188]: 0.0399
+[360/1188]: 0.0731
+[380/1188]: 0.0419
+[400/1188]: 0.0475
+[420/1188]: 0.0664
+[440/1188]: 0.0544
+[460/1188]: 0.0538
+[480/1188]: 0.0347
+[500/1188]: 0.0782
+[520/1188]: 0.0220
+[540/1188]: 0.0766
+[560/1188]: 0.0625
+[580/1188]: 0.0609
+[600/1188]: 0.0555
+[620/1188]: 0.0534
+[640/1188]: 0.0285
+[660/1188]: 0.0413
+[680/1188]: 0.0690
+[700/1188]: 0.0439
+[720/1188]: 0.0346
+[740/1188]: 0.0884
+[760/1188]: 0.0301
+[780/1188]: 0.0414
+[800/1188]: 0.0444
+[820/1188]: 0.0382
+[840/1188]: 0.0435
+[860/1188]: 0.0781
+[880/1188]: 0.0269
+[900/1188]: 0.0466
+[920/1188]: 0.0366
+[940/1188]: 0.0568
+[960/1188]: 0.0235
+[980/1188]: 0.0491
+[1000/1188]: 0.0546
+[1020/1188]: 0.0475
+[1040/1188]: 0.0268
+[1060/1188]: 0.0287
+[1080/1188]: 0.0335
+[1100/1188]: 0.0637
+[1120/1188]: 0.0618
+[1140/1188]: 0.0216
+[1160/1188]: 0.0413
+[1180/1188]: 0.0314
+=> Training Loss: 0.0514, Evaluation Loss 0.0439
+
+============= Epoch 4 | 2022-09-02 23:26:32 ===============
+=> Current Lr: 0.001
+[0/1188]: 0.0428
+[20/1188]: 0.0270
+[40/1188]: 0.0366
+[60/1188]: 0.0508
+[80/1188]: 0.0226
+[100/1188]: 0.0519
+[120/1188]: 0.0407
+[140/1188]: 0.0378
+[160/1188]: 0.0375
+[180/1188]: 0.0963
+[200/1188]: 0.0547
+[220/1188]: 0.0361
+[240/1188]: 0.0652
+[260/1188]: 0.0253
+[280/1188]: 0.0528
+[300/1188]: 0.0456
+[320/1188]: 0.0254
+[340/1188]: 0.0261
+[360/1188]: 0.0683
+[380/1188]: 0.0317
+[400/1188]: 0.0705
+[420/1188]: 0.0331
+[440/1188]: 0.0404
+[460/1188]: 0.0265
+[480/1188]: 0.0298
+[500/1188]: 0.0536
+[520/1188]: 0.0388
+[540/1188]: 0.0513
+[560/1188]: 0.0313
+[580/1188]: 0.0600
+[600/1188]: 0.0364
+[620/1188]: 0.0604
+[640/1188]: 0.0267
+[660/1188]: 0.0262
+[680/1188]: 0.0343
+[700/1188]: 0.0341
+[720/1188]: 0.0221
+[740/1188]: 0.0555
+[760/1188]: 0.0382
+[780/1188]: 0.0575
+[800/1188]: 0.0327
+[820/1188]: 0.0669
+[840/1188]: 0.0312
+[860/1188]: 0.0343
+[880/1188]: 0.0264
+[900/1188]: 0.0584
+[920/1188]: 0.0373
+[940/1188]: 0.0605
+[960/1188]: 0.0341
+[980/1188]: 0.0263
+[1000/1188]: 0.0598
+[1020/1188]: 0.0230
+[1040/1188]: 0.0363
+[1060/1188]: 0.0388
+[1080/1188]: 0.0449
+[1100/1188]: 0.0348
+[1120/1188]: 0.0358
+[1140/1188]: 0.0255
+[1160/1188]: 0.0163
+[1180/1188]: 0.0374
+=> Training Loss: 0.0428, Evaluation Loss 0.0402
+
+============= Epoch 5 | 2022-09-02 23:32:37 ===============
+=> Current Lr: 0.0005
+[0/1188]: 0.0323
+[20/1188]: 0.0397
+[40/1188]: 0.0355
+[60/1188]: 0.0171
+[80/1188]: 0.0469
+[100/1188]: 0.0329
+[120/1188]: 0.0201
+[140/1188]: 0.0314
+[160/1188]: 0.0160
+[180/1188]: 0.0553
+[200/1188]: 0.0393
+[220/1188]: 0.0478
+[240/1188]: 0.0204
+[260/1188]: 0.0210
+[280/1188]: 0.0241
+[300/1188]: 0.0301
+[320/1188]: 0.0180
+[340/1188]: 0.0212
+[360/1188]: 0.0153
+[380/1188]: 0.0193
+[400/1188]: 0.0273
+[420/1188]: 0.0171
+[440/1188]: 0.0382
+[460/1188]: 0.0170
+[480/1188]: 0.0179
+[500/1188]: 0.0558
+[520/1188]: 0.0412
+[540/1188]: 0.0596
+[560/1188]: 0.0274
+[580/1188]: 0.0248
+[600/1188]: 0.0223
+[620/1188]: 0.0229
+[640/1188]: 0.0219
+[660/1188]: 0.0182
+[680/1188]: 0.0221
+[700/1188]: 0.0464
+[720/1188]: 0.0241
+[740/1188]: 0.0530
+[760/1188]: 0.0427
+[780/1188]: 0.0341
+[800/1188]: 0.0360
+[820/1188]: 0.0228
+[840/1188]: 0.0371
+[860/1188]: 0.0324
+[880/1188]: 0.0286
+[900/1188]: 0.0216
+[920/1188]: 0.0476
+[940/1188]: 0.0150
+[960/1188]: 0.0183
+[980/1188]: 0.0317
+[1000/1188]: 0.0265
+[1020/1188]: 0.0322
+[1040/1188]: 0.0208
+[1060/1188]: 0.0189
+[1080/1188]: 0.0199
+[1100/1188]: 0.0248
+[1120/1188]: 0.0250
+[1140/1188]: 0.0135
+[1160/1188]: 0.0246
+[1180/1188]: 0.0182
+=> Training Loss: 0.0296, Evaluation Loss 0.0235
+
+============= Epoch 6 | 2022-09-02 23:38:41 ===============
+=> Current Lr: 0.0005
+[0/1188]: 0.0213
+[20/1188]: 0.0265
+[40/1188]: 0.0214
+[60/1188]: 0.0489
+[80/1188]: 0.0326
+[100/1188]: 0.0185
+[120/1188]: 0.0478
+[140/1188]: 0.0139
+[160/1188]: 0.0171
+[180/1188]: 0.0244
+[200/1188]: 0.0318
+[220/1188]: 0.0150
+[240/1188]: 0.0564
+[260/1188]: 0.0233
+[280/1188]: 0.0310
+[300/1188]: 0.0511
+[320/1188]: 0.0210
+[340/1188]: 0.0218
+[360/1188]: 0.0408
+[380/1188]: 0.0137
+[400/1188]: 0.0309
+[420/1188]: 0.0220
+[440/1188]: 0.0362
+[460/1188]: 0.0427
+[480/1188]: 0.0120
+[500/1188]: 0.0147
+[520/1188]: 0.0213
+[540/1188]: 0.0242
+[560/1188]: 0.0294
+[580/1188]: 0.0210
+[600/1188]: 0.0321
+[620/1188]: 0.0348
+[640/1188]: 0.0191
+[660/1188]: 0.0103
+[680/1188]: 0.0322
+[700/1188]: 0.0217
+[720/1188]: 0.0195
+[740/1188]: 0.0298
+[760/1188]: 0.0165
+[780/1188]: 0.0255
+[800/1188]: 0.0518
+[820/1188]: 0.0188
+[840/1188]: 0.0378
+[860/1188]: 0.0190
+[880/1188]: 0.0332
+[900/1188]: 0.0120
+[920/1188]: 0.0171
+[940/1188]: 0.0125
+[960/1188]: 0.0201
+[980/1188]: 0.0220
+[1000/1188]: 0.0206
+[1020/1188]: 0.0223
+[1040/1188]: 0.0100
+[1060/1188]: 0.0216
+[1080/1188]: 0.0188
+[1100/1188]: 0.0245
+[1120/1188]: 0.0187
+[1140/1188]: 0.0325
+[1160/1188]: 0.0382
+[1180/1188]: 0.0283
+=> Training Loss: 0.0260, Evaluation Loss 0.0211
+
+============= Epoch 7 | 2022-09-02 23:44:46 ===============
+=> Current Lr: 0.0005
+[0/1188]: 0.0255
+[20/1188]: 0.0354
+[40/1188]: 0.0174
+[60/1188]: 0.0224
+[80/1188]: 0.0193
+[100/1188]: 0.0379
+[120/1188]: 0.0213
+[140/1188]: 0.0202
+[160/1188]: 0.0187
+[180/1188]: 0.0134
+[200/1188]: 0.0192
+[220/1188]: 0.0212
+[240/1188]: 0.0121
+[260/1188]: 0.0410
+[280/1188]: 0.0457
+[300/1188]: 0.0345
+[320/1188]: 0.0283
+[340/1188]: 0.0179
+[360/1188]: 0.0230
+[380/1188]: 0.0145
+[400/1188]: 0.0299
+[420/1188]: 0.0206
+[440/1188]: 0.0156
+[460/1188]: 0.0189
+[480/1188]: 0.0191
+[500/1188]: 0.0202
+[520/1188]: 0.0205
+[540/1188]: 0.0247
+[560/1188]: 0.0170
+[580/1188]: 0.0239
+[600/1188]: 0.0155
+[620/1188]: 0.0208
+[640/1188]: 0.0220
+[660/1188]: 0.0175
+[680/1188]: 0.0225
+[700/1188]: 0.0141
+[720/1188]: 0.0135
+[740/1188]: 0.0121
+[760/1188]: 0.0184
+[780/1188]: 0.0145
+[800/1188]: 0.0290
+[820/1188]: 0.0251
+[840/1188]: 0.0294
+[860/1188]: 0.0214
+[880/1188]: 0.0250
+[900/1188]: 0.0310
+[920/1188]: 0.0668
+[940/1188]: 0.0184
+[960/1188]: 0.0264
+[980/1188]: 0.0158
+[1000/1188]: 0.0274
+[1020/1188]: 0.0277
+[1040/1188]: 0.0341
+[1060/1188]: 0.0477
+[1080/1188]: 0.0201
+[1100/1188]: 0.0163
+[1120/1188]: 0.0177
+[1140/1188]: 0.0108
+[1160/1188]: 0.0330
+[1180/1188]: 0.0222
+=> Training Loss: 0.0243, Evaluation Loss 0.0240
+
+============= Epoch 8 | 2022-09-02 23:50:51 ===============
+=> Current Lr: 0.0005
+[0/1188]: 0.0232
+[20/1188]: 0.0196
+[40/1188]: 0.0185
+[60/1188]: 0.0113
+[80/1188]: 0.0182
+[100/1188]: 0.0211
+[120/1188]: 0.0162
+[140/1188]: 0.0204
+[160/1188]: 0.0124
+[180/1188]: 0.0170
+[200/1188]: 0.0121
+[220/1188]: 0.0194
+[240/1188]: 0.0224
+[260/1188]: 0.0142
+[280/1188]: 0.0161
+[300/1188]: 0.0147
+[320/1188]: 0.0427
+[340/1188]: 0.0206
+[360/1188]: 0.0145
+[380/1188]: 0.0203
+[400/1188]: 0.0231
+[420/1188]: 0.0530
+[440/1188]: 0.0401
+[460/1188]: 0.0145
+[480/1188]: 0.0209
+[500/1188]: 0.0368
+[520/1188]: 0.0220
+[540/1188]: 0.0197
+[560/1188]: 0.0396
+[580/1188]: 0.0297
+[600/1188]: 0.0337
+[620/1188]: 0.0248
+[640/1188]: 0.0143
+[660/1188]: 0.0124
+[680/1188]: 0.0162
+[700/1188]: 0.0172
+[720/1188]: 0.0183
+[740/1188]: 0.0144
+[760/1188]: 0.0518
+[780/1188]: 0.0174
+[800/1188]: 0.0131
+[820/1188]: 0.0227
+[840/1188]: 0.0220
+[860/1188]: 0.0266
+[880/1188]: 0.0130
+[900/1188]: 0.0209
+[920/1188]: 0.0219
+[940/1188]: 0.0186
+[960/1188]: 0.0213
+[980/1188]: 0.0177
+[1000/1188]: 0.0288
+[1020/1188]: 0.0184
+[1040/1188]: 0.0238
+[1060/1188]: 0.0254
+[1080/1188]: 0.0203
+[1100/1188]: 0.0286
+[1120/1188]: 0.0207
+[1140/1188]: 0.0384
+[1160/1188]: 0.0272
+[1180/1188]: 0.0139
+=> Training Loss: 0.0227, Evaluation Loss 0.0207
+
+============= Epoch 9 | 2022-09-02 23:56:53 ===============
+=> Current Lr: 0.0005
+[0/1188]: 0.0114
+[20/1188]: 0.0309
+[40/1188]: 0.0229
+[60/1188]: 0.0145
+[80/1188]: 0.0200
+[100/1188]: 0.0180
+[120/1188]: 0.0175
+[140/1188]: 0.0253
+[160/1188]: 0.0202
+[180/1188]: 0.0293
+[200/1188]: 0.0223
+[220/1188]: 0.0465
+[240/1188]: 0.0173
+[260/1188]: 0.0221
+[280/1188]: 0.0162
+[300/1188]: 0.0126
+[320/1188]: 0.0181
+[340/1188]: 0.0217
+[360/1188]: 0.0137
+[380/1188]: 0.0311
+[400/1188]: 0.0205
+[420/1188]: 0.0276
+[440/1188]: 0.0258
+[460/1188]: 0.0239
+[480/1188]: 0.0119
+[500/1188]: 0.0170
+[520/1188]: 0.0252
+[540/1188]: 0.0220
+[560/1188]: 0.0146
+[580/1188]: 0.0152
+[600/1188]: 0.0207
+[620/1188]: 0.0230
+[640/1188]: 0.0151
+[660/1188]: 0.0177
+[680/1188]: 0.0649
+[700/1188]: 0.0479
+[720/1188]: 0.0205
+[740/1188]: 0.0159
+[760/1188]: 0.0207
+[780/1188]: 0.0394
+[800/1188]: 0.0116
+[820/1188]: 0.0190
+[840/1188]: 0.0355
+[860/1188]: 0.0232
+[880/1188]: 0.0224
+[900/1188]: 0.0315
+[920/1188]: 0.0280
+[940/1188]: 0.0097
+[960/1188]: 0.0206
+[980/1188]: 0.0083
+[1000/1188]: 0.0155
+[1020/1188]: 0.0205
+[1040/1188]: 0.0218
+[1060/1188]: 0.0172
+[1080/1188]: 0.0223
+[1100/1188]: 0.0170
+[1120/1188]: 0.0173
+[1140/1188]: 0.0187
+[1160/1188]: 0.0126
+[1180/1188]: 0.0118
+=> Training Loss: 0.0214, Evaluation Loss 0.0222
+
+============= Epoch 10 | 2022-09-03 00:02:56 ==============
+=> Current Lr: 0.00025
+[0/1188]: 0.0247
+[20/1188]: 0.0109
+[40/1188]: 0.0085
+[60/1188]: 0.0133
+[80/1188]: 0.0184
+[100/1188]: 0.0129
+[120/1188]: 0.0135
+[140/1188]: 0.0104
+[160/1188]: 0.0166
+[180/1188]: 0.0122
+[200/1188]: 0.0082
+[220/1188]: 0.0104
+[240/1188]: 0.0067
+[260/1188]: 0.0131
+[280/1188]: 0.0165
+[300/1188]: 0.0135
+[320/1188]: 0.0139
+[340/1188]: 0.0141
+[360/1188]: 0.0164
+[380/1188]: 0.0251
+[400/1188]: 0.0225
+[420/1188]: 0.0098
+[440/1188]: 0.0169
+[460/1188]: 0.0118
+[480/1188]: 0.0152
+[500/1188]: 0.0105
+[520/1188]: 0.0306
+[540/1188]: 0.0085
+[560/1188]: 0.0193
+[580/1188]: 0.0149
+[600/1188]: 0.0155
+[620/1188]: 0.0134
+[640/1188]: 0.0137
+[660/1188]: 0.0236
+[680/1188]: 0.0225
+[700/1188]: 0.0138
+[720/1188]: 0.0104
+[740/1188]: 0.0116
+[760/1188]: 0.0252
+[780/1188]: 0.0190
+[800/1188]: 0.0086
+[820/1188]: 0.0177
+[840/1188]: 0.0134
+[860/1188]: 0.0162
+[880/1188]: 0.0305
+[900/1188]: 0.0120
+[920/1188]: 0.0175
+[940/1188]: 0.0171
+[960/1188]: 0.0124
+[980/1188]: 0.0215
+[1000/1188]: 0.0234
+[1020/1188]: 0.0142
+[1040/1188]: 0.0152
+[1060/1188]: 0.0203
+[1080/1188]: 0.0173
+[1100/1188]: 0.0120
+[1120/1188]: 0.0118
+[1140/1188]: 0.0150
+[1160/1188]: 0.0150
+[1180/1188]: 0.0132
+=> Training Loss: 0.0160, Evaluation Loss 0.0153
+
+============= Epoch 11 | 2022-09-03 00:08:51 ==============
+=> Current Lr: 0.00025
+[0/1188]: 0.0069
+[20/1188]: 0.0517
+[40/1188]: 0.0216
+[60/1188]: 0.0163
+[80/1188]: 0.0104
+[100/1188]: 0.0099
+[120/1188]: 0.0174
+[140/1188]: 0.0075
+[160/1188]: 0.0189
+[180/1188]: 0.0096
+[200/1188]: 0.0163
+[220/1188]: 0.0104
+[240/1188]: 0.0135
+[260/1188]: 0.0104
+[280/1188]: 0.0072
+[300/1188]: 0.0156
+[320/1188]: 0.0357
+[340/1188]: 0.0220
+[360/1188]: 0.0131
+[380/1188]: 0.0136
+[400/1188]: 0.0103
+[420/1188]: 0.0123
+[440/1188]: 0.0117
+[460/1188]: 0.0172
+[480/1188]: 0.0110
+[500/1188]: 0.0094
+[520/1188]: 0.0199
+[540/1188]: 0.0279
+[560/1188]: 0.0193
+[580/1188]: 0.0073
+[600/1188]: 0.0149
+[620/1188]: 0.0123
+[640/1188]: 0.0125
+[660/1188]: 0.0151
+[680/1188]: 0.0169
+[700/1188]: 0.0128
+[720/1188]: 0.0115
+[740/1188]: 0.0214
+[760/1188]: 0.0210
+[780/1188]: 0.0172
+[800/1188]: 0.0179
+[820/1188]: 0.0117
+[840/1188]: 0.0104
+[860/1188]: 0.0121
+[880/1188]: 0.0169
+[900/1188]: 0.0090
+[920/1188]: 0.0164
+[940/1188]: 0.0116
+[960/1188]: 0.0260
+[980/1188]: 0.0168
+[1000/1188]: 0.0412
+[1020/1188]: 0.0084
+[1040/1188]: 0.0178
+[1060/1188]: 0.0357
+[1080/1188]: 0.0178
+[1100/1188]: 0.0156
+[1120/1188]: 0.0155
+[1140/1188]: 0.0129
+[1160/1188]: 0.0211
+[1180/1188]: 0.0175
+=> Training Loss: 0.0153, Evaluation Loss 0.0143
+
+============= Epoch 12 | 2022-09-03 00:14:45 ==============
+=> Current Lr: 0.00025
+[0/1188]: 0.0149
+[20/1188]: 0.0170
+[40/1188]: 0.0125
+[60/1188]: 0.0150
+[80/1188]: 0.0118
+[100/1188]: 0.0211
+[120/1188]: 0.0144
+[140/1188]: 0.0156
+[160/1188]: 0.0116
+[180/1188]: 0.0165
+[200/1188]: 0.0120
+[220/1188]: 0.0106
+[240/1188]: 0.0122
+[260/1188]: 0.0158
+[280/1188]: 0.0284
+[300/1188]: 0.0115
+[320/1188]: 0.0120
+[340/1188]: 0.0145
+[360/1188]: 0.0099
+[380/1188]: 0.0075
+[400/1188]: 0.0118
+[420/1188]: 0.0241
+[440/1188]: 0.0174
+[460/1188]: 0.0121
+[480/1188]: 0.0125
+[500/1188]: 0.0184
+[520/1188]: 0.0100
+[540/1188]: 0.0099
+[560/1188]: 0.0108
+[580/1188]: 0.0130
+[600/1188]: 0.0158
+[620/1188]: 0.0204
+[640/1188]: 0.0241
+[660/1188]: 0.0124
+[680/1188]: 0.0227
+[700/1188]: 0.0149
+[720/1188]: 0.0188
+[740/1188]: 0.0104
+[760/1188]: 0.0270
+[780/1188]: 0.0128
+[800/1188]: 0.0538
+[820/1188]: 0.0193
+[840/1188]: 0.0184
+[860/1188]: 0.0170
+[880/1188]: 0.0104
+[900/1188]: 0.0110
+[920/1188]: 0.0156
+[940/1188]: 0.0117
+[960/1188]: 0.0101
+[980/1188]: 0.0153
+[1000/1188]: 0.0113
+[1020/1188]: 0.0107
+[1040/1188]: 0.0222
+[1060/1188]: 0.0139
+[1080/1188]: 0.0116
+[1100/1188]: 0.0122
+[1120/1188]: 0.0090
+[1140/1188]: 0.0113
+[1160/1188]: 0.0157
+[1180/1188]: 0.0127
+=> Training Loss: 0.0156, Evaluation Loss 0.0138
+
+============= Epoch 13 | 2022-09-03 00:20:40 ==============
+=> Current Lr: 0.00025
+[0/1188]: 0.0138
+[20/1188]: 0.0196
+[40/1188]: 0.0176
+[60/1188]: 0.0108
+[80/1188]: 0.0099
+[100/1188]: 0.0129
+[120/1188]: 0.0081
+[140/1188]: 0.0080
+[160/1188]: 0.0106
+[180/1188]: 0.0151
+[200/1188]: 0.0155
+[220/1188]: 0.0144
+[240/1188]: 0.0155
+[260/1188]: 0.0085
+[280/1188]: 0.0168
+[300/1188]: 0.0108
+[320/1188]: 0.0120
+[340/1188]: 0.0233
+[360/1188]: 0.0406
+[380/1188]: 0.0125
+[400/1188]: 0.0151
+[420/1188]: 0.0109
+[440/1188]: 0.0102
+[460/1188]: 0.0620
+[480/1188]: 0.0101
+[500/1188]: 0.0099
+[520/1188]: 0.0129
+[540/1188]: 0.0095
+[560/1188]: 0.0121
+[580/1188]: 0.0254
+[600/1188]: 0.0104
+[620/1188]: 0.0082
+[640/1188]: 0.0106
+[660/1188]: 0.0107
+[680/1188]: 0.0201
+[700/1188]: 0.0115
+[720/1188]: 0.0106
+[740/1188]: 0.0101
+[760/1188]: 0.0069
+[780/1188]: 0.0186
+[800/1188]: 0.0205
+[820/1188]: 0.0148
+[840/1188]: 0.0146
+[860/1188]: 0.0106
+[880/1188]: 0.0161
+[900/1188]: 0.0120
+[920/1188]: 0.0113
+[940/1188]: 0.0242
+[960/1188]: 0.0086
+[980/1188]: 0.0086
+[1000/1188]: 0.0136
+[1020/1188]: 0.0111
+[1040/1188]: 0.0213
+[1060/1188]: 0.0135
+[1080/1188]: 0.0167
+[1100/1188]: 0.0161
+[1120/1188]: 0.0111
+[1140/1188]: 0.0093
+[1160/1188]: 0.0165
+[1180/1188]: 0.0096
+=> Training Loss: 0.0144, Evaluation Loss 0.0129
+
+============= Epoch 14 | 2022-09-03 00:26:35 ==============
+=> Current Lr: 0.00025
+[0/1188]: 0.0071
+[20/1188]: 0.0098
+[40/1188]: 0.0128
+[60/1188]: 0.0092
+[80/1188]: 0.0136
+[100/1188]: 0.0088
+[120/1188]: 0.0113
+[140/1188]: 0.0133
+[160/1188]: 0.0203
+[180/1188]: 0.0091
+[200/1188]: 0.0120
+[220/1188]: 0.0121
+[240/1188]: 0.0521
+[260/1188]: 0.0087
+[280/1188]: 0.0163
+[300/1188]: 0.0082
+[320/1188]: 0.0119
+[340/1188]: 0.0452
+[360/1188]: 0.0119
+[380/1188]: 0.0174
+[400/1188]: 0.0107
+[420/1188]: 0.0125
+[440/1188]: 0.0235
+[460/1188]: 0.0192
+[480/1188]: 0.0136
+[500/1188]: 0.0141
+[520/1188]: 0.0118
+[540/1188]: 0.0118
+[560/1188]: 0.0198
+[580/1188]: 0.0150
+[600/1188]: 0.0110
+[620/1188]: 0.0127
+[640/1188]: 0.0144
+[660/1188]: 0.0100
+[680/1188]: 0.0183
+[700/1188]: 0.0141
+[720/1188]: 0.0200
+[740/1188]: 0.0181
+[760/1188]: 0.0099
+[780/1188]: 0.0072
+[800/1188]: 0.0107
+[820/1188]: 0.0156
+[840/1188]: 0.0096
+[860/1188]: 0.0105
+[880/1188]: 0.0110
+[900/1188]: 0.0136
+[920/1188]: 0.0168
+[940/1188]: 0.0316
+[960/1188]: 0.0187
+[980/1188]: 0.0091
+[1000/1188]: 0.0115
+[1020/1188]: 0.0101
+[1040/1188]: 0.0134
+[1060/1188]: 0.0115
+[1080/1188]: 0.0106
+[1100/1188]: 0.0153
+[1120/1188]: 0.0106
+[1140/1188]: 0.0124
+[1160/1188]: 0.0378
+[1180/1188]: 0.0149
+=> Training Loss: 0.0142, Evaluation Loss 0.0154
+
+============= Epoch 15 | 2022-09-03 00:32:31 ==============
+=> Current Lr: 0.000125
+[0/1188]: 0.0140
+[20/1188]: 0.0183
+[40/1188]: 0.0120
+[60/1188]: 0.0103
+[80/1188]: 0.0134
+[100/1188]: 0.0103
+[120/1188]: 0.0111
+[140/1188]: 0.0106
+[160/1188]: 0.0104
+[180/1188]: 0.0126
+[200/1188]: 0.0067
+[220/1188]: 0.0132
+[240/1188]: 0.0147
+[260/1188]: 0.0063
+[280/1188]: 0.0111
+[300/1188]: 0.0121
+[320/1188]: 0.0135
+[340/1188]: 0.0202
+[360/1188]: 0.0142
+[380/1188]: 0.0088
+[400/1188]: 0.0286
+[420/1188]: 0.0103
+[440/1188]: 0.0085
+[460/1188]: 0.0073
+[480/1188]: 0.0181
+[500/1188]: 0.0139
+[520/1188]: 0.0224
+[540/1188]: 0.0111
+[560/1188]: 0.0109
+[580/1188]: 0.0183
+[600/1188]: 0.0131
+[620/1188]: 0.0081
+[640/1188]: 0.0159
+[660/1188]: 0.0094
+[680/1188]: 0.0106
+[700/1188]: 0.0073
+[720/1188]: 0.0057
+[740/1188]: 0.0151
+[760/1188]: 0.0071
+[780/1188]: 0.0079
+[800/1188]: 0.0080
+[820/1188]: 0.0092
+[840/1188]: 0.0089
+[860/1188]: 0.0082
+[880/1188]: 0.0132
+[900/1188]: 0.0077
+[920/1188]: 0.0119
+[940/1188]: 0.0167
+[960/1188]: 0.0217
+[980/1188]: 0.0091
+[1000/1188]: 0.0079
+[1020/1188]: 0.0146
+[1040/1188]: 0.0114
+[1060/1188]: 0.0118
+[1080/1188]: 0.0162
+[1100/1188]: 0.0080
+[1120/1188]: 0.0083
+[1140/1188]: 0.0110
+[1160/1188]: 0.0113
+[1180/1188]: 0.0127
+=> Training Loss: 0.0119, Evaluation Loss 0.0107
+
+============= Epoch 16 | 2022-09-03 00:38:26 ==============
+=> Current Lr: 0.000125
+[0/1188]: 0.0083
+[20/1188]: 0.0099
+[40/1188]: 0.0111
+[60/1188]: 0.0141
+[80/1188]: 0.0076
+[100/1188]: 0.0086
+[120/1188]: 0.0076
+[140/1188]: 0.0117
+[160/1188]: 0.0067
+[180/1188]: 0.0076
+[200/1188]: 0.0068
+[220/1188]: 0.0105
+[240/1188]: 0.0090
+[260/1188]: 0.0081
+[280/1188]: 0.0126
+[300/1188]: 0.0096
+[320/1188]: 0.0177
+[340/1188]: 0.0184
+[360/1188]: 0.0108
+[380/1188]: 0.0181
+[400/1188]: 0.0094
+[420/1188]: 0.0077
+[440/1188]: 0.0107
+[460/1188]: 0.0150
+[480/1188]: 0.0101
+[500/1188]: 0.0069
+[520/1188]: 0.0085
+[540/1188]: 0.0088
+[560/1188]: 0.0064
+[580/1188]: 0.0099
+[600/1188]: 0.0085
+[620/1188]: 0.0053
+[640/1188]: 0.0075
+[660/1188]: 0.0089
+[680/1188]: 0.0086
+[700/1188]: 0.0154
+[720/1188]: 0.0105
+[740/1188]: 0.0095
+[760/1188]: 0.0104
+[780/1188]: 0.0105
+[800/1188]: 0.0092
+[820/1188]: 0.0178
+[840/1188]: 0.0100
+[860/1188]: 0.0091
+[880/1188]: 0.0164
+[900/1188]: 0.0070
+[920/1188]: 0.0092
+[940/1188]: 0.0408
+[960/1188]: 0.0117
+[980/1188]: 0.0094
+[1000/1188]: 0.0086
+[1020/1188]: 0.0077
+[1040/1188]: 0.0084
+[1060/1188]: 0.0097
+[1080/1188]: 0.0069
+[1100/1188]: 0.0136
+[1120/1188]: 0.0102
+[1140/1188]: 0.0109
+[1160/1188]: 0.0101
+[1180/1188]: 0.0098
+=> Training Loss: 0.0111, Evaluation Loss 0.0102
+
+============= Epoch 17 | 2022-09-03 00:44:18 ==============
+=> Current Lr: 0.000125
+[0/1188]: 0.0076
+[20/1188]: 0.0120
+[40/1188]: 0.0142
+[60/1188]: 0.0090
+[80/1188]: 0.0101
+[100/1188]: 0.0096
+[120/1188]: 0.0082
+[140/1188]: 0.0098
+[160/1188]: 0.0074
+[180/1188]: 0.0108
+[200/1188]: 0.0095
+[220/1188]: 0.0092
+[240/1188]: 0.0149
+[260/1188]: 0.0070
+[280/1188]: 0.0071
+[300/1188]: 0.0072
+[320/1188]: 0.0096
+[340/1188]: 0.0068
+[360/1188]: 0.0068
+[380/1188]: 0.0104
+[400/1188]: 0.0132
+[420/1188]: 0.0078
+[440/1188]: 0.0073
+[460/1188]: 0.0092
+[480/1188]: 0.0094
+[500/1188]: 0.0134
+[520/1188]: 0.0119
+[540/1188]: 0.0075
+[560/1188]: 0.0127
+[580/1188]: 0.0149
+[600/1188]: 0.0063
+[620/1188]: 0.0123
+[640/1188]: 0.0069
+[660/1188]: 0.0076
+[680/1188]: 0.0088
+[700/1188]: 0.0071
+[720/1188]: 0.0117
+[740/1188]: 0.0110
+[760/1188]: 0.0097
+[780/1188]: 0.0119
+[800/1188]: 0.0161
+[820/1188]: 0.0095
+[840/1188]: 0.0100
+[860/1188]: 0.0108
+[880/1188]: 0.0096
+[900/1188]: 0.0086
+[920/1188]: 0.0101
+[940/1188]: 0.0058
+[960/1188]: 0.0090
+[980/1188]: 0.0079
+[1000/1188]: 0.0073
+[1020/1188]: 0.0171
+[1040/1188]: 0.0078
+[1060/1188]: 0.0083
+[1080/1188]: 0.0129
+[1100/1188]: 0.0088
+[1120/1188]: 0.0140
+[1140/1188]: 0.0073
+[1160/1188]: 0.0077
+[1180/1188]: 0.0078
+=> Training Loss: 0.0113, Evaluation Loss 0.0106
+
+============= Epoch 18 | 2022-09-03 00:50:12 ==============
+=> Current Lr: 0.000125
+[0/1188]: 0.0090
+[20/1188]: 0.0199
+[40/1188]: 0.0136
+[60/1188]: 0.0114
+[80/1188]: 0.0149
+[100/1188]: 0.0071
+[120/1188]: 0.0080
+[140/1188]: 0.0104
+[160/1188]: 0.0081
+[180/1188]: 0.0098
+[200/1188]: 0.0062
+[220/1188]: 0.0051
+[240/1188]: 0.0092
+[260/1188]: 0.0142
+[280/1188]: 0.0107
+[300/1188]: 0.0098
+[320/1188]: 0.0109
+[340/1188]: 0.0137
+[360/1188]: 0.0059
+[380/1188]: 0.0142
+[400/1188]: 0.0067
+[420/1188]: 0.0178
+[440/1188]: 0.0084
+[460/1188]: 0.0068
+[480/1188]: 0.0114
+[500/1188]: 0.0086
+[520/1188]: 0.0087
+[540/1188]: 0.0086
+[560/1188]: 0.0093
+[580/1188]: 0.0087
+[600/1188]: 0.0085
+[620/1188]: 0.0090
+[640/1188]: 0.0087
+[660/1188]: 0.0058
+[680/1188]: 0.0219
+[700/1188]: 0.0080
+[720/1188]: 0.0085
+[740/1188]: 0.0086
+[760/1188]: 0.0093
+[780/1188]: 0.0098
+[800/1188]: 0.0091
+[820/1188]: 0.0092
+[840/1188]: 0.0111
+[860/1188]: 0.0171
+[880/1188]: 0.0114
+[900/1188]: 0.0172
+[920/1188]: 0.0104
+[940/1188]: 0.0115
+[960/1188]: 0.0130
+[980/1188]: 0.0122
+[1000/1188]: 0.0169
+[1020/1188]: 0.0052
+[1040/1188]: 0.0103
+[1060/1188]: 0.0095
+[1080/1188]: 0.0076
+[1100/1188]: 0.0138
+[1120/1188]: 0.0349
+[1140/1188]: 0.0068
+[1160/1188]: 0.0100
+[1180/1188]: 0.0136
+=> Training Loss: 0.0111, Evaluation Loss 0.0117
+
+============= Epoch 19 | 2022-09-03 00:56:07 ==============
+=> Current Lr: 0.000125
+[0/1188]: 0.0151
+[20/1188]: 0.0083
+[40/1188]: 0.0116
+[60/1188]: 0.0158
+[80/1188]: 0.0211
+[100/1188]: 0.0078
+[120/1188]: 0.0140
+============= Epoch 19 | 2022-09-03 15:24:24 ==============
+=> Current Lr: 0.000125
+[0/1188]: 0.0128
+[20/1188]: 0.0134
+[40/1188]: 0.0093
+[60/1188]: 0.0104
+[80/1188]: 0.0089
+[100/1188]: 0.0091
+[120/1188]: 0.0085
+[140/1188]: 0.0317
+[160/1188]: 0.0082
+[180/1188]: 0.0105
+[200/1188]: 0.0086
+[220/1188]: 0.0112
+[240/1188]: 0.0090
+[260/1188]: 0.0088
+[280/1188]: 0.0096
+[300/1188]: 0.0113
+[320/1188]: 0.0065
+[340/1188]: 0.0074
+[360/1188]: 0.0077
+[380/1188]: 0.0082
+[400/1188]: 0.0094
+[420/1188]: 0.0072
+[440/1188]: 0.0108
+[460/1188]: 0.0088
+[480/1188]: 0.0083
+[500/1188]: 0.0113
+[520/1188]: 0.0194
+[540/1188]: 0.0184
+[560/1188]: 0.0093
+[580/1188]: 0.0099
+[600/1188]: 0.0093
+[620/1188]: 0.0061
+[640/1188]: 0.0079
+[660/1188]: 0.0089
+[680/1188]: 0.0078
+[700/1188]: 0.0104
+[720/1188]: 0.0081
+[740/1188]: 0.0095
+[760/1188]: 0.0124
+[780/1188]: 0.0061
+[800/1188]: 0.0265
+[820/1188]: 0.0184
+[840/1188]: 0.0140
+[860/1188]: 0.0067
+[880/1188]: 0.0080
+[900/1188]: 0.0053
+[920/1188]: 0.0087
+[940/1188]: 0.0093
+[960/1188]: 0.0079
+[980/1188]: 0.0079
+[1000/1188]: 0.0078
+[1020/1188]: 0.0089
+[1040/1188]: 0.0077
+[1060/1188]: 0.0361
+[1080/1188]: 0.0091
+[1100/1188]: 0.0161
+[1120/1188]: 0.0079
+[1140/1188]: 0.0072
+[1160/1188]: 0.0084
+[1180/1188]: 0.0118
+=> Training Loss: 0.0107, Evaluation Loss 0.0099
+
+============= Epoch 20 | 2022-09-03 15:30:36 ==============
+=> Current Lr: 6.25e-05
+[0/1188]: 0.0091
+[20/1188]: 0.0314
+[40/1188]: 0.0072
+[60/1188]: 0.0061
+[80/1188]: 0.0104
+[100/1188]: 0.0104
+[120/1188]: 0.0094
+[140/1188]: 0.0084
+[160/1188]: 0.0090
+[180/1188]: 0.0120
+[200/1188]: 0.0059
+[220/1188]: 0.0095
+[240/1188]: 0.0073
+[260/1188]: 0.0112
+[280/1188]: 0.0085
+[300/1188]: 0.0137
+[320/1188]: 0.0064
+[340/1188]: 0.0136
+[360/1188]: 0.0125
+[380/1188]: 0.0138
+[400/1188]: 0.0085
+[420/1188]: 0.0082
+[440/1188]: 0.0086
+[460/1188]: 0.0118
+[480/1188]: 0.0099
+[500/1188]: 0.0072
+[520/1188]: 0.0076
+[540/1188]: 0.0066
+[560/1188]: 0.0144
+[580/1188]: 0.0083
+[600/1188]: 0.0099
+[620/1188]: 0.0104
+[640/1188]: 0.0096
+[660/1188]: 0.0143
+[680/1188]: 0.0065
+[700/1188]: 0.0081
+[720/1188]: 0.0057
+[740/1188]: 0.0064
+[760/1188]: 0.0074
+[780/1188]: 0.0072
+[800/1188]: 0.0162
+[820/1188]: 0.0076
+[840/1188]: 0.0084
+[860/1188]: 0.0090
+[880/1188]: 0.0064
+[900/1188]: 0.0123
+[920/1188]: 0.0090
+[940/1188]: 0.0093
+[960/1188]: 0.0118
+[980/1188]: 0.0117
+[1000/1188]: 0.0067
+[1020/1188]: 0.0082
+[1040/1188]: 0.0107
+[1060/1188]: 0.0061
+[1080/1188]: 0.0075
+[1100/1188]: 0.0143
+[1120/1188]: 0.0074
+[1140/1188]: 0.0076
+[1160/1188]: 0.0088
+[1180/1188]: 0.0099
+=> Training Loss: 0.0094, Evaluation Loss 0.0086
+
+============= Epoch 21 | 2022-09-03 15:36:35 ==============
+=> Current Lr: 6.25e-05
+[0/1188]: 0.0098
+[20/1188]: 0.0069
+[40/1188]: 0.0069
+[60/1188]: 0.0121
+[80/1188]: 0.0070
+[100/1188]: 0.0101
+[120/1188]: 0.0066
+[140/1188]: 0.0101
+[160/1188]: 0.0068
+[180/1188]: 0.0065
+[200/1188]: 0.0108
+[220/1188]: 0.0097
+[240/1188]: 0.0069
+[260/1188]: 0.0047
+[280/1188]: 0.0104
+[300/1188]: 0.0068
+[320/1188]: 0.0081
+[340/1188]: 0.0102
+[360/1188]: 0.0081
+[380/1188]: 0.0522
+[400/1188]: 0.0059
+[420/1188]: 0.0046
+[440/1188]: 0.0065
+[460/1188]: 0.0064
+[480/1188]: 0.0080
+[500/1188]: 0.0060
+[520/1188]: 0.0122
+[540/1188]: 0.0082
+[560/1188]: 0.0156
+[580/1188]: 0.0109
+[600/1188]: 0.0137
+[620/1188]: 0.0059
+[640/1188]: 0.0155
+[660/1188]: 0.0078
+[680/1188]: 0.0082
+[700/1188]: 0.0106
+[720/1188]: 0.0087
+[740/1188]: 0.0077
+[760/1188]: 0.0092
+[780/1188]: 0.0063
+[800/1188]: 0.0061
+[820/1188]: 0.0098
+[840/1188]: 0.0070
+[860/1188]: 0.0115
+[880/1188]: 0.0099
+[900/1188]: 0.0072
+[920/1188]: 0.0114
+[940/1188]: 0.0113
+[960/1188]: 0.0072
+[980/1188]: 0.0072
+[1000/1188]: 0.0114
+[1020/1188]: 0.0061
+[1040/1188]: 0.0056
+[1060/1188]: 0.0073
+[1080/1188]: 0.0119
+[1100/1188]: 0.0166
+[1120/1188]: 0.0097
+[1140/1188]: 0.0091
+[1160/1188]: 0.0099
+[1180/1188]: 0.0115
+=> Training Loss: 0.0089, Evaluation Loss 0.0086
+
+============= Epoch 22 | 2022-09-03 15:42:47 ==============
+=> Current Lr: 6.25e-05
+[0/1188]: 0.0050
+[20/1188]: 0.0064
+[40/1188]: 0.0058
+[60/1188]: 0.0093
+[80/1188]: 0.0047
+[100/1188]: 0.0066
+[120/1188]: 0.0070
+[140/1188]: 0.0059
+[160/1188]: 0.0064
+[180/1188]: 0.0073
+[200/1188]: 0.0074
+[220/1188]: 0.0065
+[240/1188]: 0.0059
+[260/1188]: 0.0068
+[280/1188]: 0.0116
+[300/1188]: 0.0067
+[320/1188]: 0.0118
+[340/1188]: 0.0051
+[360/1188]: 0.0068
+[380/1188]: 0.0073
+[400/1188]: 0.0101
+[420/1188]: 0.0073
+[440/1188]: 0.0075
+[460/1188]: 0.0073
+[480/1188]: 0.0127
+[500/1188]: 0.0117
+[520/1188]: 0.0173
+[540/1188]: 0.0134
+[560/1188]: 0.0248
+[580/1188]: 0.0093
+[600/1188]: 0.0089
+[620/1188]: 0.0061
+[640/1188]: 0.0121
+[660/1188]: 0.0176
+[680/1188]: 0.0103
+[700/1188]: 0.0095
+[720/1188]: 0.0069
+[740/1188]: 0.0076
+[760/1188]: 0.0106
+[780/1188]: 0.0078
+[800/1188]: 0.0149
+[820/1188]: 0.0087
+[840/1188]: 0.0069
+[860/1188]: 0.0167
+[880/1188]: 0.0080
+[900/1188]: 0.0091
+[920/1188]: 0.0054
+[940/1188]: 0.0075
+[960/1188]: 0.0117
+[980/1188]: 0.0081
+[1000/1188]: 0.0063
+[1020/1188]: 0.0126
+[1040/1188]: 0.0087
+[1060/1188]: 0.0074
+[1080/1188]: 0.0093
+[1100/1188]: 0.0085
+[1120/1188]: 0.0096
+[1140/1188]: 0.0072
+[1160/1188]: 0.0120
+[1180/1188]: 0.0074
+=> Training Loss: 0.0090, Evaluation Loss 0.0079
+
+============= Epoch 23 | 2022-09-03 15:48:48 ==============
+=> Current Lr: 6.25e-05
+[0/1188]: 0.0062
+[20/1188]: 0.0106
+[40/1188]: 0.0069
+[60/1188]: 0.0106
+[80/1188]: 0.0071
+[100/1188]: 0.0074
+[120/1188]: 0.0069
+[140/1188]: 0.0085
+[160/1188]: 0.0147
+[180/1188]: 0.0067
+[200/1188]: 0.0139
+[220/1188]: 0.0057
+[240/1188]: 0.0055
+[260/1188]: 0.0098
+[280/1188]: 0.0150
+[300/1188]: 0.0102
+[320/1188]: 0.0067
+[340/1188]: 0.0080
+[360/1188]: 0.0058
+[380/1188]: 0.0076
+[400/1188]: 0.0068
+[420/1188]: 0.0119
+[440/1188]: 0.0067
+[460/1188]: 0.0092
+[480/1188]: 0.0074
+[500/1188]: 0.0081
+[520/1188]: 0.0071
+[540/1188]: 0.0219
+[560/1188]: 0.0108
+[580/1188]: 0.0117
+[600/1188]: 0.0092
+[620/1188]: 0.0103
+[640/1188]: 0.0068
+[660/1188]: 0.0063
+[680/1188]: 0.0065
+[700/1188]: 0.0092
+[720/1188]: 0.0068
+[740/1188]: 0.0059
+[760/1188]: 0.0080
+[780/1188]: 0.0093
+[800/1188]: 0.0100
+[820/1188]: 0.0059
+[840/1188]: 0.0055
+[860/1188]: 0.0048
+[880/1188]: 0.0148
+[900/1188]: 0.0059
+[920/1188]: 0.0072
+[940/1188]: 0.0072
+[960/1188]: 0.0092
+[980/1188]: 0.0108
+[1000/1188]: 0.0088
+[1020/1188]: 0.0082
+[1040/1188]: 0.0102
+[1060/1188]: 0.0142
+[1080/1188]: 0.0066
+[1100/1188]: 0.0116
+[1120/1188]: 0.0061
+[1140/1188]: 0.0096
+[1160/1188]: 0.0164
+[1180/1188]: 0.0116
+=> Training Loss: 0.0086, Evaluation Loss 0.0087
+
+============= Epoch 24 | 2022-09-03 15:54:50 ==============
+=> Current Lr: 6.25e-05
+[0/1188]: 0.0073
+[20/1188]: 0.0061
+[40/1188]: 0.0072
+[60/1188]: 0.0102
+[80/1188]: 0.0092
+[100/1188]: 0.0064
+[120/1188]: 0.0068
+[140/1188]: 0.0057
+[160/1188]: 0.0085
+[180/1188]: 0.0091
+[200/1188]: 0.0121
+[220/1188]: 0.0063
+[240/1188]: 0.0087
+[260/1188]: 0.0056
+[280/1188]: 0.0095
+[300/1188]: 0.0056
+[320/1188]: 0.0076
+[340/1188]: 0.0087
+[360/1188]: 0.0084
+[380/1188]: 0.0075
+[400/1188]: 0.0136
+[420/1188]: 0.0109
+[440/1188]: 0.0050
+[460/1188]: 0.0100
+[480/1188]: 0.0086
+[500/1188]: 0.0054
+[520/1188]: 0.0070
+[540/1188]: 0.0109
+[560/1188]: 0.0091
+[580/1188]: 0.0067
+[600/1188]: 0.0117
+[620/1188]: 0.0080
+[640/1188]: 0.0079
+[660/1188]: 0.0099
+[680/1188]: 0.0090
+[700/1188]: 0.0093
+[720/1188]: 0.0136
+[740/1188]: 0.0095
+[760/1188]: 0.0056
+[780/1188]: 0.0067
+[800/1188]: 0.0064
+[820/1188]: 0.0067
+[840/1188]: 0.0083
+[860/1188]: 0.0074
+[880/1188]: 0.0064
+[900/1188]: 0.0077
+[920/1188]: 0.0061
+[940/1188]: 0.0055
+[960/1188]: 0.0052
+[980/1188]: 0.0067
+[1000/1188]: 0.0091
+[1020/1188]: 0.0093
+[1040/1188]: 0.0066
+[1060/1188]: 0.0074
+[1080/1188]: 0.0103
+[1100/1188]: 0.0114
+[1120/1188]: 0.0051
+[1140/1188]: 0.0121
+[1160/1188]: 0.0068
+[1180/1188]: 0.0065
+=> Training Loss: 0.0084, Evaluation Loss 0.0078
+
+============= Epoch 25 | 2022-09-03 16:00:55 ==============
+=> Current Lr: 3.125e-05
+[0/1188]: 0.0082
+[20/1188]: 0.0103
+[40/1188]: 0.0067
+[60/1188]: 0.0060
+[80/1188]: 0.0086
+[100/1188]: 0.0053
+[120/1188]: 0.0135
+[140/1188]: 0.0073
+[160/1188]: 0.0094
+[180/1188]: 0.0071
+[200/1188]: 0.0060
+[220/1188]: 0.0064
+[240/1188]: 0.0079
+[260/1188]: 0.0069
+[280/1188]: 0.0066
+[300/1188]: 0.0066
+[320/1188]: 0.0060
+[340/1188]: 0.0054
+[360/1188]: 0.0054
+[380/1188]: 0.0055
+[400/1188]: 0.0091
+[420/1188]: 0.0054
+[440/1188]: 0.0139
+[460/1188]: 0.0085
+[480/1188]: 0.0056
+[500/1188]: 0.0057
+[520/1188]: 0.0114
+[540/1188]: 0.0098
+[560/1188]: 0.0060
+[580/1188]: 0.0099
+[600/1188]: 0.0612
+[620/1188]: 0.0059
+[640/1188]: 0.0057
+[660/1188]: 0.0094
+[680/1188]: 0.0067
+[700/1188]: 0.0069
+[720/1188]: 0.0085
+[740/1188]: 0.0100
+[760/1188]: 0.0066
+[780/1188]: 0.0090
+[800/1188]: 0.0070
+[820/1188]: 0.0106
+[840/1188]: 0.0094
+[860/1188]: 0.0060
+[880/1188]: 0.0105
+[900/1188]: 0.0058
+[920/1188]: 0.0061
+[940/1188]: 0.0117
+[960/1188]: 0.0070
+[980/1188]: 0.0055
+[1000/1188]: 0.0065
+[1020/1188]: 0.0177
+[1040/1188]: 0.0057
+[1060/1188]: 0.0045
+[1080/1188]: 0.0085
+[1100/1188]: 0.0064
+[1120/1188]: 0.0063
+[1140/1188]: 0.0059
+[1160/1188]: 0.0063
+[1180/1188]: 0.0061
+=> Training Loss: 0.0080, Evaluation Loss 0.0074
+
+============= Epoch 26 | 2022-09-03 16:07:00 ==============
+=> Current Lr: 3.125e-05
+[0/1188]: 0.0094
+[20/1188]: 0.0056
+[40/1188]: 0.0056
+[60/1188]: 0.0073
+[80/1188]: 0.0115
+[100/1188]: 0.0091
+[120/1188]: 0.0050
+[140/1188]: 0.0049
+[160/1188]: 0.0114
+[180/1188]: 0.0054
+[200/1188]: 0.0101
+[220/1188]: 0.0076
+[240/1188]: 0.0052
+[260/1188]: 0.0060
+[280/1188]: 0.0050
+[300/1188]: 0.0064
+[320/1188]: 0.0075
+[340/1188]: 0.0078
+[360/1188]: 0.0117
+[380/1188]: 0.0097
+[400/1188]: 0.0065
+[420/1188]: 0.0060
+[440/1188]: 0.0070
+[460/1188]: 0.0067
+[480/1188]: 0.0138
+[500/1188]: 0.0063
+[520/1188]: 0.0107
+[540/1188]: 0.0104
+[560/1188]: 0.0070
+[580/1188]: 0.0063
+[600/1188]: 0.0051
+[620/1188]: 0.0057
+[640/1188]: 0.0048
+[660/1188]: 0.0101
+[680/1188]: 0.0115
+[700/1188]: 0.0056
+[720/1188]: 0.0066
+[740/1188]: 0.0041
+[760/1188]: 0.0118
+[780/1188]: 0.0051
+[800/1188]: 0.0064
+[820/1188]: 0.0063
+[840/1188]: 0.0077
+[860/1188]: 0.0070
+[880/1188]: 0.0113
+[900/1188]: 0.0075
+[920/1188]: 0.0145
+[940/1188]: 0.0065
+[960/1188]: 0.0065
+[980/1188]: 0.0078
+[1000/1188]: 0.0087
+[1020/1188]: 0.0067
+[1040/1188]: 0.0146
+[1060/1188]: 0.0092
+[1080/1188]: 0.0064
+[1100/1188]: 0.0095
+[1120/1188]: 0.0058
+[1140/1188]: 0.0055
+[1160/1188]: 0.0108
+[1180/1188]: 0.0068
+=> Training Loss: 0.0077, Evaluation Loss 0.0077
+
+============= Epoch 27 | 2022-09-03 16:13:05 ==============
+=> Current Lr: 3.125e-05
+[0/1188]: 0.0073
+[20/1188]: 0.0064
+[40/1188]: 0.0061
+[60/1188]: 0.0082
+[80/1188]: 0.0058
+[100/1188]: 0.0061
+[120/1188]: 0.0051
+[140/1188]: 0.0091
+[160/1188]: 0.0126
+[180/1188]: 0.0070
+[200/1188]: 0.0058
+[220/1188]: 0.0054
+[240/1188]: 0.0064
+[260/1188]: 0.0132
+[280/1188]: 0.0049
+[300/1188]: 0.0066
+[320/1188]: 0.0069
+[340/1188]: 0.0046
+[360/1188]: 0.0067
+[380/1188]: 0.0079
+[400/1188]: 0.0059
+[420/1188]: 0.0053
+[440/1188]: 0.0048
+[460/1188]: 0.0067
+[480/1188]: 0.0060
+[500/1188]: 0.0121
+[520/1188]: 0.0065
+[540/1188]: 0.0063
+[560/1188]: 0.0063
+[580/1188]: 0.0046
+[600/1188]: 0.0137
+[620/1188]: 0.0111
+[640/1188]: 0.0074
+[660/1188]: 0.0070
+[680/1188]: 0.0052
+[700/1188]: 0.0123
+[720/1188]: 0.0122
+[740/1188]: 0.0061
+[760/1188]: 0.0063
+[780/1188]: 0.0072
+[800/1188]: 0.0091
+[820/1188]: 0.0064
+[840/1188]: 0.0075
+[860/1188]: 0.0083
+[880/1188]: 0.0102
+[900/1188]: 0.0109
+[920/1188]: 0.0088
+[940/1188]: 0.0064
+[960/1188]: 0.0118
+[980/1188]: 0.0056
+[1000/1188]: 0.0096
+[1020/1188]: 0.0096
+[1040/1188]: 0.0071
+[1060/1188]: 0.0057
+[1080/1188]: 0.0047
+[1100/1188]: 0.0069
+[1120/1188]: 0.0090
+[1140/1188]: 0.0058
+[1160/1188]: 0.0083
+[1180/1188]: 0.0049
+=> Training Loss: 0.0076, Evaluation Loss 0.0072
+
+============= Epoch 28 | 2022-09-03 16:19:15 ==============
+=> Current Lr: 3.125e-05
+[0/1188]: 0.0066
+[20/1188]: 0.0059
+[40/1188]: 0.0067
+[60/1188]: 0.0064
+[80/1188]: 0.0087
+[100/1188]: 0.0088
+[120/1188]: 0.0058
+[140/1188]: 0.0070
+[160/1188]: 0.0049
+[180/1188]: 0.0116
+[200/1188]: 0.0056
+[220/1188]: 0.0102
+[240/1188]: 0.0067
+[260/1188]: 0.0074
+[280/1188]: 0.0069
+[300/1188]: 0.0073
+[320/1188]: 0.0073
+[340/1188]: 0.0099
+[360/1188]: 0.0077
+[380/1188]: 0.0101
+[400/1188]: 0.0067
+[420/1188]: 0.0068
+[440/1188]: 0.0087
+[460/1188]: 0.0068
+[480/1188]: 0.0097
+[500/1188]: 0.0072
+[520/1188]: 0.0121
+[540/1188]: 0.0052
+[560/1188]: 0.0061
+[580/1188]: 0.0050
+[600/1188]: 0.0062
+[620/1188]: 0.0059
+[640/1188]: 0.0060
+[660/1188]: 0.0050
+[680/1188]: 0.0091
+[700/1188]: 0.0055
+[720/1188]: 0.0054
+[740/1188]: 0.0053
+[760/1188]: 0.0069
+[780/1188]: 0.0055
+[800/1188]: 0.0051
+[820/1188]: 0.0111
+[840/1188]: 0.0056
+[860/1188]: 0.0052
+[880/1188]: 0.0053
+[900/1188]: 0.0157
+[920/1188]: 0.0059
+[940/1188]: 0.0089
+[960/1188]: 0.0070
+[980/1188]: 0.0056
+[1000/1188]: 0.0062
+[1020/1188]: 0.0055
+[1040/1188]: 0.0072
+[1060/1188]: 0.0076
+[1080/1188]: 0.0131
+[1100/1188]: 0.0053
+[1120/1188]: 0.0070
+[1140/1188]: 0.0074
+[1160/1188]: 0.0067
+[1180/1188]: 0.0070
+=> Training Loss: 0.0075, Evaluation Loss 0.0072
+
+============= Epoch 29 | 2022-09-03 16:25:14 ==============
+=> Current Lr: 3.125e-05
+[0/1188]: 0.0065
+[20/1188]: 0.0059
+[40/1188]: 0.0074
+[60/1188]: 0.0100
+[80/1188]: 0.0061
+[100/1188]: 0.0069
+[120/1188]: 0.0055
+[140/1188]: 0.0054
+[160/1188]: 0.0145
+[180/1188]: 0.0084
+[200/1188]: 0.0065
+[220/1188]: 0.0060
+[240/1188]: 0.0046
+[260/1188]: 0.0061
+[280/1188]: 0.0053
+[300/1188]: 0.0067
+[320/1188]: 0.0067
+[340/1188]: 0.0056
+[360/1188]: 0.0101
+[380/1188]: 0.0084
+[400/1188]: 0.0065
+[420/1188]: 0.0058
+[440/1188]: 0.0054
+[460/1188]: 0.0058
+[480/1188]: 0.0100
+[500/1188]: 0.0067
+[520/1188]: 0.0144
+[540/1188]: 0.0106
+[560/1188]: 0.0089
+[580/1188]: 0.0086
+[600/1188]: 0.0055
+[620/1188]: 0.0065
+[640/1188]: 0.0058
+[660/1188]: 0.0079
+[680/1188]: 0.0083
+[700/1188]: 0.0057
+[720/1188]: 0.0075
+[740/1188]: 0.0093
+[760/1188]: 0.0064
+[780/1188]: 0.0055
+[800/1188]: 0.0060
+[820/1188]: 0.0066
+[840/1188]: 0.0061
+[860/1188]: 0.0060
+[880/1188]: 0.0058
+[900/1188]: 0.0055
+[920/1188]: 0.0054
+[940/1188]: 0.0054
+[960/1188]: 0.0063
+[980/1188]: 0.0054
+[1000/1188]: 0.0046
+[1020/1188]: 0.0086
+[1040/1188]: 0.0043
+[1060/1188]: 0.0059
+[1080/1188]: 0.0062
+[1100/1188]: 0.0065
+[1120/1188]: 0.0077
+[1140/1188]: 0.0069
+[1160/1188]: 0.0061
+[1180/1188]: 0.0054
+=> Training Loss: 0.0074, Evaluation Loss 0.0074
+
+============= Epoch 30 | 2022-09-03 16:31:11 ==============
+=> Current Lr: 1.5625e-05
+[0/1188]: 0.0056
+[20/1188]: 0.0050
+[40/1188]: 0.0068
+[60/1188]: 0.0078
+[80/1188]: 0.0126
+[100/1188]: 0.0085
+[120/1188]: 0.0068
+[140/1188]: 0.0057
+[160/1188]: 0.0049
+[180/1188]: 0.0055
+[200/1188]: 0.0074
+[220/1188]: 0.0058
+[240/1188]: 0.0053
+[260/1188]: 0.0053
+[280/1188]: 0.0060
+[300/1188]: 0.0096
+[320/1188]: 0.0056
+[340/1188]: 0.0062
+[360/1188]: 0.0065
+[380/1188]: 0.0118
+[400/1188]: 0.0050
+[420/1188]: 0.0047
+[440/1188]: 0.0064
+[460/1188]: 0.0050
+[480/1188]: 0.0055
+[500/1188]: 0.0062
+[520/1188]: 0.0052
+[540/1188]: 0.0055
+[560/1188]: 0.0064
+[580/1188]: 0.0053
+[600/1188]: 0.0057
+[620/1188]: 0.0062
+[640/1188]: 0.0062
+[660/1188]: 0.0049
+[680/1188]: 0.0066
+[700/1188]: 0.0145
+[720/1188]: 0.0078
+[740/1188]: 0.0071
+[760/1188]: 0.0060
+[780/1188]: 0.0076
+[800/1188]: 0.0084
+[820/1188]: 0.0039
+[840/1188]: 0.0155
+[860/1188]: 0.0097
+[880/1188]: 0.0056
+[900/1188]: 0.0061
+[920/1188]: 0.0055
+[940/1188]: 0.0061
+[960/1188]: 0.0056
+[980/1188]: 0.0055
+[1000/1188]: 0.0051
+[1020/1188]: 0.0083
+[1040/1188]: 0.0104
+[1060/1188]: 0.0091
+[1080/1188]: 0.0054
+[1100/1188]: 0.0103
+[1120/1188]: 0.0064
+[1140/1188]: 0.0054
+[1160/1188]: 0.0059
+[1180/1188]: 0.0054
+=> Training Loss: 0.0072, Evaluation Loss 0.0069
+
+============= Epoch 31 | 2022-09-03 16:37:06 ==============
+=> Current Lr: 1.5625e-05
+[0/1188]: 0.0057
+[20/1188]: 0.0119
+[40/1188]: 0.0064
+[60/1188]: 0.0055
+[80/1188]: 0.0078
+[100/1188]: 0.0055
+[120/1188]: 0.0056
+[140/1188]: 0.0135
+[160/1188]: 0.0101
+[180/1188]: 0.0065
+[200/1188]: 0.0083
+[220/1188]: 0.0065
+[240/1188]: 0.0073
+[260/1188]: 0.0080
+[280/1188]: 0.0205
+[300/1188]: 0.0069
+[320/1188]: 0.0112
+[340/1188]: 0.0107
+[360/1188]: 0.0051
+[380/1188]: 0.0058
+[400/1188]: 0.0143
+[420/1188]: 0.0083
+[440/1188]: 0.0065
+[460/1188]: 0.0065
+[480/1188]: 0.0050
+[500/1188]: 0.0065
+[520/1188]: 0.0049
+[540/1188]: 0.0069
+============= Epoch 31 | 2022-09-06 08:33:06 ==============
+=> Current Lr: 1.5625e-05
+[0/1188]: 0.0101
+[20/1188]: 0.0061
+[40/1188]: 0.0059
+[60/1188]: 0.0059
+[80/1188]: 0.0125
+[100/1188]: 0.0090
+[120/1188]: 0.0172
+[140/1188]: 0.0070
+[160/1188]: 0.0051
+[180/1188]: 0.0055
+[200/1188]: 0.0056
+[220/1188]: 0.0068
+[240/1188]: 0.0062
+[260/1188]: 0.0051
+[280/1188]: 0.0060
+[300/1188]: 0.0069
+[320/1188]: 0.0055
+[340/1188]: 0.0056
+[360/1188]: 0.0049
+[380/1188]: 0.0087
+[400/1188]: 0.0051
+[420/1188]: 0.0095
+[440/1188]: 0.0052
+[460/1188]: 0.0113
+[480/1188]: 0.0065
+[500/1188]: 0.0065
+[520/1188]: 0.0072
+[540/1188]: 0.0065
+[560/1188]: 0.0084
+[580/1188]: 0.0052
+[600/1188]: 0.0051
+[620/1188]: 0.0064
+[640/1188]: 0.0062
+[660/1188]: 0.0063
+[680/1188]: 0.0063
+[700/1188]: 0.0069
+[720/1188]: 0.0055
+[740/1188]: 0.0081
+[760/1188]: 0.0050
+[780/1188]: 0.0056
+[800/1188]: 0.0062
+[820/1188]: 0.0077
+[840/1188]: 0.0044
+[860/1188]: 0.0058
+[880/1188]: 0.0059
+[900/1188]: 0.0062
+[920/1188]: 0.0076
+[940/1188]: 0.0067
+[960/1188]: 0.0049
+[980/1188]: 0.0053
+[1000/1188]: 0.0058
+[1020/1188]: 0.0088
+[1040/1188]: 0.0054
+[1060/1188]: 0.0052
+[1080/1188]: 0.0044
+[1100/1188]: 0.0057
+[1120/1188]: 0.0055
+[1140/1188]: 0.0055
+[1160/1188]: 0.0049
+[1180/1188]: 0.0080
+=> Training Loss: 0.0070, Evaluation Loss 0.0070
+
+============= Epoch 32 | 2022-09-06 08:40:14 ==============
+=> Current Lr: 1.5625e-05
+[0/1188]: 0.0090
+[20/1188]: 0.0057
+[40/1188]: 0.0058
+[60/1188]: 0.0072
+[80/1188]: 0.0083
+[100/1188]: 0.0049
+[120/1188]: 0.0065
+[140/1188]: 0.0061
+[160/1188]: 0.0050
+[180/1188]: 0.0049
+[200/1188]: 0.0063
+[220/1188]: 0.0044
+[240/1188]: 0.0064
+[260/1188]: 0.0043
+[280/1188]: 0.0061
+[300/1188]: 0.0063
+[320/1188]: 0.0057
+[340/1188]: 0.0061
+[360/1188]: 0.0078
+[380/1188]: 0.0057
+[400/1188]: 0.0095
+[420/1188]: 0.0058
+[440/1188]: 0.0058
+[460/1188]: 0.0047
+[480/1188]: 0.0071
+[500/1188]: 0.0057
+[520/1188]: 0.0059
+[540/1188]: 0.0064
+[560/1188]: 0.0045
+[580/1188]: 0.0093
+[600/1188]: 0.0057
+[620/1188]: 0.0061
+[640/1188]: 0.0064
+[660/1188]: 0.0061
+[680/1188]: 0.0086
+[700/1188]: 0.0057
+[720/1188]: 0.0086
+[740/1188]: 0.0063
+[760/1188]: 0.0059
+[780/1188]: 0.0081
+[800/1188]: 0.0061
+[820/1188]: 0.0083
+[840/1188]: 0.0123
+[860/1188]: 0.0073
+[880/1188]: 0.0098
+[900/1188]: 0.0067
+[920/1188]: 0.0054
+[940/1188]: 0.0189
+[960/1188]: 0.0069
+[980/1188]: 0.0056
+[1000/1188]: 0.0066
+[1020/1188]: 0.0055
+[1040/1188]: 0.0049
+[1060/1188]: 0.0058
+[1080/1188]: 0.0058
+[1100/1188]: 0.0059
+[1120/1188]: 0.0050
+[1140/1188]: 0.0064
+[1160/1188]: 0.0064
+[1180/1188]: 0.0056
+=> Training Loss: 0.0070, Evaluation Loss 0.0067
+
+============= Epoch 33 | 2022-09-06 08:46:17 ==============
+=> Current Lr: 1.5625e-05
+[0/1188]: 0.0077Net Architecture:
+Resnet18Skip(
+  (res18_backbone): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU(inplace=True)
+    (3): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  )
+  (conv2_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv3_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv4_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (conv5_x): Sequential(
+    (0): Sequential(
+      (0): BasicBlock(
+        (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (downsample): Sequential(
+          (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+          (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (1): BasicBlock(
+        (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (relu): ReLU(inplace=True)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (top_conv): Sequential(
+    (0): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv1): Sequential(
+    (0): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv2): Sequential(
+    (0): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (lateral_conv3): Sequential(
+    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (segmentation_conv): Sequential(
+    (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU()
+    (2): Conv2d(64, 6, kernel_size=(1, 1), stride=(1, 1))
+  )
+  (criterion): CrossEntropyLoss()
+)
+Loss Function: CrossEntropyLoss
+
+===========================================================
+==================== Hyper-parameters =====================
+n_classes: 5
+lr: 0.001
+epochs: 40
+batch_size: 64
+weight_decay: 0.0001
+scheduler_step: 5
+scheduler_gamma: 0.5
+model_dir: model
+load_best: 0
+log_freq: 20
+dataset_dir: dataset
+===========================================================
+============= Epoch 0 | 2022-09-06 10:43:20 ===============
+=> Current Lr: 0.001
+[0/594]: 1.9120
+[20/594]: 0.2066
+[40/594]: 0.1248
+[60/594]: 0.1108
+[80/594]: 0.0752
+[100/594]: 0.0901
+[120/594]: 0.0643
+[140/594]: 0.0434
+[160/594]: 0.0869
+[180/594]: 0.0345
+[200/594]: 0.0464
+[220/594]: 0.0383
+[240/594]: 0.1348
+[260/594]: 0.0250
+[280/594]: 0.0729
+[300/594]: 0.0268
+[320/594]: 0.0238
+[340/594]: 0.0467
+[360/594]: 0.0176
+[380/594]: 0.0279
+[400/594]: 0.0258
+[420/594]: 0.0184
+[440/594]: 0.0240
+[460/594]: 0.0165
+[480/594]: 0.0178
+[500/594]: 0.0132
+[520/594]: 0.0300
+[540/594]: 0.0504
+[560/594]: 0.0265
+[580/594]: 0.0173
+=> Training Loss: 0.0561, Evaluation Loss 0.0338
+
+============= Epoch 1 | 2022-09-06 10:50:42 ===============
+=> Current Lr: 0.001
+[0/594]: 0.0490
+[20/594]: 0.0251
+[40/594]: 0.0286
+[60/594]: 0.0307
+[80/594]: 0.0166
+[100/594]: 0.0183
+[120/594]: 0.0129
+[140/594]: 0.0227
+[160/594]: 0.0217
+[180/594]: 0.0153
+[200/594]: 0.0286
+[220/594]: 0.0139
+[240/594]: 0.0097
+[260/594]: 0.0140
+[280/594]: 0.0136
+[300/594]: 0.0182
+[320/594]: 0.0127
+[340/594]: 0.0192
+[360/594]: 0.0155
+[380/594]: 0.0153
+[400/594]: 0.0154
+[420/594]: 0.0125
+[440/594]: 0.0297
+[460/594]: 0.0147
+[480/594]: 0.0113
+[500/594]: 0.0150
+[520/594]: 0.0104
+[540/594]: 0.0110
+[560/594]: 0.0107
+[580/594]: 0.0119
+=> Training Loss: 0.0185, Evaluation Loss 0.0156
+
+============= Epoch 2 | 2022-09-06 10:56:41 ===============
+=> Current Lr: 0.001
+[0/594]: 0.0183
+[20/594]: 0.0212
+[40/594]: 0.0115
+[60/594]: 0.0162
+[80/594]: 0.0124
+[100/594]: 0.0111
+[120/594]: 0.0090
+[140/594]: 0.0155
+[160/594]: 0.0099
+============= Epoch 2 | 2022-09-06 11:06:55 ===============
+=> Current Lr: 0.001
+[0/594]: 0.0148
+[20/594]: 0.0092
+[40/594]: 0.0221
+[60/594]: 0.0476
+[80/594]: 0.0172
+[100/594]: 0.0142
+[120/594]: 0.0094
+[140/594]: 0.0133
+[160/594]: 0.0125
+[180/594]: 0.0109
+[200/594]: 0.0116
+[220/594]: 0.0236
+[240/594]: 0.0281
+[260/594]: 0.0145
+[280/594]: 0.0135
+[300/594]: 0.0100
+[320/594]: 0.0113
+[340/594]: 0.0089
+[360/594]: 0.0100
+[380/594]: 0.0084
+[400/594]: 0.0094
+[420/594]: 0.0094
+[440/594]: 0.0136
+[460/594]: 0.0152
+[480/594]: 0.0098
+[500/594]: 0.0340
+[520/594]: 0.0135
+[540/594]: 0.0272
+[560/594]: 0.0098
+[580/594]: 0.0101
+=> Training Loss: 0.0153, Evaluation Loss 0.0223
+
+============= Epoch 3 | 2022-09-06 11:15:13 ===============
+=> Current Lr: 0.001
+[0/594]: 0.0490
+[20/594]: 0.0116
+[40/594]: 0.0112
+[60/594]: 0.0170
+[80/594]: 0.0139
+[100/594]: 0.0114
+[120/594]: 0.0085
+[140/594]: 0.0097
+[160/594]: 0.0109
+[180/594]: 0.0083
+[200/594]: 0.0076
+[220/594]: 0.0145
+[240/594]: 0.0143
+[260/594]: 0.0105
+[280/594]: 0.0107
+[300/594]: 0.0074
+[320/594]: 0.0085
+[340/594]: 0.0111
+[360/594]: 0.0081
+[380/594]: 0.0092
+[400/594]: 0.0098
+[420/594]: 0.0088
+[440/594]: 0.0109
+[460/594]: 0.0261
+[480/594]: 0.0168
+[500/594]: 0.0107
+[520/594]: 0.0137
+[540/594]: 0.0547
+[560/594]: 0.0190
+[580/594]: 0.0103
+=> Training Loss: 0.0130, Evaluation Loss 0.0116
+
+============= Epoch 4 | 2022-09-06 11:23:14 ===============
+=> Current Lr: 0.001
+[0/594]: 0.0097
+[20/594]: 0.0125
+[40/594]: 0.0090
+[60/594]: 0.0081
+[80/594]: 0.0113
+[100/594]: 0.0096
+[120/594]: 0.0090
+[140/594]: 0.0080
+[160/594]: 0.0095
+[180/594]: 0.0068
+[200/594]: 0.0129
+[220/594]: 0.0108
+[240/594]: 0.0092
+[260/594]: 0.0067
+[280/594]: 0.0121
+[300/594]: 0.0123
+[320/594]: 0.0116
+[340/594]: 0.0070
+[360/594]: 0.0077
+[380/594]: 0.0109
+[400/594]: 0.0069
+[420/594]: 0.0074
+[440/594]: 0.0075
+[460/594]: 0.0069
+[480/594]: 0.0159
+[500/594]: 0.0120
+[520/594]: 0.0082
+[540/594]: 0.0085
+[560/594]: 0.0100
+[580/594]: 0.0084
+=> Training Loss: 0.0100, Evaluation Loss 0.0091
+
+============= Epoch 5 | 2022-09-06 11:31:33 ===============
+=> Current Lr: 0.0005
+[0/594]: 0.0099
+[20/594]: 0.0074
+[40/594]: 0.0074
+[60/594]: 0.0088
+[80/594]: 0.0068
+[100/594]: 0.0076
+[120/594]: 0.0070
+[140/594]: 0.0138
+[160/594]: 0.0079
+[180/594]: 0.0074
+[200/594]: 0.0066
+[220/594]: 0.0060
+[240/594]: 0.0072
+[260/594]: 0.0072
+[280/594]: 0.0060
+[300/594]: 0.0070
+[320/594]: 0.0061
+[340/594]: 0.0076
+[360/594]: 0.0079
+[380/594]: 0.0084
+[400/594]: 0.0074
+[420/594]: 0.0059
+[440/594]: 0.0079
+[460/594]: 0.0090
+[480/594]: 0.0121
+[500/594]: 0.0079
+[520/594]: 0.0063
+[540/594]: 0.0068
+[560/594]: 0.0076
+[580/594]: 0.0110
+=> Training Loss: 0.0076, Evaluation Loss 0.0111
+
+============= Epoch 6 | 2022-09-06 11:40:06 ===============
+=> Current Lr: 0.0005
+============= Epoch 6 | 2022-09-06 11:46:19 ===============
+=> Current Lr: 0.0005
+[0/594]: 0.0085
+[20/594]: 0.0086
+[40/594]: 0.0078
+[60/594]: 0.0070
+[80/594]: 0.0079
+[100/594]: 0.0060
+[120/594]: 0.0053
+[140/594]: 0.0140
+[160/594]: 0.0065
+[180/594]: 0.0064
+[200/594]: 0.0062
+[220/594]: 0.0059
+[240/594]: 0.0057
+[260/594]: 0.0064
+[280/594]: 0.0057
+[300/594]: 0.0059
+[320/594]: 0.0068
+[340/594]: 0.0052
+[360/594]: 0.0058
+[380/594]: 0.0071
+[400/594]: 0.0061
+[420/594]: 0.0066
+[440/594]: 0.0087
+[460/594]: 0.0067
+[480/594]: 0.0078
+[500/594]: 0.0295
+[520/594]: 0.0113
+[540/594]: 0.0098
+[560/594]: 0.0075
+[580/594]: 0.0098
+=> Training Loss: 0.0079, Evaluation Loss 0.0076
+
+============= Epoch 7 | 2022-09-06 11:52:25 ===============
+=> Current Lr: 0.0005
+[0/594]: 0.0062
+[20/594]: 0.0068
+[40/594]: 0.0077
+[60/594]: 0.0090
+[80/594]: 0.0069
+[100/594]: 0.0064
+[120/594]: 0.0071
+[140/594]: 0.0056
+[160/594]: 0.0059
+[180/594]: 0.0056
+[200/594]: 0.0067
+[220/594]: 0.0064
+[240/594]: 0.0065
+[260/594]: 0.0060
+[280/594]: 0.0089
+[300/594]: 0.0059
+[320/594]: 0.0063
+[340/594]: 0.0059
+[360/594]: 0.0064
+[380/594]: 0.0060
+[400/594]: 0.0069
+[420/594]: 0.0071
+[440/594]: 0.0062
+[460/594]: 0.0061
+[480/594]: 0.0055
+[500/594]: 0.0067
+[520/594]: 0.0069
+[540/594]: 0.0068
+[560/594]: 0.0064
+[580/594]: 0.0078
+=> Training Loss: 0.0067, Evaluation Loss 0.0075
+
+============= Epoch 8 | 2022-09-06 11:58:19 ===============
+=> Current Lr: 0.0005
+[0/594]: 0.0067
+[20/594]: 0.0062
+[40/594]: 0.0062
+[60/594]: 0.0062
+[80/594]: 0.0061
+[100/594]: 0.0082
+[120/594]: 0.0062
+[140/594]: 0.0061
+[160/594]: 0.0072
+[180/594]: 0.0109
+[200/594]: 0.0070
+[220/594]: 0.0062
+[240/594]: 0.0074
+[260/594]: 0.0071
+[280/594]: 0.0224
+[300/594]: 0.0122
+[320/594]: 0.0068
+[340/594]: 0.0074
+[360/594]: 0.0061
+[380/594]: 0.0073
+[400/594]: 0.0069
+[420/594]: 0.0067
+[440/594]: 0.0064
+[460/594]: 0.0064
+[480/594]: 0.0077
+[500/594]: 0.0201
+[520/594]: 0.0130
+[540/594]: 0.0114
+[560/594]: 0.0082
+[580/594]: 0.0086
+=> Training Loss: 0.0086, Evaluation Loss 0.0073
+
+============= Epoch 9 | 2022-09-06 12:04:16 ===============
+=> Current Lr: 0.0005
+[0/594]: 0.0095
+[20/594]: 0.0069
+[40/594]: 0.0072
+[60/594]: 0.0068
+[80/594]: 0.0072
+[100/594]: 0.0076
+[120/594]: 0.0082
+[140/594]: 0.0070
+[160/594]: 0.0067
+[180/594]: 0.0063
+[200/594]: 0.0059
+[220/594]: 0.0060
+[240/594]: 0.0059
+[260/594]: 0.0081
+[280/594]: 0.0066
+[300/594]: 0.0084
+[320/594]: 0.0125
+[340/594]: 0.0089
+[360/594]: 0.0070
+[380/594]: 0.0103
+[400/594]: 0.0086
+[420/594]: 0.0068
+[440/594]: 0.0073
+[460/594]: 0.0078
+[480/594]: 0.0060
+[500/594]: 0.0070
+[520/594]: 0.0064
+[540/594]: 0.0070
+[560/594]: 0.0100
+[580/594]: 0.0063
+=> Training Loss: 0.0076, Evaluation Loss 0.0064
+
+============= Epoch 10 | 2022-09-06 12:10:11 ==============
+=> Current Lr: 0.00025
+[0/594]: 0.0061
+[20/594]: 0.0056
+[40/594]: 0.0058
+[60/594]: 0.0062
+[80/594]: 0.0061
+[100/594]: 0.0058
+[120/594]: 0.0058
+[140/594]: 0.0056
+[160/594]: 0.0056
+[180/594]: 0.0053
+[200/594]: 0.0053
+[220/594]: 0.0058
+[240/594]: 0.0057
+[260/594]: 0.0056
+[280/594]: 0.0051
+[300/594]: 0.0054
+[320/594]: 0.0056
+[340/594]: 0.0060
+[360/594]: 0.0049
+[380/594]: 0.0077
+[400/594]: 0.0072
+[420/594]: 0.0064
+[440/594]: 0.0058
+[460/594]: 0.0058
+[480/594]: 0.0047
+[500/594]: 0.0056
+[520/594]: 0.0067
+[540/594]: 0.0056
+[560/594]: 0.0060
+[580/594]: 0.0056
+=> Training Loss: 0.0063, Evaluation Loss 0.0057
+
+============= Epoch 11 | 2022-09-06 12:16:07 ==============
+=> Current Lr: 0.00025
+[0/594]: 0.0058
+[20/594]: 0.0050
+[40/594]: 0.0055
+[60/594]: 0.0057
+[80/594]: 0.0053
+[100/594]: 0.0065
+[120/594]: 0.0063
+[140/594]: 0.0058
+[160/594]: 0.0064
+[180/594]: 0.0057
+[200/594]: 0.0066
+[220/594]: 0.0052
+[240/594]: 0.0050
+[260/594]: 0.0052
+[280/594]: 0.0057
+[300/594]: 0.0055
+[320/594]: 0.0055
+[340/594]: 0.0052
+[360/594]: 0.0058
+[380/594]: 0.0067
+[400/594]: 0.0053
+[420/594]: 0.0051
+[440/594]: 0.0052
+[460/594]: 0.0060
+[480/594]: 0.0059
+[500/594]: 0.0059
+[520/594]: 0.0059
+[540/594]: 0.0048
+[560/594]: 0.0053
+[580/594]: 0.0050
+=> Training Loss: 0.0057, Evaluation Loss 0.0059
+
+============= Epoch 12 | 2022-09-06 12:22:16 ==============
+=> Current Lr: 0.00025
+[0/594]: 0.0055
+[20/594]: 0.0049
+[40/594]: 0.0048
+[60/594]: 0.0067
+[80/594]: 0.0052
+[100/594]: 0.0060
+[120/594]: 0.0047
+[140/594]: 0.0074
+[160/594]: 0.0074
+[180/594]: 0.0067
+[200/594]: 0.0071
+[220/594]: 0.0061
+[240/594]: 0.0059
+[260/594]: 0.0056
+[280/594]: 0.0062
+[300/594]: 0.0056
+[320/594]: 0.0059
+[340/594]: 0.0050
+[360/594]: 0.0055
+[380/594]: 0.0051
+[400/594]: 0.0054
+[420/594]: 0.0060
+[440/594]: 0.0055
+[460/594]: 0.0056
+[480/594]: 0.0056
+[500/594]: 0.0045
+[520/594]: 0.0048
+[540/594]: 0.0053
+[560/594]: 0.0053
+[580/594]: 0.0048
+=> Training Loss: 0.0057, Evaluation Loss 0.0053
+
+============= Epoch 13 | 2022-09-06 12:28:11 ==============
+=> Current Lr: 0.00025
+[0/594]: 0.0051
+[20/594]: 0.0056
+[40/594]: 0.0053
+[60/594]: 0.0053
+[80/594]: 0.0060
+[100/594]: 0.0067
+[120/594]: 0.0065
+[140/594]: 0.0063
+[160/594]: 0.0055
+[180/594]: 0.0061
+[200/594]: 0.0063
+[220/594]: 0.0062
+[240/594]: 0.0057
+[260/594]: 0.0059
+[280/594]: 0.0052
+[300/594]: 0.0058
+[320/594]: 0.0055
+[340/594]: 0.0053
+[360/594]: 0.0057
+[380/594]: 0.0062
+[400/594]: 0.0050
+[420/594]: 0.0058
+[440/594]: 0.0070
+[460/594]: 0.0052
+[480/594]: 0.0064
+[500/594]: 0.0051
+[520/594]: 0.0050
+[540/594]: 0.0053
+[560/594]: 0.0057
+[580/594]: 0.0054
+=> Training Loss: 0.0061, Evaluation Loss 0.0062
+
+============= Epoch 14 | 2022-09-06 12:34:05 ==============
+=> Current Lr: 0.00025
+[0/594]: 0.0068
+[20/594]: 0.0056
+[40/594]: 0.0053
+[60/594]: 0.0052
+[80/594]: 0.0054
+[100/594]: 0.0051
+[120/594]: 0.0053
+[140/594]: 0.0055
+[160/594]: 0.0059
+[180/594]: 0.0055
+[200/594]: 0.0063
+[220/594]: 0.0055
+[240/594]: 0.0051
+[260/594]: 0.0050
+[280/594]: 0.0060
+[300/594]: 0.0067
+[320/594]: 0.0050
+[340/594]: 0.0059
+[360/594]: 0.0055
+[380/594]: 0.0048
+[400/594]: 0.0053
+[420/594]: 0.0057
+[440/594]: 0.0054
+[460/594]: 0.0069
+[480/594]: 0.0055
+[500/594]: 0.0056
+[520/594]: 0.0056
+[540/594]: 0.0065
+[560/594]: 0.0058
+[580/594]: 0.0061
+=> Training Loss: 0.0057, Evaluation Loss 0.0052
+
+============= Epoch 15 | 2022-09-06 12:39:59 ==============
+=> Current Lr: 0.000125
+[0/594]: 0.0058
+[20/594]: 0.0052
+[40/594]: 0.0048
+[60/594]: 0.0054
+[80/594]: 0.0049
+[100/594]: 0.0057
+[120/594]: 0.0050
+[140/594]: 0.0045
+[160/594]: 0.0050
+[180/594]: 0.0048
+[200/594]: 0.0051
+[220/594]: 0.0052
+[240/594]: 0.0055
+[260/594]: 0.0049
+[280/594]: 0.0055
+[300/594]: 0.0049
+[320/594]: 0.0054
+[340/594]: 0.0047
+[360/594]: 0.0054
+[380/594]: 0.0045
+[400/594]: 0.0052
+[420/594]: 0.0055
+[440/594]: 0.0046
+[460/594]: 0.0056
+[480/594]: 0.0049
+[500/594]: 0.0045
+[520/594]: 0.0052
+[540/594]: 0.0051
+[560/594]: 0.0047
+[580/594]: 0.0047
+=> Training Loss: 0.0051, Evaluation Loss 0.0051
+
+============= Epoch 16 | 2022-09-06 12:45:54 ==============
+=> Current Lr: 0.000125
+[0/594]: 0.0060
+[20/594]: 0.0048
+[40/594]: 0.0055
+[60/594]: 0.0059
+[80/594]: 0.0049
+[100/594]: 0.0051
+[120/594]: 0.0055
+[140/594]: 0.0048
+[160/594]: 0.0054
+[180/594]: 0.0050
+[200/594]: 0.0054
+[220/594]: 0.0054
+[240/594]: 0.0051
+[260/594]: 0.0056
+[280/594]: 0.0047
+[300/594]: 0.0049
+[320/594]: 0.0052
+[340/594]: 0.0050
+[360/594]: 0.0046
+[380/594]: 0.0055
+[400/594]: 0.0043
+[420/594]: 0.0046
+[440/594]: 0.0051
+[460/594]: 0.0057
+[480/594]: 0.0049
+[500/594]: 0.0050
+[520/594]: 0.0046
+[540/594]: 0.0047
+[560/594]: 0.0050
+[580/594]: 0.0050
+=> Training Loss: 0.0052, Evaluation Loss 0.0050
+
+============= Epoch 17 | 2022-09-06 12:51:49 ==============
+=> Current Lr: 0.000125
+[0/594]: 0.0049
+[20/594]: 0.0052
+[40/594]: 0.0043
+[60/594]: 0.0044
+[80/594]: 0.0046
+[100/594]: 0.0050
+[120/594]: 0.0050
+[140/594]: 0.0049
+[160/594]: 0.0058
+[180/594]: 0.0049
+[200/594]: 0.0051
+[220/594]: 0.0053
+[240/594]: 0.0047
+[260/594]: 0.0056
+[280/594]: 0.0048
+[300/594]: 0.0050
+[320/594]: 0.0046
+[340/594]: 0.0047
+[360/594]: 0.0054
+[380/594]: 0.0048
+[400/594]: 0.0047
+[420/594]: 0.0056
+[440/594]: 0.0048
+[460/594]: 0.0052
+[480/594]: 0.0046
+[500/594]: 0.0046
+[520/594]: 0.0044
+[540/594]: 0.0051
+[560/594]: 0.0048
+[580/594]: 0.0051
+=> Training Loss: 0.0052, Evaluation Loss 0.0051
+
+============= Epoch 18 | 2022-09-06 12:57:44 ==============
+=> Current Lr: 0.000125
+[0/594]: 0.0056
+[20/594]: 0.0050
+[40/594]: 0.0049
+[60/594]: 0.0057
+[80/594]: 0.0047
+[100/594]: 0.0057
+[120/594]: 0.0101
+[140/594]: 0.0054
+[160/594]: 0.0062
+[180/594]: 0.0057
+[200/594]: 0.0054
+[220/594]: 0.0054
+[240/594]: 0.0046
+[260/594]: 0.0058
+[280/594]: 0.0056
+[300/594]: 0.0052
+[320/594]: 0.0057
+[340/594]: 0.0045
+[360/594]: 0.0052
+[380/594]: 0.0051
+[400/594]: 0.0052
+[420/594]: 0.0050
+============= Epoch 18 | 2022-09-06 13:47:04 ==============
+=> Current Lr: 0.000125
+[0/594]: 0.0048
+[20/594]: 0.0055
+[40/594]: 0.0053
+[60/594]: 0.0054
+[80/594]: 0.0048
+[100/594]: 0.0056
+[120/594]: 0.0052
+[140/594]: 0.0055
+[160/594]: 0.0051
+[180/594]: 0.0041
+[200/594]: 0.0044
+[220/594]: 0.0054
+[240/594]: 0.0052
+[260/594]: 0.0053
+[280/594]: 0.0048
+[300/594]: 0.0049
+[320/594]: 0.0048
+[340/594]: 0.0053
+[360/594]: 0.0057
+[380/594]: 0.0054
+[400/594]: 0.0042
+[420/594]: 0.0054
+[440/594]: 0.0050
+[460/594]: 0.0052
+[480/594]: 0.0051
+[500/594]: 0.0058
+[520/594]: 0.0050
+[540/594]: 0.0048
+[560/594]: 0.0048
+[580/594]: 0.0045
+=> Training Loss: 0.0051, Evaluation Loss 0.0049
+
+============= Epoch 19 | 2022-09-06 13:53:25 ==============
+=> Current Lr: 0.000125
+[0/594]: 0.0047
+[20/594]: 0.0054
+[40/594]: 0.0049
+[60/594]: 0.0053
+[80/594]: 0.0043
+[100/594]: 0.0047
+[120/594]: 0.0047
+[140/594]: 0.0054
+[160/594]: 0.0047
+[180/594]: 0.0051
+[200/594]: 0.0052
+[220/594]: 0.0054
+[240/594]: 0.0045
+[260/594]: 0.0049
+[280/594]: 0.0055
+[300/594]: 0.0041
+[320/594]: 0.0045
+[340/594]: 0.0046
+[360/594]: 0.0050
+[380/594]: 0.0046
+[400/594]: 0.0050
+[420/594]: 0.0058
+[440/594]: 0.0049
+[460/594]: 0.0048
+[480/594]: 0.0048
+[500/594]: 0.0045
+[520/594]: 0.0046
+[540/594]: 0.0050
+[560/594]: 0.0048
+[580/594]: 0.0048
+=> Training Loss: 0.0049, Evaluation Loss 0.0048
+
+============= Epoch 20 | 2022-09-06 13:59:30 ==============
+=> Current Lr: 6.25e-05
+[0/594]: 0.0048
+[20/594]: 0.0049
+[40/594]: 0.0050
+[60/594]: 0.0049
+[80/594]: 0.0045
+[100/594]: 0.0048
+[120/594]: 0.0042
+[140/594]: 0.0050
+[160/594]: 0.0055
+[180/594]: 0.0044
+[200/594]: 0.0046
+[220/594]: 0.0047
+[240/594]: 0.0064
+[260/594]: 0.0052
+[280/594]: 0.0050
+[300/594]: 0.0048
+[320/594]: 0.0045
+[340/594]: 0.0050
+[360/594]: 0.0051
+[380/594]: 0.0053
+[400/594]: 0.0048
+[420/594]: 0.0045
+[440/594]: 0.0051
+[460/594]: 0.0050
+[480/594]: 0.0048
+[500/594]: 0.0047
+[520/594]: 0.0050
+[540/594]: 0.0053
+[560/594]: 0.0045
+[580/594]: 0.0047
+=> Training Loss: 0.0049, Evaluation Loss 0.0048
+
+============= Epoch 21 | 2022-09-06 14:06:40 ==============
+=> Current Lr: 6.25e-05
+[0/594]: 0.0048
+[20/594]: 0.0050
+[40/594]: 0.0042
+[60/594]: 0.0052
+[80/594]: 0.0051
+[100/594]: 0.0050
+[120/594]: 0.0042
+[140/594]: 0.0048
+[160/594]: 0.0044
+[180/594]: 0.0050
+[200/594]: 0.0051
+[220/594]: 0.0039
+[240/594]: 0.0049
+[260/594]: 0.0043
+[280/594]: 0.0046
+[300/594]: 0.0050
+[320/594]: 0.0040
+[340/594]: 0.0048
+[360/594]: 0.0041
+[380/594]: 0.0041
+[400/594]: 0.0046
+[420/594]: 0.0049
+[440/594]: 0.0045
+[460/594]: 0.0050
+[480/594]: 0.0043
+[500/594]: 0.0044
+[520/594]: 0.0051
+[540/594]: 0.0051
+[560/594]: 0.0045
+[580/594]: 0.0043
+=> Training Loss: 0.0047, Evaluation Loss 0.0046
+
+============= Epoch 22 | 2022-09-06 14:14:24 ==============
+=> Current Lr: 6.25e-05
+[0/594]: 0.0047
+[20/594]: 0.0043
+[40/594]: 0.0050
+============= Epoch 22 | 2022-09-06 16:41:37 ==============
+=> Current Lr: 6.25e-05
+[0/594]: 0.0052
+[20/594]: 0.0046
+[40/594]: 0.0053
+[60/594]: 0.0046
+[80/594]: 0.0054
+[100/594]: 0.0043
+[120/594]: 0.0049
+[140/594]: 0.0038
+[160/594]: 0.0047
+[180/594]: 0.0045
+[200/594]: 0.0045
+[220/594]: 0.0050
+[240/594]: 0.0048
+[260/594]: 0.0049
+[280/594]: 0.0050
+[300/594]: 0.0042
+[320/594]: 0.0043
+[340/594]: 0.0051
+[360/594]: 0.0046
+[380/594]: 0.0049
+[400/594]: 0.0048
+[420/594]: 0.0045
+[440/594]: 0.0048
+[460/594]: 0.0050
+[480/594]: 0.0049
+[500/594]: 0.0045
+[520/594]: 0.0046
+[540/594]: 0.0047
+[560/594]: 0.0050
+[580/594]: 0.0049
+=> Training Loss: 0.0047, Evaluation Loss 0.0048
+
+============= Epoch 23 | 2022-09-06 16:47:51 ==============
+=> Current Lr: 6.25e-05
+[0/594]: 0.0050
+[20/594]: 0.0044
+[40/594]: 0.0054
+[60/594]: 0.0049
+[80/594]: 0.0048
+[100/594]: 0.0052
+[120/594]: 0.0046
+[140/594]: 0.0046
+[160/594]: 0.0050
+[180/594]: 0.0043
+[200/594]: 0.0050
+[220/594]: 0.0050
+[240/594]: 0.0045
+[260/594]: 0.0046
+[280/594]: 0.0048
+[300/594]: 0.0038
+[320/594]: 0.0045
+[340/594]: 0.0046
+[360/594]: 0.0044
+[380/594]: 0.0045
+[400/594]: 0.0047
+[420/594]: 0.0046
+[440/594]: 0.0052
+[460/594]: 0.0046
+[480/594]: 0.0043
+[500/594]: 0.0042
+[520/594]: 0.0050
+[540/594]: 0.0052
+[560/594]: 0.0045
+[580/594]: 0.0047
+=> Training Loss: 0.0047, Evaluation Loss 0.0046
+
+============= Epoch 24 | 2022-09-06 16:53:45 ==============
+=> Current Lr: 6.25e-05
+[0/594]: 0.0044
+[20/594]: 0.0043
+[40/594]: 0.0044
+[60/594]: 0.0041
+[80/594]: 0.0044
+[100/594]: 0.0048
+[120/594]: 0.0045
+[140/594]: 0.0050
+[160/594]: 0.0048
+[180/594]: 0.0046
+[200/594]: 0.0048
+[220/594]: 0.0057
+[240/594]: 0.0053
+[260/594]: 0.0045
+[280/594]: 0.0044
+[300/594]: 0.0048
+[320/594]: 0.0043
+[340/594]: 0.0047
+[360/594]: 0.0044
+[380/594]: 0.0043
+[400/594]: 0.0051
+[420/594]: 0.0050
+[440/594]: 0.0049
+[460/594]: 0.0049
+[480/594]: 0.0050
+[500/594]: 0.0042
+[520/594]: 0.0048
+[540/594]: 0.0044
+[560/594]: 0.0042
+[580/594]: 0.0043
+=> Training Loss: 0.0046, Evaluation Loss 0.0048
+
+============= Epoch 25 | 2022-09-06 16:59:40 ==============
+=> Current Lr: 3.125e-05
+[0/594]: 0.0051
+[20/594]: 0.0046
+[40/594]: 0.0045
+[60/594]: 0.0046
+[80/594]: 0.0053
+[100/594]: 0.0048
+[120/594]: 0.0041
+[140/594]: 0.0049
+[160/594]: 0.0045
+[180/594]: 0.0046
+[200/594]: 0.0045
+[220/594]: 0.0040
+[240/594]: 0.0043
+[260/594]: 0.0045
+[280/594]: 0.0057
+[300/594]: 0.0047
+[320/594]: 0.0045
+[340/594]: 0.0038
+[360/594]: 0.0045
+[380/594]: 0.0041
+[400/594]: 0.0039
+[420/594]: 0.0041
+[440/594]: 0.0043
+[460/594]: 0.0043
+[480/594]: 0.0049
+[500/594]: 0.0049
+[520/594]: 0.0045
+[540/594]: 0.0051
+[560/594]: 0.0044
+[580/594]: 0.0039
+=> Training Loss: 0.0046, Evaluation Loss 0.0044
+
+============= Epoch 26 | 2022-09-06 17:05:37 ==============
+=> Current Lr: 3.125e-05
+[0/594]: 0.0042
+[20/594]: 0.0044
+[40/594]: 0.0050
+[60/594]: 0.0051
+[80/594]: 0.0045
+[100/594]: 0.0050
+[120/594]: 0.0050
+[140/594]: 0.0046
+[160/594]: 0.0043
+[180/594]: 0.0041
+[200/594]: 0.0041
+[220/594]: 0.0048
+[240/594]: 0.0046
+[260/594]: 0.0046
+[280/594]: 0.0047
+[300/594]: 0.0042
+[320/594]: 0.0046
+[340/594]: 0.0042
+[360/594]: 0.0048
+[380/594]: 0.0084
+[400/594]: 0.0046
+[420/594]: 0.0045
+[440/594]: 0.0053
+[460/594]: 0.0043
+[480/594]: 0.0046
+[500/594]: 0.0046
+[520/594]: 0.0046
+[540/594]: 0.0044
+[560/594]: 0.0043
+[580/594]: 0.0043
+=> Training Loss: 0.0048, Evaluation Loss 0.0045
+
+============= Epoch 27 | 2022-09-06 17:11:40 ==============
+=> Current Lr: 3.125e-05
+[0/594]: 0.0041
+[20/594]: 0.0041
+[40/594]: 0.0044
+[60/594]: 0.0040
+[80/594]: 0.0052
+[100/594]: 0.0044
+[120/594]: 0.0046
+[140/594]: 0.0041
+[160/594]: 0.0044
+[180/594]: 0.0048
+[200/594]: 0.0043
+[220/594]: 0.0045
+[240/594]: 0.0042
+[260/594]: 0.0044
+[280/594]: 0.0042
+[300/594]: 0.0045
+[320/594]: 0.0047
+[340/594]: 0.0046
+[360/594]: 0.0043
+[380/594]: 0.0044
+[400/594]: 0.0046
+[420/594]: 0.0043
+[440/594]: 0.0046
+[460/594]: 0.0040
+[480/594]: 0.0045
+[500/594]: 0.0053
+[520/594]: 0.0045
+[540/594]: 0.0044
+[560/594]: 0.0042
+[580/594]: 0.0047
+=> Training Loss: 0.0045, Evaluation Loss 0.0045
+
+============= Epoch 28 | 2022-09-06 17:17:50 ==============
+=> Current Lr: 3.125e-05
+[0/594]: 0.0044
+[20/594]: 0.0046
+[40/594]: 0.0036
+[60/594]: 0.0043
+[80/594]: 0.0041
+[100/594]: 0.0043
+[120/594]: 0.0043
+[140/594]: 0.0043
+[160/594]: 0.0044
+[180/594]: 0.0037
+[200/594]: 0.0046
+[220/594]: 0.0043
+[240/594]: 0.0044
+[260/594]: 0.0052
+[280/594]: 0.0042
+[300/594]: 0.0047
+[320/594]: 0.0045
+[340/594]: 0.0044
+[360/594]: 0.0044
+[380/594]: 0.0053
+[400/594]: 0.0041
+[420/594]: 0.0040
+[440/594]: 0.0045
+[460/594]: 0.0044
+[480/594]: 0.0042
+[500/594]: 0.0051
+[520/594]: 0.0045
+[540/594]: 0.0047
+[560/594]: 0.0041
+[580/594]: 0.0043
+=> Training Loss: 0.0045, Evaluation Loss 0.0044
+
+============= Epoch 29 | 2022-09-06 17:23:58 ==============
+=> Current Lr: 3.125e-05
+[0/594]: 0.0045
+[20/594]: 0.0039
+[40/594]: 0.0051
+[60/594]: 0.0045
+[80/594]: 0.0042
+[100/594]: 0.0042
+[120/594]: 0.0047
+[140/594]: 0.0039
+[160/594]: 0.0045
+[180/594]: 0.0047
+[200/594]: 0.0045
+[220/594]: 0.0042
+[240/594]: 0.0047
+[260/594]: 0.0052
+[280/594]: 0.0043
+[300/594]: 0.0048
+[320/594]: 0.0046
+[340/594]: 0.0047
+[360/594]: 0.0043
+[380/594]: 0.0043
+[400/594]: 0.0041
+[420/594]: 0.0043
+[440/594]: 0.0040
+[460/594]: 0.0040
+[480/594]: 0.0055
+[500/594]: 0.0045
+[520/594]: 0.0043
+[540/594]: 0.0050
+[560/594]: 0.0040
+[580/594]: 0.0043
+=> Training Loss: 0.0045, Evaluation Loss 0.0045
+
+============= Epoch 30 | 2022-09-06 17:30:04 ==============
+=> Current Lr: 1.5625e-05
+[0/594]: 0.0046
+[20/594]: 0.0046
+[40/594]: 0.0041
+[60/594]: 0.0044
+[80/594]: 0.0040
+[100/594]: 0.0039
+[120/594]: 0.0047
+[140/594]: 0.0045
+[160/594]: 0.0046
+[180/594]: 0.0045
+[200/594]: 0.0044
+[220/594]: 0.0056
+[240/594]: 0.0044
+[260/594]: 0.0048
+[280/594]: 0.0045
+[300/594]: 0.0042
+[320/594]: 0.0045
+[340/594]: 0.0047
+[360/594]: 0.0044
+[380/594]: 0.0048
+[400/594]: 0.0044
+[420/594]: 0.0046
+[440/594]: 0.0041
+[460/594]: 0.0047
+[480/594]: 0.0044
+[500/594]: 0.0037
+[520/594]: 0.0046
+[540/594]: 0.0042
+[560/594]: 0.0045
+[580/594]: 0.0046
+=> Training Loss: 0.0045, Evaluation Loss 0.0044
+
+============= Epoch 31 | 2022-09-06 17:36:01 ==============
+=> Current Lr: 1.5625e-05
+[0/594]: 0.0048
+[20/594]: 0.0048
+[40/594]: 0.0048
+[60/594]: 0.0050
+[80/594]: 0.0043
+[100/594]: 0.0037
+[120/594]: 0.0044
+[140/594]: 0.0045
+[160/594]: 0.0040
+[180/594]: 0.0046
+[200/594]: 0.0045
+[220/594]: 0.0041
+[240/594]: 0.0047
+[260/594]: 0.0051
+[280/594]: 0.0044
+[300/594]: 0.0041
+[320/594]: 0.0046
+[340/594]: 0.0042
+[360/594]: 0.0043
+[380/594]: 0.0046
+[400/594]: 0.0041
+[420/594]: 0.0049
+[440/594]: 0.0044
+[460/594]: 0.0048
+[480/594]: 0.0052
+[500/594]: 0.0044
+[520/594]: 0.0045
+[540/594]: 0.0050
+[560/594]: 0.0044
+[580/594]: 0.0042
+=> Training Loss: 0.0044, Evaluation Loss 0.0044
+
+============= Epoch 32 | 2022-09-06 17:42:04 ==============
+=> Current Lr: 1.5625e-05
+[0/594]: 0.0048
+[20/594]: 0.0046
+[40/594]: 0.0040
+[60/594]: 0.0036
+[80/594]: 0.0048
+[100/594]: 0.0044
+[120/594]: 0.0042
+[140/594]: 0.0047
+[160/594]: 0.0044
+[180/594]: 0.0049
+[200/594]: 0.0039
+[220/594]: 0.0041
+[240/594]: 0.0047
+[260/594]: 0.0043
+[280/594]: 0.0044
+[300/594]: 0.0036
+[320/594]: 0.0052
+[340/594]: 0.0051
+[360/594]: 0.0052
+[380/594]: 0.0043
+[400/594]: 0.0044
+[420/594]: 0.0047
+[440/594]: 0.0048
+[460/594]: 0.0042
+[480/594]: 0.0045
+[500/594]: 0.0042
+[520/594]: 0.0048
+[540/594]: 0.0049
+[560/594]: 0.0042
+[580/594]: 0.0048
+=> Training Loss: 0.0044, Evaluation Loss 0.0044
+
+============= Epoch 33 | 2022-09-06 17:48:09 ==============
+=> Current Lr: 1.5625e-05
+[0/594]: 0.0041
+[20/594]: 0.0046
+[40/594]: 0.0043
+[60/594]: 0.0045
+[80/594]: 0.0042
+[100/594]: 0.0046
+[120/594]: 0.0047
+[140/594]: 0.0048
+[160/594]: 0.0041
+[180/594]: 0.0044
+[200/594]: 0.0049
+[220/594]: 0.0038
+[240/594]: 0.0043
+[260/594]: 0.0041
+[280/594]: 0.0045
+[300/594]: 0.0043
+[320/594]: 0.0043
+[340/594]: 0.0043
+[360/594]: 0.0047
+[380/594]: 0.0045
+[400/594]: 0.0044
+[420/594]: 0.0049
+[440/594]: 0.0041
+[460/594]: 0.0049
+[480/594]: 0.0042
+[500/594]: 0.0045
+[520/594]: 0.0056
+[540/594]: 0.0042
+[560/594]: 0.0042
+[580/594]: 0.0046
+=> Training Loss: 0.0044, Evaluation Loss 0.0043
+
+============= Epoch 34 | 2022-09-06 17:54:15 ==============
+=> Current Lr: 1.5625e-05
+[0/594]: 0.0042
+[20/594]: 0.0041
+[40/594]: 0.0047
+[60/594]: 0.0043
+[80/594]: 0.0046
+[100/594]: 0.0050
+[120/594]: 0.0049
+[140/594]: 0.0046
+[160/594]: 0.0047
+[180/594]: 0.0051
+[200/594]: 0.0045
+[220/594]: 0.0042
+[240/594]: 0.0048
+[260/594]: 0.0048
+[280/594]: 0.0037
+[300/594]: 0.0046
+[320/594]: 0.0034
+[340/594]: 0.0050
+[360/594]: 0.0043
+[380/594]: 0.0044
+[400/594]: 0.0045
+[420/594]: 0.0049
+[440/594]: 0.0043
+[460/594]: 0.0042
+[480/594]: 0.0046
+[500/594]: 0.0041
+[520/594]: 0.0038
+[540/594]: 0.0044
+[560/594]: 0.0043
+[580/594]: 0.0047
+=> Training Loss: 0.0044, Evaluation Loss 0.0044
+
+============= Epoch 35 | 2022-09-06 18:00:07 ==============
+=> Current Lr: 7.8125e-06
+[0/594]: 0.0049
+[20/594]: 0.0042
+[40/594]: 0.0049
+[60/594]: 0.0048
+[80/594]: 0.0042
+[100/594]: 0.0047
+[120/594]: 0.0037
+[140/594]: 0.0049
+[160/594]: 0.0040
+[180/594]: 0.0048
+[200/594]: 0.0045
+[220/594]: 0.0048
+[240/594]: 0.0044
+[260/594]: 0.0042
+[280/594]: 0.0045
+[300/594]: 0.0045
+[320/594]: 0.0051
+[340/594]: 0.0039
+[360/594]: 0.0046
+[380/594]: 0.0044
+[400/594]: 0.0050
+[420/594]: 0.0041
+[440/594]: 0.0045
+[460/594]: 0.0041
+[480/594]: 0.0039
+[500/594]: 0.0040
+[520/594]: 0.0039
+[540/594]: 0.0043
+[560/594]: 0.0037
+[580/594]: 0.0042
+=> Training Loss: 0.0044, Evaluation Loss 0.0043
+
+============= Epoch 36 | 2022-09-06 18:06:04 ==============
+=> Current Lr: 7.8125e-06
+[0/594]: 0.0047
+[20/594]: 0.0045
+[40/594]: 0.0044
+[60/594]: 0.0044
+[80/594]: 0.0042
+[100/594]: 0.0044
+[120/594]: 0.0045
+[140/594]: 0.0046
+[160/594]: 0.0042
+[180/594]: 0.0044
+[200/594]: 0.0043
+[220/594]: 0.0047
+[240/594]: 0.0039
+[260/594]: 0.0044
+[280/594]: 0.0047
+[300/594]: 0.0043
+[320/594]: 0.0043
+[340/594]: 0.0041
+[360/594]: 0.0044
+[380/594]: 0.0043
+[400/594]: 0.0040
+[420/594]: 0.0037
+[440/594]: 0.0043
+[460/594]: 0.0045
+[480/594]: 0.0044
+[500/594]: 0.0042
+[520/594]: 0.0048
+[540/594]: 0.0054
+[560/594]: 0.0038
+[580/594]: 0.0044
+=> Training Loss: 0.0044, Evaluation Loss 0.0043
+
+============= Epoch 37 | 2022-09-06 18:13:30 ==============
+=> Current Lr: 7.8125e-06
+[0/594]: 0.0045
+[20/594]: 0.0043
+[40/594]: 0.0044
+[60/594]: 0.0045
+[80/594]: 0.0041
+[100/594]: 0.0044
+[120/594]: 0.0047
+[140/594]: 0.0047
+[160/594]: 0.0044
+[180/594]: 0.0041
+[200/594]: 0.0041
+[220/594]: 0.0046
+[240/594]: 0.0045
+[260/594]: 0.0046
+[280/594]: 0.0047
+[300/594]: 0.0050
+[320/594]: 0.0043
+[340/594]: 0.0040
+[360/594]: 0.0038
+[380/594]: 0.0047
+[400/594]: 0.0043
+[420/594]: 0.0044
+[440/594]: 0.0043
+[460/594]: 0.0040
+[480/594]: 0.0041
+[500/594]: 0.0044
+[520/594]: 0.0042
+[540/594]: 0.0047
+[560/594]: 0.0046
+[580/594]: 0.0048
+=> Training Loss: 0.0043, Evaluation Loss 0.0043
+
+============= Epoch 38 | 2022-09-06 18:21:21 ==============
+=> Current Lr: 7.8125e-06
+[0/594]: 0.0040
+[20/594]: 0.0050
+[40/594]: 0.0037
+[60/594]: 0.0045
+[80/594]: 0.0046
+[100/594]: 0.0042
+[120/594]: 0.0045
+[140/594]: 0.0041
+[160/594]: 0.0040
+[180/594]: 0.0037
+[200/594]: 0.0045
+[220/594]: 0.0047
+[240/594]: 0.0040
+[260/594]: 0.0041
+[280/594]: 0.0048
+[300/594]: 0.0043
+[320/594]: 0.0040
+[340/594]: 0.0049
+[360/594]: 0.0041
+[380/594]: 0.0038
+[400/594]: 0.0047
+[420/594]: 0.0040
+[440/594]: 0.0042
+[460/594]: 0.0041
+[480/594]: 0.0047
+[500/594]: 0.0044
+[520/594]: 0.0045
+[540/594]: 0.0045
+[560/594]: 0.0042
+[580/594]: 0.0049
+=> Training Loss: 0.0044, Evaluation Loss 0.0043
+
+============= Epoch 39 | 2022-09-06 18:29:19 ==============
+=> Current Lr: 7.8125e-06
+[0/594]: 0.0044
+============= Epoch 39 | 2022-09-06 20:27:40 ==============
+=> Current Lr: 7.8125e-06
+[0/594]: 0.0048
+[20/594]: 0.0042
+[40/594]: 0.0047
+[60/594]: 0.0042
+[80/594]: 0.0045
+[100/594]: 0.0043
+[120/594]: 0.0046
+[140/594]: 0.0038
+[160/594]: 0.0041
+[180/594]: 0.0036
+[200/594]: 0.0043
+[220/594]: 0.0052
+[240/594]: 0.0044
+[260/594]: 0.0045
+[280/594]: 0.0044
+[300/594]: 0.0037
+[320/594]: 0.0045
+[340/594]: 0.0042
+[360/594]: 0.0051
+[380/594]: 0.0047
+[400/594]: 0.0043
+[420/594]: 0.0044
+[440/594]: 0.0045
+[460/594]: 0.0048
+[480/594]: 0.0044
+[500/594]: 0.0047
+[520/594]: 0.0044
+[540/594]: 0.0049
+[560/594]: 0.0045
+[580/594]: 0.0044
+=> Training Loss: 0.0043, Evaluation Loss 0.0043
