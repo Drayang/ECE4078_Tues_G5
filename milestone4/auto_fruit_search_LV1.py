@@ -9,21 +9,14 @@ import ast
 import argparse
 import time
 
-######################## REPLACE WITH OUR OWN CODE #########################
-# import SLAM components
-sys.path.insert(0, "{}/slam".format(os.getcwd()))
-from slam.ekf import EKF
-from slam.robot import Robot
-import slam.aruco_detector as aruco
-
-# import operate.py
-from operate import Operate
-
-######################## REPLACE WITH OUR OWN CODE #########################
 # import utility functions
 sys.path.insert(0, "util")
 from pibot import Alphabot
 import measure as measure
+
+# -------------------------------- Newly added imports --------------------------------
+from operate import Operate
+# -------------------------------- Newly added imports --------------------------------
 
 
 def read_true_map(fname):
@@ -119,11 +112,10 @@ def drive_to_point(waypoint, robot_pose):
     # TODO: replace with your codes to make the robot drive to the waypoint
     # One simple strategy is to first turn on the spot facing the waypoint,
     # then drive straight to the way point
+
+    wheel_vel = 10*2.5 # tick to move the robot,*2.5 is to map with the value we commonly put in operate.py slef.command['motion']
+
     
-
-    wheel_vel = 10 * 2.5 # tick to move the robot, *2.5 is to map with the value we commonly put in operate.py slef.command['motion']
-    wheel_vel = 10 * 2
-
     # turn towards the waypoint
     turn_time = 0.0 # replace with your calculation
     theta_goal = np.arctan2(waypoint[1]-robot_pose[1], waypoint[0]-robot_pose[0])
@@ -132,60 +124,39 @@ def drive_to_point(waypoint, robot_pose):
     print("Turning for {:.2f} seconds".format(turn_time))
 
     operate.take_pic()
-    lv,rv = ppi.set_velocity([0, 1], turning_tick=wheel_vel, time=turn_time)
+    if delta_theta >0:
+        lv,rv = ppi.set_velocity([0, 1], turning_tick=wheel_vel, time=turn_time)
+    else:
+        lv,rv = ppi.set_velocity([0, -1], turning_tick=wheel_vel, time=turn_time)
 
-    # Update the slam while turning
     drive_meas = measure.Drive(lv, rv, turn_time)
     operate.update_slam(drive_meas)
+    robot_pose = operate.ekf.get_state_vector()[0:3,:]
 
 
+    
     # after turning, drive straight to the waypoint
     drive_time = 0.0 # replace with your calculation
     delta_dist = ((waypoint[0]-robot_pose[0])**2 + (waypoint[1]-robot_pose[1])**2)**0.5
     drive_time = float(delta_dist / (wheel_vel*scale))
     print("Driving for {:.2f} seconds".format(drive_time))
     operate.take_pic()
-    lv,rv = ppi.set_velocity([1, 0], tick=wheel_vel, time=drive_time)
-
+    lv, rv = ppi.set_velocity([1, 0], tick=wheel_vel, time=drive_time)
+    
     # Update the slam while moving
-    drive_meas = measure.Drive(lv, rv, turn_time)
+    drive_meas = measure.Drive(lv, rv, drive_time)
     operate.update_slam(drive_meas)
     ####################################################
 
     print("Arrived at [{}, {}]".format(waypoint[0], waypoint[1]))
 
-    return get_robot_pose()
+
+
 
 def get_robot_pose():
     ####################################################
     # TODO: replace with your codes to estimate the pose of the robot
     # We STRONGLY RECOMMEND you to use your SLAM code from M2 here
-
-    # #TODO initiialise EKF - operate.py init_ekf()
-    # fileK = "calibration/param/intrinsic.txt".format(datadir)
-    # camera_matrix = np.loadtxt(fileK, delimiter=',')
-    # fileD = "calibration/param/distCoeffs.txt".format(datadir)
-    # dist_coeffs = np.loadtxt(fileD, delimiter=',')
-    # fileS = "calibration/param/scale.txt".format(datadir)
-    # scale = np.loadtxt(fileS, delimiter=',')
-    # fileB = "calibration/param/baseline.txt".format(datadir)  
-    # baseline = np.loadtxt(fileB, delimiter=',')
-    # robot = Robot(baseline, scale, camera_matrix, dist_coeffs)
-    # ekf = EKF(robot)
-
-
-    # # TODO obtain drive_meas -operate.py control()
-    # lv,rv = ppi.set_velocity()  
-    # dt = time.time() - control_clock
-    # drive_meas = measure.Drive(lv, rv, dt)
-    # control_clock = time.time()
-
-    
-    # # TODO SLAM with ARUCO markers - update_slam()
-    # lms, aruco_img = aruco_det.detect_marker_positions(img)
-    # ekf.predict(drive_meas)
-    # ekf.add_landmarks(lms)
-    # ekf.update(lms)
 
     # get robot state
     robot_state = operate.ekf.get_state_vector()
@@ -197,18 +168,13 @@ def get_robot_pose():
 
     return robot_pose
 
-
 ######################## REPLACE WITH OUR OWN CODE #########################
 # To rotate the robot slowly until it scan a aruco marker at the camera centre frame
 # and update robot current pose based on the aruco marker location
 # call it whenever reacha way point
 def recentre():
-
-
     
     return None
-
-######################## REPLACE WITH OUR OWN CODE #########################
 
 # main loop
 if __name__ == "__main__":
@@ -218,17 +184,19 @@ if __name__ == "__main__":
     parser.add_argument("--port", metavar='', type=int, default=8000)
     
     ##################### REPLACE WITH OWN CODE #####################
+    
     # For creating Operate class purpose
     parser.add_argument("--calib_dir", type=str, default="calibration/param/")
     parser.add_argument("--save_data", action='store_true')
     parser.add_argument("--play_data", action='store_true')
     parser.add_argument("--ckpt", default='network/scripts/model/model.best.pth')
 
-
     ##################### REPLACE WITH OWN CODE #####################
     
+
     args, _ = parser.parse_known_args()
     ppi = Alphabot(args.ip,args.port)
+
 
     # read in the true map
     fruits_list, fruits_true_pos, aruco_true_pos = read_true_map(args.map)
@@ -238,53 +206,8 @@ if __name__ == "__main__":
     waypoint = [0.0,0.0]
     robot_pose = [0.0,0.0,0.0]
 
-
     ############## REPLACE WITH OWN CODE #####################
-    operate = Operate(args) #initilaise operate class
-
-    # #TODO initiialise EKF - operate.py init_ekf()
-    # fileK = "calibration/param/intrinsic.txt".format(datadir)
-    # camera_matrix = np.loadtxt(fileK, delimiter=',')
-    # fileD = "calibration/param/distCoeffs.txt".format(datadir)
-    # dist_coeffs = np.loadtxt(fileD, delimiter=',')
-    # fileS = "calibration/param/scale.txt".format(datadir)
-    # scale = np.loadtxt(fileS, delimiter=',')
-    # fileB = "calibration/param/baseline.txt".format(datadir)  
-    # baseline = np.loadtxt(fileB, delimiter=',')
-    # robot = Robot(baseline, scale, camera_matrix, dist_coeffs)
-    # ekf = EKF(robot)
-
-    # # initialise aruco detector
-    # aruco_det = aruco.aruco_detector(
-    #         ekf.robot, marker_length = 0.06) # size of the ARUCO markers
-
-    
-    # img = np.zeros([240,320,3], dtype=np.uint8)
-    # aruco_img = np.zeros([240,320,3], dtype=np.uint8)
-
-    # # some initialise code when create Operate class in operate.py
-    # control_clock = time.time() 
-
-
-    # run SLAM (copy from operate.py update_keyboard() function)
-    n_observed_markers = len(operate.ekf.taglist)
-    if n_observed_markers == 0:
-        if not operate.ekf_on:
-            print( 'SLAM is running' )
-            operate.ekf_on = True
-        else:
-            print('> 2 landmarks is required for pausing')
-    elif n_observed_markers < 3:
-        print('> 2 landmarks is required for pausing')
-    else:
-        if not operate.ekf_on:
-            operate.request_recover_robot = True
-        soperateelf.ekf_on = not operate.ekf_on
-        if operate.ekf_on:
-            print('SLAM is running')
-        else:
-            print('SLAM is paused')
-
+    operate = Operate(args)
     ############## REPLACE WITH OWN CODE #####################
 
     # The following code is only a skeleton code the semi-auto fruit searching task
@@ -311,7 +234,7 @@ if __name__ == "__main__":
         n_observed_markers = len(operate.ekf.taglist)
         if n_observed_markers == 0:
             if not operate.ekf_on:
-                print( 'SLAM is running' )
+                print('SLAM is running')
                 operate.ekf_on = True
             else:
                 print('> 2 landmarks is required for pausing')
@@ -320,7 +243,7 @@ if __name__ == "__main__":
         else:
             if not operate.ekf_on:
                 operate.request_recover_robot = True
-            soperateelf.ekf_on = not operate.ekf_on
+            operate.ekf_on = not operate.ekf_on
             if operate.ekf_on:
                 print('SLAM is running')
             else:
@@ -328,13 +251,16 @@ if __name__ == "__main__":
 
         ############## REPLACE WITH OWN CODE #####################
 
+        
         # estimate the robot's pose
         robot_pose = get_robot_pose()
 
         # robot drives to the waypoint
         waypoint = [x,y]
-        robot_pose = drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
+        drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
+        robot_pose = get_robot_pose()
         print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
+
 
         # exit
         ppi.set_velocity([0, 0])
