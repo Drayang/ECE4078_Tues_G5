@@ -310,7 +310,7 @@ if __name__ == "__main__":
     
     width, height = 700, 660
     canvas = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('ECE4078 2021 Lab')
+    pygame.display.set_caption('ECE4078 2022 Lab')
     pygame.display.set_icon(pygame.image.load('pics/8bit/pibot5.png'))
     canvas.fill((0, 0, 0))
     splash = pygame.image.load('pics/loading.png')
@@ -341,8 +341,8 @@ if __name__ == "__main__":
         operate.update_keyboard()
         operate.take_pic()
         drive_meas = operate.control()
-        operate.update_slam(drive_meas)
-        operate.record_data()
+        operate.update_slam(drive_meas) 
+        operate.record_data() #save slam MAP
         operate.save_image()
         operate.detect_target()
         # visualise

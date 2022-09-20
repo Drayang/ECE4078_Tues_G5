@@ -224,11 +224,11 @@ if __name__ == "__main__":
     with open(base_dir/'lab_output/images.txt') as fp:
         for line in fp.readlines():
             pose_dict = ast.literal_eval(line)
-            image_poses[pose_dict['imgfname']] = pose_dict['pose']
+            image_poses[pose_dict['imgfname']] = pose_dict['pose'] # get the pose key value from images.txt
     
     # estimate pose of targets in each detector output
     target_map = {}        
-    for file_path in image_poses.keys():
+    for file_path in image_poses.keys(): # filepath is all the imgfname key value in images.txt
         completed_img_dict = get_image_info(base_dir, file_path, image_poses)
         target_map[file_path] = estimate_pose(base_dir, camera_matrix, completed_img_dict)
 

@@ -9,6 +9,7 @@ from res18_skip import Resnet18Skip
 from torchvision import transforms
 import cv2
 
+###################### REPLACe WITH OUR CODE ######################
 class Detector:
     def __init__(self, ckpt, use_gpu=False):
         self.args = args
@@ -75,6 +76,8 @@ class Detector:
             self.model.load_state_dict(ckpt['weights'])
         else:
             print(f'checkpoint not found, weights are randomly initialised')
+
+    ###################### REPLACe WITH OUR CODE ######################
             
     @staticmethod
     def np_img2torch(np_img, use_gpu=False, _size=(192, 256)):
