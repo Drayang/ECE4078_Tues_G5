@@ -237,7 +237,7 @@ def initialise_space(fruits_true_pos,aruco_true_pos,search_order):
 
     # define the obstacle location
     for i in range(3):
-        if i == search_order:
+        if i == search_order: # do not include the current fruit goal as obstacle
             continue
         ox.append(fruits_true_pos[i][0])
         oy.append(fruits_true_pos[i][1])
@@ -271,8 +271,8 @@ def initialise_space(fruits_true_pos,aruco_true_pos,search_order):
 def path_planning(search_order):
 
     fileB = "calibration/param/baseline.txt"
-    robot_radius = np.loadtxt(fileB, delimiter=',') # robot radius = baseline of the robot/2.0
-
+    robot_radius = np.loadtxt(fileB, delimiter=',')*2 # robot radius = baseline of the robot/2.0
+    robot_radius = 0.2
     robot_pose = get_robot_pose() # estimate the robot's pose
     print("Search order is:", search_order)
     sx,sy = float(robot_pose[0]),float(robot_pose[1]) # starting location
@@ -282,27 +282,6 @@ def path_planning(search_order):
     print("ending loation is: ",gx,",",gy)
     
 #--------------------------------------- Using Dijkstra-------------------------------------#
-    # if True:  # pragma: no cover
-    #     plt.plot(ox, oy, ".k")
-    #     plt.plot(sx, sy, "og")
-    #     plt.plot(gx, gy, "xb")
-    #     plt.grid(True)
-    #     plt.axis("equal")
-
-    # grid_size = 0.25
-    # dijkstra = Dijkstra(ox, oy, grid_size, robot_radius)
-    # rx, ry = dijkstra.planning(sx, sy, gx, gy)
-    
-    # print("The x path is:",rx)
-    # print("The y path is:",ry)
-    # print("The last location is:",rx[-1])
-
-    # if True:  # pragma: no cover
-    #     plt.plot(rx, ry, "-r")
-    #     plt.pause(0.01)
-    #     plt.show()
-#--------------------------------------- Using Dijkstra-------------------------------------#
-#--------------------------------------- Using AStar-------------------------------------#
     if True:  # pragma: no cover
         plt.plot(ox, oy, ".k")
         plt.plot(sx, sy, "og")
@@ -310,18 +289,43 @@ def path_planning(search_order):
         plt.grid(True)
         plt.axis("equal")
 
-    grid_size = 0.20
+    grid_size = 0.2
+    dijkstra = Dijkstra(ox, oy, grid_size, robot_radius)
+    rx, ry = dijkstra.planning(sx, sy, gx, gy)
+    
+    for i in range(len(rx)):
+        rx[i]= round(rx[i],2)
+        ry[i]= round(ry[i],2)
 
-    a_star = AStarPlanner(ox, oy, grid_size, robot_radius)
-    rx, ry = a_star.planning(sx, sy, gx, gy)
 
     print("The x path is:",rx)
     print("The y path is:",ry)
+    print("The last location is:",rx[0],",",ry[0])
+    
 
     if True:  # pragma: no cover
         plt.plot(rx, ry, "-r")
-        plt.pause(0.001)
+        plt.pause(0.01)
         plt.show()
+#--------------------------------------- Using Dijkstra-------------------------------------#
+#--------------------------------------- Using AStar-------------------------------------#
+    # if True:  # pragma: no cover
+    #     plt.plot(ox, oy, ".k")
+    #     plt.plot(sx, sy, "og")
+    #     plt.plot(gx, gy, "xb")
+    #     plt.grid(True)
+    #     plt.axis("equal")
+
+    # grid_size = 0.20
+
+    # a_star = AStarPlanner(ox, oy, grid_size, robot_radius)
+    # rx, ry = a_star.planning(sx, sy, gx, gy)
+
+
+    # if True:  # pragma: no cover
+    #     plt.plot(rx, ry, "-r")
+    #     plt.pause(0.001)
+    #     plt.show()
 #--------------------------------------- Using AStar-------------------------------------#
 #--------------------------------------- Using lqr_RRT -------------------------------------#
     # start_location = [float(robot_pose[0]),float(robot_pose[1])] # starting location
@@ -345,7 +349,14 @@ def path_planning(search_order):
 
 
 #--------------------------------------- Using lqr_RRT -------------------------------------#
+    # for i in range(len(rx)):
+    #     rx[i]= round(rx[i],2)
+    #     ry[i]= round(ry[i],2)
 
+
+    # print("The x path is:",rx)
+    # print("The y path is:",ry)
+    # print("The last location is:",rx[0],",",ry[0])
     return rx,ry
 
 # main loop
@@ -373,8 +384,6 @@ if __name__ == "__main__":
     # read in the true map
     fruits_list, fruits_true_pos, aruco_true_pos = read_true_map(args.map)
 
-    print("The fruit position list is:",fruits_true_pos)
-
     search_list = read_search_list()
     print_target_fruits_pos(search_list, fruits_list, fruits_true_pos)
 
@@ -385,9 +394,6 @@ if __name__ == "__main__":
     operate = Operate(args)
 
     search_order = 0 # indicate search which fruit now
-
-   
-
 
     ############## REPLACE WITH OWN CODE #####################
 
@@ -404,7 +410,7 @@ if __name__ == "__main__":
             rx,ry = path_planning(search_order)
              #---------------- For path planning -----------------#
 
-            for i in range(1,len(rx)): # loop the navigation waypoint
+            for i in range(1,len(rx)-1): # loop the navigation waypoint, no reach the final goal to avoid hitting the fruit
                 # TODO: let rx,ry run many 
                 x = rx[-i-1]
                 y = ry[-i-1] 
@@ -442,14 +448,29 @@ if __name__ == "__main__":
                 robot_pose = get_robot_pose()
                 print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
 
+                ############## REPLACE WITH OWN CODE #####################
+                # update SLAM again
+                operate.take_pic()
+                lv,rv = ppi.set_velocity([0, 0], turning_tick=0.0, time=0.0)
+                drive_meas = measure.Drive(lv, rv, 0.0)
+                operate.update_slam(drive_meas)
+
+                time.sleep(2)
+
+                ############## REPLACE WITH OWN CODE #####################
+
+            
+
             uInput = input("Continue? [Y/y]")
             if uInput == 'Y' or uInput == 'y':
                 search_order= search_order + 1
                 print("search order is: ",search_order)
                 continue
+            else:
+                break
 
         # exit
         ppi.set_velocity([0, 0])
         uInput = input("Add a new waypoint? [Y/N]")
-        if uInput == 'N':
+        if uInput == 'N' or uInput == 'n':
             break

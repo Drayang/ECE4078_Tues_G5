@@ -55,7 +55,7 @@ def read_true_map(fname):
                 else:
                     marker_id = int(key[5])
                     aruco_true_pos[marker_id-1][0] = x
-                    aruco_true_pos[marker_id-1][1] = ys
+                    aruco_true_pos[marker_id-1][1] = y
             else:
                 fruit_list.append(key[:-2])
                 if len(fruit_true_pos) == 0:
@@ -129,7 +129,7 @@ def drive_to_point(waypoint, robot_pose):
     print("Turning for {:.2f} seconds".format(turn_time))
 
     
-    if delta == 0: # To handle 0 turning case
+    if delta_theta == 0: # To handle 0 turning case
         print("Not turning required!")
 
     else:
@@ -138,6 +138,7 @@ def drive_to_point(waypoint, robot_pose):
             lv,rv = ppi.set_velocity([0, 1], turning_tick=wheel_vel, time=turn_time)
         else:
             lv,rv = ppi.set_velocity([0, -1], turning_tick=wheel_vel, time=turn_time)
+        
         
         drive_meas = measure.Drive(lv, rv, turn_time)
         operate.update_slam(drive_meas)
@@ -179,6 +180,14 @@ def get_robot_pose():
     return robot_pose
 
 ######################## REPLACE WITH OUR OWN CODE #########################
+#update the slam when stop moving
+def update_slam_stop():
+    operate.take_pic()
+    lv,rv = ppi.set_velocity([0, 0], turning_tick=0.0, time=0.0)
+    drive_meas = measure.Drive(lv, rv, 0.0)
+    operate.update_slam(drive_meas)
+
+
 # To rotate the robot slowly until it scan a aruco marker at the camera centre frame
 # and update robot current pose based on the aruco marker location
 # call it whenever reacha way point
@@ -186,54 +195,16 @@ def recentre():
     
     return None
 
-
-def draw(canvas):
-    canvas.blit(operate.bg, (0, 0))
-    text_colour = (220, 220, 220)
-    v_pad = 40
-    h_pad = 20
-
-    # paint cameraoutputs
-    robot_view = cv2.resize(operate.aruco_img, (320, 240))
-    draw_pygame_window(canvas, robot_view, 
-                            position=(h_pad, v_pad)
-                            )
-
-    # # for target detector (M3)
-    # detector_view = cv2.resize(operate.network_vis,
-    #                             (320, 240), cv2.INTER_NEAREST)
-    # draw_pygame_window(canvas, detector_view, 
-    #                         position=(h_pad, 240+2*v_pad)
-    #                         )
-
-    # canvas.blit(self.gui_mask, (0, 0))
-    # put_caption(canvas, caption='Detector',
-    #                     position=(h_pad, 240+2*v_pad))
-    put_caption(canvas, caption='PiBot Cam', position=(h_pad, v_pad))
+######################## REPLACE WITH OUR OWN CODE #########################
 
 
-    
-    return canvas
-
-@staticmethod
-def draw_pygame_window(canvas, cv2_img, position):
-    cv2_img = np.rot90(cv2_img)
-    view = pygame.surfarray.make_surface(cv2_img)
-    view = pygame.transform.flip(view, True, False)
-    canvas.blit(view, position)
-
-@staticmethod
-def put_caption(canvas, caption, position, text_colour=(200, 200, 200)):
-    caption_surface = TITLE_FONT.render(caption,
-                                        False, text_colour)
-    canvas.blit(caption_surface, (position[0], position[1]-25))
 
 
 # main loop
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Fruit searching")
     parser.add_argument("--map", type=str, default='M4_true_map.txt')
-    parser.add_argument("--ip", metavar='', type=str, default='localhost')
+    parser.add_argument("--ip", metavar='', type=str, default='192.168.137.65')
     parser.add_argument("--port", metavar='', type=int, default=8000)
     
     ##################### REPLACE WITH OWN CODE #####################
@@ -246,7 +217,6 @@ if __name__ == "__main__":
 
     ##################### REPLACE WITH OWN CODE #####################
     
-
     args, _ = parser.parse_known_args()
     ppi = Alphabot(args.ip,args.port)
 
@@ -262,32 +232,30 @@ if __name__ == "__main__":
     ############## REPLACE WITH OWN CODE #####################
     operate = Operate(args)
 
+     # run SLAM (copy from operate.py update_keyboard() function)
+    n_observed_markers = len(operate.ekf.taglist)
+    if n_observed_markers == 0:
+        if not operate.ekf_on:
+            print('SLAM is running')
+            operate.ekf_on = True
+        else:
+            print('> 2 landmarks is required for pausing')
+    elif n_observed_markers < 3:
+        print('> 2 landmarks is required for pausing')
+    else:
+        if not operate.ekf_on:
+            operate.request_recover_robot = True
+        operate.ekf_on = not operate.ekf_on
+        if operate.ekf_on:
+            print('SLAM is running')
+        else:
+            print('SLAM is paused')
 
-    ## Copy from operate.py
-    import pygame # python package for GUI
-    import shutil # python package for file operations
-
-    # To display GUI
-    pygame.font.init() 
-    TITLE_FONT = pygame.font.Font('pics/8-BitMadness.ttf', 35)
-    TEXT_FONT = pygame.font.Font('pics/8-BitMadness.ttf', 40)
-    
-    width, height = 700, 660
-    canvas = pygame.display.set_mode((width, height))
-    pygame.display.set_caption('ECE4078 2022 Lab')
-    pygame.display.set_icon(pygame.image.load('pics/8bit/pibot5.png'))
-    canvas.fill((0, 0, 0))
-    splash = pygame.image.load('pics/loading.png')
-    pibot_animate = [pygame.image.load('pics/8bit/pibot1.png'),
-                    pygame.image.load('pics/8bit/pibot2.png'),
-                    pygame.image.load('pics/8bit/pibot3.png'),
-                    pygame.image.load('pics/8bit/pibot4.png'),
-                    pygame.image.load('pics/8bit/pibot5.png')]
-    pygame.display.update()
+    # update SLAM again
     operate.take_pic()
-
-
-    
+    lv,rv = ppi.set_velocity([0, 0], turning_tick=0.0, time=0.0)
+    drive_meas = measure.Drive(lv, rv, 0.0)
+    operate.update_slam(drive_meas)
     ############## REPLACE WITH OWN CODE #####################
 
     # The following code is only a skeleton code the semi-auto fruit searching task
@@ -309,34 +277,7 @@ if __name__ == "__main__":
             continue
 
 
-        ############## REPLACE WITH OWN CODE #####################
-        # run SLAM (copy from operate.py update_keyboard() function)
-        n_observed_markers = len(operate.ekf.taglist)
-        if n_observed_markers == 0:
-            if not operate.ekf_on:
-                print('SLAM is running')
-                operate.ekf_on = True
-            else:
-                print('> 2 landmarks is required for pausing')
-        elif n_observed_markers < 3:
-            print('> 2 landmarks is required for pausing')
-        else:
-            if not operate.ekf_on:
-                operate.request_recover_robot = True
-            operate.ekf_on = not operate.ekf_on
-            if operate.ekf_on:
-                print('SLAM is running')
-            else:
-                print('SLAM is paused')
 
-
-        #visualize
-        operate.take_pic()
-        operate.save_image()
-        draw(canvas)
-        pygame.display.update()
-        
-        ############## REPLACE WITH OWN CODE #####################
 
         
         # estimate the robot's pose
@@ -347,6 +288,16 @@ if __name__ == "__main__":
         drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
         robot_pose = get_robot_pose()
         print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
+
+
+        ############## REPLACE WITH OWN CODE #####################
+        # update SLAM again
+        operate.take_pic()
+        lv,rv = ppi.set_velocity([0, 0], turning_tick=0.0, time=0.0)
+        drive_meas = measure.Drive(lv, rv, 0.0)
+        operate.update_slam(drive_meas)
+
+        ############## REPLACE WITH OWN CODE #####################
 
 
         # exit
