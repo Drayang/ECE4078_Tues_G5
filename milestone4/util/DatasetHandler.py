@@ -123,9 +123,21 @@ class OutputWriter:
         with open(self.map_f, 'w') as map_f:
             json.dump(map_dict, map_f, indent=2)
             
+    # def write_image(self, image, slam):
+    #     img_fname = "{}pred_{}.png".format(self.folder, self.image_count)
+    #     self.image_count += 1
+    #     img_dict = {"pose":slam.robot.state.tolist(),
+    #                 "imgfname":img_fname}
+    #     img_line = json.dumps(img_dict)
+    #     self.img_f.write(img_line+'\n')
+    #     self.img_f.flush()
+    #     cv2.imwrite(img_fname, image)
+    #     return f'pred_{self.image_count}.png'
+
+#------------------ FOR M4 to overwrite the same pred image (fruit detector output)----------------------#
     def write_image(self, image, slam):
-        img_fname = "{}pred_{}.png".format(self.folder, self.image_count)
-        self.image_count += 1
+        img_fname = "{}pred_{}.png".format(self.folder,0)
+        # self.image_count += 1
         img_dict = {"pose":slam.robot.state.tolist(),
                     "imgfname":img_fname}
         img_line = json.dumps(img_dict)

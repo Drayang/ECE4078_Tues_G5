@@ -186,19 +186,6 @@ def get_robot_pose():
 
     return robot_pose
 
-######################## REPLACE WITH OUR OWN CODE #########################
-#update the slam when stop moving
-def update_slam_stop():
-    operate.take_pic()
-    lv,rv = ppi.set_velocity([0, 0], turning_tick=0.0, time=0.0)
-    drive_meas = measure.Drive(lv, rv, 0.0)
-    operate.update_slam(drive_meas)
-
-
-
-######################## REPLACE WITH OUR OWN CODE #########################
-
-
 
 
 # main loop

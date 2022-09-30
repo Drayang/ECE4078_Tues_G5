@@ -72,7 +72,7 @@ class Operate:
     # wheel control
     def control(self):       
         if args.play_data:
-            lv, rv = self.pibot.set_velocity()            
+            lv, rv = self.pibot.set_velocity(offset = 1)            
         else:
             lv, rv = self.pibot.set_velocity(
                 self.command['motion'])

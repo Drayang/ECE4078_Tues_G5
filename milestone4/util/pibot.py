@@ -15,6 +15,7 @@ class Alphabot:
     # Change the robot velocity here
     # tick = forward speed
     # turning_tick = turning speed
+    #### TODO: add a offset argument to increase or decrease the offset
     ########################################## 
     def set_velocity(self, command, tick=10, turning_tick=5, time=0): 
         l_vel = command[0]*tick - command[1]*turning_tick

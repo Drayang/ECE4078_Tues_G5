@@ -16,9 +16,9 @@ class Alphabot:
     # tick = forward speed
     # turning_tick = turning speed
     ########################################## 
-    def set_velocity(self, command, tick=10, turning_tick=5, time=0): 
-        l_vel = command[0]*tick - command[1]*turning_tick
-        r_vel = command[0]*tick + command[1]*turning_tick
+    def set_velocity(self, command, tick=10, turning_tick=5, time=0,offset = 0): 
+        l_vel = command[0]*tick - command[1]*turning_tick + offset
+        r_vel = command[0]*tick + command[1]*turning_tick - offset
         self.wheel_vel = [l_vel, r_vel]
         if time == 0:
             requests.get(
@@ -29,7 +29,7 @@ class Alphabot:
             requests.get(
                 "http://"+self.ip+":"+str(self.port)+"/robot/set/velocity?value="+str(l_vel)+","+str(r_vel)
                             +"&time="+str(time))
-        return l_vel, r_vel
+        return l_vel - offset, r_vel + offset
         
     def get_image(self):
         try:

@@ -336,6 +336,15 @@ def self_update_slam(command,wheel_vel,turn_time):
 
         operate.update_slam(drive_meas)
 
+def self_detect_fruit():
+     # camera_matrix = np.ones((3,3))/2
+    fileK = "{}intrinsic.txt".format('./calibration/param/')
+    camera_matrix = np.loadtxt(fileK, delimiter=',')
+    base_dir = Path('./')
+
+    
+    return None
+
 ######################## REPLACE WITH OUR OWN CODE #########################
 
 # main loop
