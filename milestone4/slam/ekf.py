@@ -282,6 +282,87 @@ class EKF:
                     (coor_[0]-5, coor_[1]-5))
         return surface
 
+#------------------------------- Self replace code for GUI in m4-------------------------------#
+
+    def self_draw_slam_state(self, res = (480, 480), not_pause=True):
+        # Draw landmarks
+        m2pixel = res[0]/3.2
+        # if not_pause:
+        #     bg_rgb = np.array([213, 213, 213]).reshape(1, 1, 3)
+        # else:
+        #     bg_rgb = np.array([120, 120, 120]).reshape(1, 1, 3)
+        bg_rgb = cv2.resize(cv2.imread(f'./pics/map_grid.jpg'),res)
+        canvas = np.ones((res[1], res[0], 3))*bg_rgb.astype(np.uint8)
+        # in meters, 
+        lms_xy = self.markers[:2, :]
+        f_xy = self.fruits[:2, :]
+        robot_xy = self.robot.state[:2, 0].reshape((2, 1))
+        # lms_xy = lms_xy - robot_xy
+        # robot_xy = robot_xy*0
+        robot_theta = self.robot.state[2,0]
+        # plot robot
+        start_point_uv = self.to_im_coor((0, 0), res, m2pixel)
+        start_point_uv = self.to_im_coor(robot_xy, res, m2pixel)
+        
+        p_robot = self.P[0:2,0:2]
+        axes_len,angle = self.make_ellipse(p_robot)
+        canvas = cv2.ellipse(canvas, start_point_uv, 
+                    (int(axes_len[0]*m2pixel), int(axes_len[1]*m2pixel)),
+                    angle, 0, 360, (0, 30, 56), 1)
+        # draw landmards
+        if self.number_landmarks() > 0:
+            for i in range(len(self.markers[0,:])):
+                xy = (lms_xy[0, i], lms_xy[1, i])
+                coor_ = self.to_im_coor(xy, res, m2pixel)
+                # plot covariance
+                Plmi = self.P[3+2*i:3+2*(i+1),3+2*i:3+2*(i+1)]
+                axes_len, angle = self.make_ellipse(Plmi)
+                canvas = cv2.ellipse(canvas, coor_, 
+                    (int(axes_len[0]*m2pixel), int(axes_len[1]*m2pixel)),
+                    angle, 0, 360, (244, 69, 96), 1)
+
+        # if self.number_fruits() > 0:
+        #     for i in range(len(self.fruits[0,:])):
+        #         xy = (f_xy[0, i], f_xy[1, i])
+        #         coor_ = self.to_im_coor(xy, res, m2pixel)
+        #         # plot covariance
+        #         Plmi = self.P[3+2*i:3+2*(i+1),3+2*i:3+2*(i+1)]
+        #         axes_len, angle = self.make_ellipse(Plmi)
+        #         canvas = cv2.ellipse(canvas, coor_, 
+        #             (int(axes_len[0]*m2pixel), int(axes_len[1]*m2pixel)),
+        #             angle, 0, 360, (244, 69, 96), 1)
+
+        surface = pygame.surfarray.make_surface(np.rot90(canvas))
+        surface = pygame.transform.flip(surface, True, False)
+        surface.blit(self.rot_center(self.pibot_pic,(robot_theta+np.pi)*57.3),
+                    (start_point_uv[0]-15, start_point_uv[1]-15))
+        if self.number_landmarks() > 0:
+            for i in range(len(self.markers[0,:])):
+                xy = (lms_xy[0, i], lms_xy[1, i])
+                coor_ = self.to_im_coor(xy, res, m2pixel)
+                try:
+                    surface.blit(self.lm_pics[self.taglist[i]-1],
+                    (coor_[0]-5, coor_[1]-5))
+                except IndexError:
+                    surface.blit(self.lm_pics[-1],
+                    (coor_[0]-5, coor_[1]-5))
+        print("no fruits: ",self.number_fruits())
+        if self.number_fruits() > 0:
+            for i in range(len(self.fruits[0,:])):
+                xy = (f_xy[0, i], f_xy[1, i])
+                print("fruit_xy", xy)
+                coor_ = self.to_im_coor(xy, res, m2pixel)
+                try:
+                    surface.blit(self.fruit_pics[self.fruitlist[i]-1],
+                    (coor_[0]-5, coor_[1]-5))
+                except IndexError:
+                    surface.blit(self.fruit_pics[-1],
+                    (coor_[0]-5, coor_[1]-5))
+        return surface
+#------------------------------- Self replace code for GUI in m4-------------------------------#
+
+
+
     @staticmethod
     def rot_center(image, angle):
         """rotate an image while keeping its center and size"""

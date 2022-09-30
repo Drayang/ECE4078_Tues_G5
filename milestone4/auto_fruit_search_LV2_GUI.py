@@ -259,15 +259,18 @@ def initialise_space(fruits_true_pos,aruco_true_pos,search_order):
 
     print("Number of obstacle is : ",len(ox))
 
-    # show the space map
-    plt.plot(ox, oy, ".k")
-    plt.xlim([-2, 2])
-    plt.ylim([-2, 2])
-    plt.grid(True)
-    plt.axis("equal")
-    plt.show()
+    #------------------------ For lqr_RRT [not use now]-----------------------#
+    obstacle_list = []
+    temp_list = []
+    for i in range(3):
+        temp_list = [fruits_true_pos[i][0],fruits_true_pos[i][1],0.07]
+        obstacle_list.append(temp_list)
+    for i in range(10):
+        temp_list = [aruco_true_pos[i][0],aruco_true_pos[i][1],0.07] #[x,y,radius]
+        obstacle_list.append(temp_list)
 
-    return ox,oy
+    #------------------------ For lqr_RRT [not use now] -----------------------#
+    return ox,oy,obstacle_list
 
 # search order tell us which fruit we going to move to now
 def path_planning(search_order):
@@ -288,12 +291,6 @@ def path_planning(search_order):
     print("ending loation is: ",gx,",",gy)
     
 #--------------------------------------- Using Dijkstra-------------------------------------#
-    if True:  # pragma: no cover
-        plt.plot(ox, oy, ".k")
-        plt.plot(sx, sy, "og")
-        plt.plot(gx, gy, "xb")
-        plt.grid(True)
-        plt.axis("equal")
 
     grid_size = 0.2
     dijkstra = Dijkstra(ox, oy, grid_size, robot_radius)
@@ -310,10 +307,66 @@ def path_planning(search_order):
     
 
     if True:  # pragma: no cover
-        plt.plot(rx, ry, "-r")
-        plt.pause(0.01)
-        plt.show()
+        # to display in GUI
+        ticks=np.arange(-1.6,1.6,0.4)
+        plt.xticks(ticks)
+        plt.yticks(ticks)
+        plt.plot(rx[1:], ry[1:], "-r")
+        plt.xlim([-1.6,1.6])
+        plt.ylim([-1.6,1.6])
+        plt.tick_params(length=0, labelleft=False, labeltop=False, labelright=False, labelbottom=False)
+        plt.savefig(f'./pics/map_grid.jpg', bbox_inches='tight',transparent=True, pad_inches=0)
 
+#--------------------------------------- Using Dijkstra-------------------------------------#
+#--------------------------------------- Using AStar-------------------------------------#
+    # if True:  # pragma: no cover
+    #     plt.plot(ox, oy, ".k")
+    #     plt.plot(sx, sy, "og")
+    #     plt.plot(gx, gy, "xb")
+    #     plt.grid(True)
+    #     plt.axis("equal")
+
+    # grid_size = 0.20
+
+    # a_star = AStarPlanner(ox, oy, grid_size, robot_radius)
+    # rx, ry = a_star.planning(sx, sy, gx, gy)
+
+
+    # if True:  # pragma: no cover
+    #     plt.plot(rx, ry, "-r")
+    #     plt.pause(0.001)
+    #     plt.show()
+#--------------------------------------- Using AStar-------------------------------------#
+#--------------------------------------- Using lqr_RRT -------------------------------------#
+    # start_location = [float(robot_pose[0]),float(robot_pose[1])] # starting location
+    # goal_location = [ fruits_true_pos[search_order][0],fruits_true_pos[search_order][1]] # goal position
+
+    # lqr_rrt_star = LQRRRTStar(start_location, goal_location,
+    #                           obstacle_list,
+    #                           [-2.0, 2.0])
+    # path = lqr_rrt_star.planning(animation=True)
+
+    # # Draw final path
+    # if True:  # pragma: no cover
+    #     lqr_rrt_star.draw_graph()
+    #     plt.plot([x for (x, y) in path], [y for (x, y) in path], '-r')
+    #     plt.grid(True)
+    #     plt.pause(0.001)
+    #     plt.show()
+
+    # print("Done")
+    # print("The path is:",path)
+
+
+#--------------------------------------- Using lqr_RRT -------------------------------------#
+    # for i in range(len(rx)):
+    #     rx[i]= round(rx[i],2)
+    #     ry[i]= round(ry[i],2)
+
+
+    # print("The x path is:",rx)
+    # print("The y path is:",ry)
+    # print("The last location is:",rx[0],",",ry[0])
     return rx,ry
 
 
@@ -328,13 +381,12 @@ def self_update_slam(command,wheel_vel,turn_time):
             lv,rv = ppi.set_velocity(command, tick=wheel_vel, time=turn_time)    
 
         drive_meas = measure.Drive(lv, rv, turn_time)
-        # TODO: add code for fruit detection
-        # operate.command['inference'] = True # trigger fruit detector
-        # operate.detect_target() #detect the targets
-        # operate.command['save_inference'] = True # save object detection outputs
-        # operate.record_data() # save the pred image ('save_inference') for later poseEstimation
-
         operate.update_slam(drive_meas)
+
+def self_update_gui():
+    operate.draw(canvas)
+    pygame.display.update()
+
 
 ######################## REPLACE WITH OUR OWN CODE #########################
 
@@ -374,9 +426,39 @@ if __name__ == "__main__":
     operate = Operate(args)
 
     search_order = 0 # indicate search which fruit now
+
+    #--------------------------------- For GUI #---------------------------------#
+    pygame.font.init()     
     
-    obtacle_detected = False # Indicate detect fruit obstacle or not
-  
+    width, height = 902, 660
+    canvas = pygame.display.set_mode((width, height))
+    pygame.display.set_caption('ECE4078 2022 Lab')
+    pygame.display.set_icon(pygame.image.load('pics/8bit/pibot5.png'))
+    canvas.fill((0, 0, 0))
+    splash = pygame.image.load('pics/loading.png')
+    pibot_animate = [pygame.image.load('pics/8bit/pibot1.png'),
+                     pygame.image.load('pics/8bit/pibot2.png'),
+                     pygame.image.load('pics/8bit/pibot3.png'),
+                    pygame.image.load('pics/8bit/pibot4.png'),
+                     pygame.image.load('pics/8bit/pibot5.png')]
+    pygame.display.update()
+
+    start = False
+
+    counter = 40
+    while not start:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                start = True
+        canvas.blit(splash, (0, 0))
+        x_ = min(counter, 600)
+        if x_ < 600:
+            canvas.blit(pibot_animate[counter%10//2], (x_, 565))
+            pygame.display.update()
+            counter += 2
+
+    #--------------------------------- For GUI #---------------------------------#
+
     # run SLAM (copy from operate.py update_keyboard() function)
     n_observed_markers = len(operate.ekf.taglist)
     if n_observed_markers == 0:
@@ -408,18 +490,27 @@ if __name__ == "__main__":
         # enter the waypoints
         # instead of manually enter waypoints in command line, you can get coordinates by clicking on a map (GUI input), see camera_calibration.py
         x,y = 0.0,0.0
+
+        self_update_gui() #update the GUI
         
         while search_order < 3: # loop search list
 
+
+
             #---------------- For path planning -----------------#
-            ox,oy = initialise_space(fruits_true_pos,aruco_true_pos,search_order) #recreate  space again
+            ox,oy,obstacle_list = initialise_space(fruits_true_pos,aruco_true_pos,search_order) #recreate  space again
             rx,ry = path_planning(search_order)
              #---------------- For path planning -----------------#
 
             for i in range(1,len(rx)-1): # loop the navigation waypoint, no reach the final goal to avoid hitting the fruit
-
+                # TODO: let rx,ry run many 
                 x = rx[-i-1]
                 y = ry[-i-1] 
+
+
+                
+                operate.notification = "Waypoint (X,Y): " + str(x)+','+ str(y)
+                self_update_gui()
                 
                 # estimate the robot's pose
                 robot_pose = get_robot_pose()
@@ -429,6 +520,8 @@ if __name__ == "__main__":
                 drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
                 robot_pose = get_robot_pose()
                 print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
+                operate.notification =  "Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose)
+                self_update_gui()
                 
                 ############## REPLACE WITH OWN CODE #####################
                 # update SLAM again

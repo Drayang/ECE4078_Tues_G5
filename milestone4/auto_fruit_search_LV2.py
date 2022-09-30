@@ -23,16 +23,18 @@ import measure as measure
 
 ##################### REPLACE WITH OWN CODE #####################
 from operate import Operate
+import pygame # for GUI
 
-
+#---------------------------- For path planning ------------------------------#
 sys.path.insert(0, "{}/path_planning".format(os.getcwd()))
-
 import matplotlib.pyplot as plt
 import math
 from path_planning.dijkstra import Dijkstra
 from path_planning.a_star import AStarPlanner
 
 from path_planning.lqr_rrt_star import LQRRRTStar
+#---------------------------- For path planning ------------------------------#
+
 ##################### REPLACE WITH OWN CODE #####################
 
 
@@ -113,6 +115,8 @@ def print_target_fruits_pos(search_list, fruit_list, fruit_true_pos):
         n_fruit += 1
 
 
+
+
 # Waypoint navigation
 # the robot automatically drives to a given [x,y] coordinate
 # additional improvements:
@@ -133,10 +137,83 @@ def drive_to_point(waypoint, robot_pose):
     wheel_vel = 10*2.5 # tick to move the robot,*2.5 is to map with the value we commonly put in operate.py slef.command['motion']
 
     
+    # # turn towards the waypoint
+    # turn_time = 0.0 # replace with your calculation
+    # theta_goal = np.arctan2(waypoint[1]-robot_pose[1], waypoint[0]-robot_pose[0])
+    # delta_theta = theta_goal - robot_pose[2]
+
+    # # to handle robot turn 360 degree issue
+    # # if delta_theta>np.pi:
+    # #     delta_theta-=np.pi*2
+    # # elif delta_theta<-np.pi:
+    # #    delta_theta+=np.pi*2
+
+
+    # turn_time = float((abs(delta_theta)*baseline) / (2*wheel_vel*scale))
+    # print("Turning for {:.2f} seconds".format(turn_time))
+
+    
+    # if delta_theta == 0: # To handle 0 turning case
+    #     print("Not turning required!")
+
+    # else:
+    #     # operate.take_pic()
+    #     if delta_theta >0:
+    #         self_update_slam([0,1],wheel_vel,turn_time)
+    #         # lv,rv = ppi.set_velocity([0, 1], turning_tick=wheel_vel, time=turn_time)
+    #     else:
+    #         self_update_slam([0,-1],wheel_vel,turn_time)
+    #         # lv,rv = ppi.set_velocity([0, -1], turning_tick=wheel_vel, time=turn_time)
+        
+    #     # drive_meas = measure.Drive(lv, rv, turn_time)
+    #     # operate.update_slam(drive_meas)
+    #     # robot_pose = operate.ekf.get_state_vector()[0:3,:]
+
+    # robot_pose = get_robot_pose()
+    
+    # after turning, drive straight to the waypoint
+    drive_time = 0.0 # replace with your calculation
+    delta_dist = ((waypoint[0]-robot_pose[0])**2 + (waypoint[1]-robot_pose[1])**2)**0.5
+    drive_time = float(delta_dist / (wheel_vel*scale))
+    print("Driving for {:.2f} seconds".format(drive_time))
+    self_update_slam([1,0],wheel_vel,drive_time)
+    # operate.take_pic()
+    # lv, rv = ppi.set_velocity([1, 0], tick=wheel_vel, time=drive_time)
+    
+    # # Update the slam while moving
+    # drive_meas = measure.Drive(lv, rv, drive_time)
+    # operate.update_slam(drive_meas)
+    ####################################################
+
+    print("Arrived at [{}, {}]".format(waypoint[0], waypoint[1]))
+
+
+def turn_to_point(waypoint,robot_pose):
+    #  imports camera / wheel calibration parameters 
+    fileS = "calibration/param/scale.txt"
+    scale = np.loadtxt(fileS, delimiter=',')
+    fileB = "calibration/param/baseline.txt"
+    baseline = np.loadtxt(fileB, delimiter=',')
+    
+    ####################################################
+    # TODO: replace with your codes to make the robot drive to the waypoint
+    # One simple strategy is to first turn on the spot facing the waypoint,
+    # then drive straight to the way point
+
+    wheel_vel = 10*2.0 # tick to move the robot,*2.5 is to map with the value we commonly put in operate.py slef.command['motion']
+
+    
     # turn towards the waypoint
     turn_time = 0.0 # replace with your calculation
     theta_goal = np.arctan2(waypoint[1]-robot_pose[1], waypoint[0]-robot_pose[0])
     delta_theta = theta_goal - robot_pose[2]
+
+    # to handle robot turn 360 degree issue
+    # if delta_theta>np.pi:
+    #     delta_theta-=np.pi*2
+    # elif delta_theta<-np.pi:
+    #    delta_theta+=np.pi*2
+
     turn_time = float((abs(delta_theta)*baseline) / (2*wheel_vel*scale))
     print("Turning for {:.2f} seconds".format(turn_time))
 
@@ -145,34 +222,10 @@ def drive_to_point(waypoint, robot_pose):
         print("Not turning required!")
 
     else:
-        operate.take_pic()
         if delta_theta >0:
-            lv,rv = ppi.set_velocity([0, 1], turning_tick=wheel_vel, time=turn_time)
+            self_update_slam([0,1],wheel_vel,turn_time)
         else:
-            lv,rv = ppi.set_velocity([0, -1], turning_tick=wheel_vel, time=turn_time)
-        
-        drive_meas = measure.Drive(lv, rv, turn_time)
-        operate.update_slam(drive_meas)
-        robot_pose = operate.ekf.get_state_vector()[0:3,:]
-
-
-    
-    # after turning, drive straight to the waypoint
-    drive_time = 0.0 # replace with your calculation
-    delta_dist = ((waypoint[0]-robot_pose[0])**2 + (waypoint[1]-robot_pose[1])**2)**0.5
-    drive_time = float(delta_dist / (wheel_vel*scale))
-    print("Driving for {:.2f} seconds".format(drive_time))
-    operate.take_pic()
-    lv, rv = ppi.set_velocity([1, 0], tick=wheel_vel, time=drive_time)
-    
-    # Update the slam while moving
-    drive_meas = measure.Drive(lv, rv, drive_time)
-    operate.update_slam(drive_meas)
-    ####################################################
-
-    print("Arrived at [{}, {}]".format(waypoint[0], waypoint[1]))
-
-
+            self_update_slam([0,-1],wheel_vel,turn_time)
 
 def get_robot_pose():
     ####################################################
@@ -190,14 +243,8 @@ def get_robot_pose():
     return robot_pose
 
 ######################## REPLACE WITH OUR OWN CODE #########################
-# To rotate the robot slowly until it scan a aruco marker at the camera centre frame
-# and update robot current pose based on the aruco marker location
-# call it whenever reacha way point
-def recentre():
-    
-    return None
 
-# To create a square obstacle but for loop cannot work with float.....
+# To create a square obstacle [but for loop cannot work with float so NOT USE]
 def create_square_obstacle():
     ox,oy = [],[]
 
@@ -235,9 +282,13 @@ def create_square_obstacle():
 def initialise_space(fruits_true_pos,aruco_true_pos,search_order):
     ox,oy=[],[] # obstacle location
 
+    # to get the fruit idx based on the search list
+    for i in range(3):
+        if search_list[search_order] == fruits_list[i]:
+            search_idx = i
     # define the obstacle location
     for i in range(3):
-        if i == search_order: # do not include the current fruit goal as obstacle
+        if i == search_idx: # do not include the current fruit goal as obstacle
             continue
         ox.append(fruits_true_pos[i][0])
         oy.append(fruits_true_pos[i][1])
@@ -248,24 +299,14 @@ def initialise_space(fruits_true_pos,aruco_true_pos,search_order):
     print("Number of obstacle is : ",len(ox))
 
     # show the space map
-    plt.plot(ox, oy, ".k")
-    plt.xlim([-2, 2])
-    plt.ylim([-2, 2])
-    plt.grid(True)
-    plt.axis("equal")
-    plt.show()
+    # plt.plot(ox, oy, ".k")
+    # plt.xlim([-2, 2])
+    # plt.ylim([-2, 2])
+    # plt.grid(True)
+    # plt.axis("equal")
+    # plt.show()
 
-    obstacle_list = []
-    temp_list = []
-    for i in range(3):
-        temp_list = [fruits_true_pos[i][0],fruits_true_pos[i][1],0.07]
-        obstacle_list.append(temp_list)
-    for i in range(10):
-        temp_list = [aruco_true_pos[i][0],aruco_true_pos[i][1],0.07] #[x,y,radius]
-        obstacle_list.append(temp_list)
-
-
-    return ox,oy,obstacle_list
+    return ox,oy
 
 # search order tell us which fruit we going to move to now
 def path_planning(search_order):
@@ -276,7 +317,11 @@ def path_planning(search_order):
     robot_pose = get_robot_pose() # estimate the robot's pose
     print("Search order is:", search_order)
     sx,sy = float(robot_pose[0]),float(robot_pose[1]) # starting location
-    gx,gy = fruits_true_pos[search_order][0],fruits_true_pos[search_order][1] # goal position
+    # gx,gy = fruits_true_pos[search_order][0],fruits_true_pos[search_order][1] # goal position
+
+    for i in range(3): # to get the correct fruit idx based on the search list
+        if search_list[search_order] == fruits_list[i]:
+            gx,gy = fruits_true_pos[i][0],fruits_true_pos[i][1] # goal position
 
     print("starting loation is: ",sx,",",sy)
     print("ending loation is: ",gx,",",gy)
@@ -307,6 +352,7 @@ def path_planning(search_order):
         plt.plot(rx, ry, "-r")
         plt.pause(0.01)
         plt.show()
+
 #--------------------------------------- Using Dijkstra-------------------------------------#
 #--------------------------------------- Using AStar-------------------------------------#
     # if True:  # pragma: no cover
@@ -327,43 +373,36 @@ def path_planning(search_order):
     #     plt.pause(0.001)
     #     plt.show()
 #--------------------------------------- Using AStar-------------------------------------#
-#--------------------------------------- Using lqr_RRT -------------------------------------#
-    # start_location = [float(robot_pose[0]),float(robot_pose[1])] # starting location
-    # goal_location = [ fruits_true_pos[search_order][0],fruits_true_pos[search_order][1]] # goal position
 
-    # lqr_rrt_star = LQRRRTStar(start_location, goal_location,
-    #                           obstacle_list,
-    #                           [-2.0, 2.0])
-    # path = lqr_rrt_star.planning(animation=True)
-
-    # # Draw final path
-    # if True:  # pragma: no cover
-    #     lqr_rrt_star.draw_graph()
-    #     plt.plot([x for (x, y) in path], [y for (x, y) in path], '-r')
-    #     plt.grid(True)
-    #     plt.pause(0.001)
-    #     plt.show()
-
-    # print("Done")
-    # print("The path is:",path)
-
-
-#--------------------------------------- Using lqr_RRT -------------------------------------#
-    # for i in range(len(rx)):
-    #     rx[i]= round(rx[i],2)
-    #     ry[i]= round(ry[i],2)
-
-
-    # print("The x path is:",rx)
-    # print("The y path is:",ry)
-    # print("The last location is:",rx[0],",",ry[0])
     return rx,ry
+
+
+######################## REPLACE WITH OUR OWN CODE #########################
+#update the slam + take picture
+def self_update_slam(command,wheel_vel,turn_time):
+    operate.take_pic()
+    if not (command[0] == 0 and command[1] == 0): # skip stop ([0,0]) command
+        if command[0] == 0: # turning command
+            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time)    
+        else: # moving straight command
+            lv,rv = ppi.set_velocity(command, tick=wheel_vel, time=turn_time)    
+
+        drive_meas = measure.Drive(lv, rv, turn_time)
+        # TODO: add code for fruit detection
+        # operate.command['inference'] = True # trigger fruit detector
+        # operate.detect_target() #detect the targets
+        # operate.command['save_inference'] = True # save object detection outputs
+        # operate.record_data() # save the pred image ('save_inference') for later poseEstimation
+
+        operate.update_slam(drive_meas)
+
+######################## REPLACE WITH OUR OWN CODE #########################
 
 # main loop
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Fruit searching")
     parser.add_argument("--map", type=str, default='M4_true_map.txt')
-    parser.add_argument("--ip", metavar='', type=str, default='192.168.137.65')
+    parser.add_argument("--ip", metavar='', type=str, default='192.168.137.156')
     parser.add_argument("--port", metavar='', type=int, default=8000)
     
     ##################### REPLACE WITH OWN CODE #####################
@@ -385,6 +424,7 @@ if __name__ == "__main__":
     fruits_list, fruits_true_pos, aruco_true_pos = read_true_map(args.map)
 
     search_list = read_search_list()
+    print("SearchList is:",search_list)
     print_target_fruits_pos(search_list, fruits_list, fruits_true_pos)
 
     waypoint = [0.0,0.0]
@@ -395,10 +435,35 @@ if __name__ == "__main__":
 
     search_order = 0 # indicate search which fruit now
 
-    ############## REPLACE WITH OWN CODE #####################
+  
+    # run SLAM (copy from operate.py update_keyboard() function)
+    n_observed_markers = len(operate.ekf.taglist)
+    if n_observed_markers == 0:
+        if not operate.ekf_on:
+            print('SLAM is running')
+            operate.ekf_on = True
+        else:
+            print('> 2 landmarks is required for pausing')
+    elif n_observed_markers < 3:
+        print('> 2 landmarks is required for pausing')
+    else:
+        if not operate.ekf_on:
+            operate.request_recover_robot = True
+        operate.ekf_on = not operate.ekf_on
+        if operate.ekf_on:
+            print('SLAM is running')
+        else:
+            print('SLAM is paused')
 
-    # The following code is only a skeleton code the semi-auto fruit searching task
+    # update SLAM (TODO: can replace with self_update_slam() function)
+    operate.take_pic()
+    lv,rv = ppi.set_velocity([0, 0], tick=0.0, time=0.0)
+    drive_meas = measure.Drive(lv, rv, 0.0)
+    operate.update_slam(drive_meas)
+
+    ############## REPLACE WITH OWN CODE #####################
     while True:
+        
         # enter the waypoints
         # instead of manually enter waypoints in command line, you can get coordinates by clicking on a map (GUI input), see camera_calibration.py
         x,y = 0.0,0.0
@@ -406,7 +471,7 @@ if __name__ == "__main__":
         while search_order < 3: # loop search list
 
             #---------------- For path planning -----------------#
-            ox,oy,obstacle_list = initialise_space(fruits_true_pos,aruco_true_pos,search_order) #revretea  space again
+            ox,oy = initialise_space(fruits_true_pos,aruco_true_pos,search_order) #recreate  space again
             rx,ry = path_planning(search_order)
              #---------------- For path planning -----------------#
 
@@ -414,60 +479,40 @@ if __name__ == "__main__":
                 # TODO: let rx,ry run many 
                 x = rx[-i-1]
                 y = ry[-i-1] 
-
-
-                ############## REPLACE WITH OWN CODE #####################
-                # run SLAM (copy from operate.py update_keyboard() function)
-                n_observed_markers = len(operate.ekf.taglist)
-                if n_observed_markers == 0:
-                    if not operate.ekf_on:
-                        print('SLAM is running')
-                        operate.ekf_on = True
-                    else:
-                        print('> 2 landmarks is required for pausing')
-                elif n_observed_markers < 3:
-                    print('> 2 landmarks is required for pausing')
-                else:
-                    if not operate.ekf_on:
-                        operate.request_recover_robot = True
-                    operate.ekf_on = not operate.ekf_on
-                    if operate.ekf_on:
-                        print('SLAM is running')
-                    else:
-                        print('SLAM is paused')
-
-                ############## REPLACE WITH OWN CODE #####################
-
                 
                 # estimate the robot's pose
                 robot_pose = get_robot_pose()
 
                 # robot drives to the waypoint
                 waypoint = [x,y]
-                drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
+                turn_to_point(waypoint,robot_pose)
                 robot_pose = get_robot_pose()
+                drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
+                # robot_pose = get_robot_pose()
+                # turn_to_point(waypoint,robot_pose)
                 print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
-
+                
                 ############## REPLACE WITH OWN CODE #####################
                 # update SLAM again
+                # self_update_slam([0,0],0.0,0.0)
                 operate.take_pic()
                 lv,rv = ppi.set_velocity([0, 0], turning_tick=0.0, time=0.0)
                 drive_meas = measure.Drive(lv, rv, 0.0)
                 operate.update_slam(drive_meas)
 
-                time.sleep(2)
-
                 ############## REPLACE WITH OWN CODE #####################
 
-            
-
-            uInput = input("Continue? [Y/y]")
-            if uInput == 'Y' or uInput == 'y':
-                search_order= search_order + 1
-                print("search order is: ",search_order)
-                continue
-            else:
-                break
+            print("Moving to the next fruit.")
+            time.sleep(2)
+            search_order= search_order + 1
+            print("search order is: ",search_order)
+            # uInput = input("Continue? [Y/y]")
+            # if uInput == 'Y' or uInput == 'y':
+            #     search_order= search_order + 1
+            #     print("search order is: ",search_order)
+            #     continue
+            # else:
+            #     break
 
         # exit
         ppi.set_velocity([0, 0])

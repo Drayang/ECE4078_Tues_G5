@@ -125,6 +125,13 @@ def drive_to_point(waypoint, robot_pose):
     turn_time = 0.0 # replace with your calculation
     theta_goal = np.arctan2(waypoint[1]-robot_pose[1], waypoint[0]-robot_pose[0])
     delta_theta = theta_goal - robot_pose[2]
+
+    # to handle robot turn 360 degree issue
+    if delta_theta>np.pi:
+        delta_theta-=np.pi*2
+    elif delta_theta<-np.pi:
+       delta_theta+=np.pi*2
+
     turn_time = float((abs(delta_theta)*baseline) / (2*wheel_vel*scale))
     print("Turning for {:.2f} seconds".format(turn_time))
 
@@ -188,12 +195,6 @@ def update_slam_stop():
     operate.update_slam(drive_meas)
 
 
-# To rotate the robot slowly until it scan a aruco marker at the camera centre frame
-# and update robot current pose based on the aruco marker location
-# call it whenever reacha way point
-def recentre():
-    
-    return None
 
 ######################## REPLACE WITH OUR OWN CODE #########################
 
@@ -277,9 +278,6 @@ if __name__ == "__main__":
             continue
 
 
-
-
-        
         # estimate the robot's pose
         robot_pose = get_robot_pose()
 
