@@ -453,11 +453,8 @@ if __name__ == "__main__":
         else:
             print('SLAM is paused')
 
-    # update SLAM (TODO: can replace with self_update_slam() function)
-    operate.take_pic()
-    lv,rv = ppi.set_velocity([0, 0], tick=0.0, time=0.0)
-    drive_meas = measure.Drive(lv, rv, 0.0)
-    operate.update_slam(drive_meas)
+    # update SLAM 
+    self_update_slam([0,0],0.0,0.0)
 
     lms=[]
     for i,lm in enumerate(aruco_true_pos):
@@ -465,7 +462,8 @@ if __name__ == "__main__":
         lms.append(measure_lm)
     operate.ekf.add_landmarks(lms)   
 
-# The following code is only a skeleton code the semi-auto fruit searching task
+   
+    # The following code is only a skeleton code the semi-auto fruit searching task
     while True:
         # enter the waypoints
         # instead of manually enter waypoints in command line, you can get coordinates by clicking on a map (GUI input), see camera_calibration.py
@@ -489,19 +487,15 @@ if __name__ == "__main__":
 
         # robot drives to the waypoint
         waypoint = [x,y]
+        turn_to_point(waypoint,robot_pose)
+        robot_pose = get_robot_pose()
         drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
         robot_pose = get_robot_pose()
         print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
 
 
-        ############## REPLACE WITH OWN CODE #####################
         # update SLAM again
-        operate.take_pic()
-        lv,rv = ppi.set_velocity([0, 0], turning_tick=0.0, time=0.0)
-        drive_meas = measure.Drive(lv, rv, 0.0)
-        operate.update_slam(drive_meas)
-
-        ############## REPLACE WITH OWN CODE #####################
+        self_update_slam([0,0],0.0,0.0)
 
 
         # exit

@@ -247,7 +247,7 @@ def get_robot_pose():
 #--------------------------------------- For path planning-------------------------------------#
 def initialise_space(fruits_true_pos,aruco_true_pos,search_order,detected_x,detected_y):
     ox,oy=[],[] # obstacle location
-
+    search_idx = 0
     if detected_x or detected_y: # add obstacle list if we detected new obstalce (unknown fruit)
         ox.append(detected_x)
         oy.append(detected_y)
@@ -274,6 +274,10 @@ def initialise_space(fruits_true_pos,aruco_true_pos,search_order,detected_x,dete
 # search order tell us which fruit we going to move to now
 def path_planning(search_order):
 
+    sx,sy = 0,0
+    gx,gy = 0,0
+
+    
     fileB = "calibration/param/baseline.txt"
     robot_radius = np.loadtxt(fileB, delimiter=',')*2 # robot radius = baseline of the robot/2.0
     robot_radius = 0.2
@@ -283,6 +287,8 @@ def path_planning(search_order):
     # gx,gy = fruits_true_pos[search_order][0],fruits_true_pos[search_order][1] # goal position
 
     for i in range(3): # to get the correct fruit idx based on the search list
+        print("search_list[search_order] =",search_list[search_order] )
+        print("fruits_list[i]",fruits_list[i])
         if search_list[search_order] == fruits_list[i]:
             gx,gy = fruits_true_pos[i][0],fruits_true_pos[i][1] # goal position
 
@@ -323,27 +329,6 @@ def path_planning(search_order):
         plt.savefig(f'./pics/map_grid.jpg', bbox_inches='tight',transparent=True, pad_inches=0)
         
 
-#--------------------------------------- Using Dijkstra-------------------------------------#
-#--------------------------------------- Using AStar-------------------------------------#
-    # if True:  # pragma: no cover
-    #     plt.plot(ox, oy, ".k")
-    #     plt.plot(sx, sy, "og")
-    #     plt.plot(gx, gy, "xb")
-    #     plt.grid(True)
-    #     plt.axis("equal")
-
-    # grid_size = 0.20
-
-    # a_star = AStarPlanner(ox, oy, grid_size, robot_radius)
-    # rx, ry = a_star.planning(sx, sy, gx, gy)
-
-
-    # if True:  # pragma: no cover
-    #     plt.plot(rx, ry, "-r")
-    #     plt.pause(0.001)
-    #     plt.show()
-#--------------------------------------- Using AStar-------------------------------------#
-
     return rx,ry
 
 
@@ -356,12 +341,8 @@ def self_update_slam(command,wheel_vel,turn_time):
         else: # moving straight command
             lv,rv = ppi.set_velocity(command, tick=wheel_vel, time=turn_time)    
 
+        time.sleep(1)
         drive_meas = measure.Drive(lv, rv, turn_time)
-        # TODO: add code for fruit detection
-        # operate.command['inference'] = True # trigger fruit detector
-        # operate.detect_target() #detect the targets
-        # operate.command['save_inference'] = True # save object detection outputs
-        # operate.record_data() # save the pred image ('save_inference') for later poseEstimation
         operate.take_pic()
         operate.update_slam(drive_meas)
         self_update_GUI()
@@ -533,7 +514,7 @@ if __name__ == "__main__":
         else:
             print('SLAM is paused')
 
-    # update SLAM (TODO: can replace with self_update_slam() function)
+    # update SLAM 
     self_update_slam([0,0],0.0,0.0)
 
     #initialise slam state
@@ -566,12 +547,16 @@ if __name__ == "__main__":
             rx,ry = path_planning(search_order)
              #---------------- For path planning -----------------#
 
-            # rotate 360 degree
-            for i in range(8):
-                turn_rad = 45*np.pi/180
-                wheel_vel = 10*2.0
-                turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
-                self_update_slam([0, 1],wheel_vel,turn_time)
+            
+            if not (search_order == 0): # first round dun turn
+                #rotate 360 degree
+                for i in range(8):
+                    turn_rad = 45*np.pi/180
+                    wheel_vel = 10*2.0
+                    turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
+                    self_update_slam([0, 1],wheel_vel,turn_time)
+
+
 
             for i in range(1,len(rx)-1): # loop the navigation waypoint, no reach the final goal to avoid hitting the fruit
                 # TODO: let rx,ry run many 
@@ -594,21 +579,14 @@ if __name__ == "__main__":
                 if (obstacle_detected):
                     break
                 drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
-
+                robot_pose = get_robot_pose()
                 
                 print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
                 operate.notification = "Finished driving to waypoint: {};New robot pose: {:.2f}, {:.2f}, {:.2f}".format(waypoint,robot_pose[0][0],robot_pose[1][0],robot_pose[2][0])
                 self_update_GUI()
 
-                ############## REPLACE WITH OWN CODE #####################
                 # update SLAM again
-                # self_update_slam([0,0],0.0,0.0)
-                operate.take_pic()
-                lv,rv = ppi.set_velocity([0, 0], turning_tick=0.0, time=0.0)
-                drive_meas = measure.Drive(lv, rv, 0.0)
-                operate.update_slam(drive_meas)
-
-                ############## REPLACE WITH OWN CODE #####################
+                self_update_slam([0,0],0.0,0.0)
 
 
             if obstacle_detected: 
@@ -625,5 +603,8 @@ if __name__ == "__main__":
                 print("search order is: ",search_order)
 
         # exit
+        operate.notification = "Reach final goal!"
+        self_update_GUI()
+
         ppi.set_velocity([0, 0])
         start = False

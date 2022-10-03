@@ -270,6 +270,9 @@ def initialise_space(fruits_true_pos,aruco_true_pos,search_order):
 # search order tell us which fruit we going to move to now
 def path_planning(search_order):
 
+    sx,sy = 0,0
+    gx,gy = 0,0
+
     fileB = "calibration/param/baseline.txt"
     robot_radius = np.loadtxt(fileB, delimiter=',')*2 # robot radius = baseline of the robot/2.0
     robot_radius = 0.2
@@ -317,28 +320,6 @@ def path_planning(search_order):
         plt.ylim([-1.6,1.6])
         plt.tick_params(length=0, labelleft=False, labeltop=False, labelright=False, labelbottom=False)
         plt.savefig(f'./pics/map_grid.jpg', bbox_inches='tight',transparent=True, pad_inches=0)
-        
-
-#--------------------------------------- Using Dijkstra-------------------------------------#
-#--------------------------------------- Using AStar-------------------------------------#
-    # if True:  # pragma: no cover
-    #     plt.plot(ox, oy, ".k")
-    #     plt.plot(sx, sy, "og")
-    #     plt.plot(gx, gy, "xb")
-    #     plt.grid(True)
-    #     plt.axis("equal")
-
-    # grid_size = 0.20
-
-    # a_star = AStarPlanner(ox, oy, grid_size, robot_radius)
-    # rx, ry = a_star.planning(sx, sy, gx, gy)
-
-
-    # if True:  # pragma: no cover
-    #     plt.plot(rx, ry, "-r")
-    #     plt.pause(0.001)
-    #     plt.show()
-#--------------------------------------- Using AStar-------------------------------------#
 
     return rx,ry
 
@@ -458,12 +439,10 @@ if __name__ == "__main__":
         else:
             print('SLAM is paused')
 
-    # update SLAM (TODO: can replace with self_update_slam() function)
-    operate.take_pic()
-    lv,rv = ppi.set_velocity([0, 0], tick=0.0, time=0.0)
-    drive_meas = measure.Drive(lv, rv, 0.0)
-    operate.update_slam(drive_meas)
+    # update SLAM 
+    self_update_slam([0,0],0.0,0.0)
 
+    # initialise slam state space
     lms=[]
     for i,lm in enumerate(aruco_true_pos):
         measure_lm = measure.Marker(np.array([[lm[0]],[lm[1]]]),i+1)
@@ -510,20 +489,15 @@ if __name__ == "__main__":
                 turn_to_point(waypoint,robot_pose)
                 robot_pose = get_robot_pose()
                 drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
-
+                robot_pose = get_robot_pose()
                 print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
                 # operate.notifiation="Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose)
                 operate.notification = "Finished driving to waypoint: {};New robot pose: {:.2f}, {:.2f}, {:.2f}".format(waypoint,robot_pose[0][0],robot_pose[1][0],robot_pose[2][0])
                 self_update_GUI()
-                ############## REPLACE WITH OWN CODE #####################
-                # update SLAM again
-                # self_update_slam([0,0],0.0,0.0)
-                operate.take_pic()
-                lv,rv = ppi.set_velocity([0, 0], turning_tick=0.0, time=0.0)
-                drive_meas = measure.Drive(lv, rv, 0.0)
-                operate.update_slam(drive_meas)
 
-                ############## REPLACE WITH OWN CODE #####################
+                # update SLAM again
+                self_update_slam([0,0],0.0,0.0)
+
 
             print("Moving to the next fruit.")
             time.sleep(2)
@@ -540,8 +514,8 @@ if __name__ == "__main__":
             #     break
 
         # exit
+        operate.notification = "Reach final goal!"
+        self_update_GUI()
+
         ppi.set_velocity([0, 0])
         start = False
-        # uInput = input("Add a new waypoint? [Y/N]")
-        # if uInput == 'N' or uInput == 'n':
-        #     break

@@ -12,18 +12,20 @@ import cv2
 class Detector:
     def __init__(self, ckpt, use_gpu=False):
         self.args = args
-        self.model = Resnet18Skip(args)
-        if torch.cuda.torch.cuda.device_count() > 0 and use_gpu:
-            self.use_gpu = True
-            self.model = self.model.cuda()
-        else:
-            self.use_gpu = False
-        self.load_weights(ckpt)
-        self.model = self.model.eval()
+        # self.model = Resnet18Skip(args)
+        # if torch.cuda.torch.cuda.device_count() > 0 and use_gpu:
+        #     self.use_gpu = True
+        #     self.model = self.model.cuda()
+        # else:
+        #     self.use_gpu = False
+        # self.load_weights(ckpt)
+        # self.model = self.model.eval()
 
-        # self.model_directory = 'network/scripts/model/yolo_best.pt'
-        # self.yolo_model = torch.hub.load('ultralytics/yolov5', 'custom', path=self.model_directory)
-        # self.yolo_model.conf = 0.8 # confidence level
+        self.model_directory = 'network/scripts/model/yolo_best.pt'
+        self.yolo_model = torch.hub.load('ultralytics/yolov5', 'custom', path=self.model_directory,force_reload=True)
+        self.yolo_model.cpu()
+        self.yolo_model.conf = 0.7 # confidence level
+
 
         cmd_printer.divider(text="warning")
         print('This detector uses "RGB" input convention by default')
