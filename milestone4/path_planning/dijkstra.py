@@ -9,7 +9,7 @@ author: Atsushi Sakai(@Atsushi_twi)
 import matplotlib.pyplot as plt
 import math
 
-show_animation = True
+show_animation = False
 
 
 class Dijkstra:

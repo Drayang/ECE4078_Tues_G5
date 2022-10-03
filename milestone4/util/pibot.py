@@ -18,7 +18,7 @@ class Alphabot:
     #### TODO: add a offset argument to increase or decrease the offset
     ########################################## 
     def set_velocity(self, command, tick=10, turning_tick=5, time=0): 
-        l_vel = command[0]*tick - command[1]*turning_tick
+        l_vel = 1.03*command[0]*tick - command[1]*turning_tick
         r_vel = command[0]*tick + command[1]*turning_tick
         self.wheel_vel = [l_vel, r_vel]
         if time == 0:
@@ -30,6 +30,8 @@ class Alphabot:
             requests.get(
                 "http://"+self.ip+":"+str(self.port)+"/robot/set/velocity?value="+str(l_vel)+","+str(r_vel)
                             +"&time="+str(time))
+        
+        l_vel = command[0]*tick - command[1]*turning_tick
         return l_vel, r_vel
         
     def get_image(self):

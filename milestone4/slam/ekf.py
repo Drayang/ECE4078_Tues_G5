@@ -228,8 +228,8 @@ class EKF:
     def to_im_coor(xy, res, m2pixel):
         w, h = res
         x, y = xy
-        x_im = int(-x*m2pixel+w/2.0)
-        y_im = int(y*m2pixel+h/2.0)
+        x_im = int(x*m2pixel+w/2.0)
+        y_im = int(-y*m2pixel+h/2.0)
         return (x_im, y_im)
 
     def draw_slam_state(self, res = (320, 500), not_pause=True):
@@ -295,7 +295,7 @@ class EKF:
         canvas = np.ones((res[1], res[0], 3))*bg_rgb.astype(np.uint8)
         # in meters, 
         lms_xy = self.markers[:2, :]
-        f_xy = self.fruits[:2, :]
+
         robot_xy = self.robot.state[:2, 0].reshape((2, 1))
         # lms_xy = lms_xy - robot_xy
         # robot_xy = robot_xy*0
@@ -346,18 +346,7 @@ class EKF:
                 except IndexError:
                     surface.blit(self.lm_pics[-1],
                     (coor_[0]-5, coor_[1]-5))
-        print("no fruits: ",self.number_fruits())
-        if self.number_fruits() > 0:
-            for i in range(len(self.fruits[0,:])):
-                xy = (f_xy[0, i], f_xy[1, i])
-                print("fruit_xy", xy)
-                coor_ = self.to_im_coor(xy, res, m2pixel)
-                try:
-                    surface.blit(self.fruit_pics[self.fruitlist[i]-1],
-                    (coor_[0]-5, coor_[1]-5))
-                except IndexError:
-                    surface.blit(self.fruit_pics[-1],
-                    (coor_[0]-5, coor_[1]-5))
+
         return surface
 #------------------------------- Self replace code for GUI in m4-------------------------------#
 

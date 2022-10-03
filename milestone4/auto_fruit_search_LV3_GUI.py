@@ -9,12 +9,6 @@ import ast
 import argparse
 import time
 
-# import SLAM components
-# sys.path.insert(0, "{}/slam".format(os.getcwd()))
-# from slam.ekf import EKF
-# from slam.robot import Robot
-# import slam.aruco_detector as aruco
-
 
 # import utility functions
 sys.path.insert(0, "util")
@@ -24,6 +18,11 @@ import measure as measure
 ##################### REPLACE WITH OWN CODE #####################
 from operate import Operate
 import pygame # for GUI
+
+#---------------------------- For fruit detector ------------------------------#
+from pathlib import Path
+from TargetPoseEst import get_image_info,estimate_pose,merge_estimations
+
 
 #---------------------------- For path planning ------------------------------#
 sys.path.insert(0, "{}/path_planning".format(os.getcwd()))
@@ -244,43 +243,15 @@ def get_robot_pose():
 
 ######################## REPLACE WITH OUR OWN CODE #########################
 
-# To create a square obstacle [but for loop cannot work with float so NOT USE]
-def create_square_obstacle():
-    ox,oy = [],[]
-
-    radius = 1 # from the centre point how far away we want have the obstacle
-
-    # centre point of the obstacle
-    pos_x = 2
-    pos_y = 2
-
-    # up  bound
-    for i in range(pos_x-radius,pos_x+radius+1):
-        ox.append(i)
-        oy.append(pos_y+radius)
-        # down bound
-    for i in range(pos_x-radius,pos_x+radius+1):
-        ox.append(i)
-        oy.append(pos_y-radius)    
-    #left bound
-    for i in range(pos_y-radius+1,pos_y+radius):
-        ox.append(pos_x-radius)
-        oy.append(i)    
-    #right bound
-    for i in range(pos_y-radius+1,pos_y+radius):
-        ox.append(pos_x+radius)
-        oy.append(i)    
-
-    print(len(ox))
-    plt.plot(ox, oy, ".k")
-    plt.grid(True)
-    plt.axis("equal")
-    plt.pause(0.01)
-    plt.show()
 
 #--------------------------------------- For path planning-------------------------------------#
-def initialise_space(fruits_true_pos,aruco_true_pos,search_order):
+def initialise_space(fruits_true_pos,aruco_true_pos,search_order,detected_x,detected_y):
     ox,oy=[],[] # obstacle location
+
+    if detected_x or detected_y: # add obstacle list if we detected new obstalce (unknown fruit)
+        ox.append(detected_x)
+        oy.append(detected_y)
+        detected_x,detected_y = 0,0 # reinitialise
 
     # to get the fruit idx based on the search list
     for i in range(3):
@@ -297,14 +268,6 @@ def initialise_space(fruits_true_pos,aruco_true_pos,search_order):
         oy.append(aruco_true_pos[i][1])
 
     print("Number of obstacle is : ",len(ox))
-
-    # show the space map
-    # plt.plot(ox, oy, ".k")
-    # plt.xlim([-2, 2])
-    # plt.ylim([-2, 2])
-    # plt.grid(True)
-    # plt.axis("equal")
-    # plt.show()
 
     return ox,oy
 
@@ -328,11 +291,12 @@ def path_planning(search_order):
     
 #--------------------------------------- Using Dijkstra-------------------------------------#
     if True:  # pragma: no cover
+        plt.figure(figsize=(9,9))
         plt.plot(ox, oy, ".k")
         plt.plot(sx, sy, "og")
         plt.plot(gx, gy, "xb")
         plt.grid(True)
-        plt.axis("equal")
+        plt.axis("square")
 
     grid_size = 0.2
     dijkstra = Dijkstra(ox, oy, grid_size, robot_radius)
@@ -349,9 +313,15 @@ def path_planning(search_order):
     
 
     if True:  # pragma: no cover
-        plt.plot(rx, ry, "-r")
-        plt.pause(0.01)
-        plt.show()
+        ticks=np.arange(-1.6,1.6,0.4)
+        plt.xticks(ticks)
+        plt.yticks(ticks)
+        plt.plot(rx[1:], ry[1:], "-r")
+        plt.xlim([-1.6,1.6])
+        plt.ylim([-1.6,1.6])
+        plt.tick_params(length=0, labelleft=False, labeltop=False, labelright=False, labelbottom=False)
+        plt.savefig(f'./pics/map_grid.jpg', bbox_inches='tight',transparent=True, pad_inches=0)
+        
 
 #--------------------------------------- Using Dijkstra-------------------------------------#
 #--------------------------------------- Using AStar-------------------------------------#
@@ -395,7 +365,77 @@ def self_update_slam(command,wheel_vel,turn_time):
         # operate.record_data() # save the pred image ('save_inference') for later poseEstimation
 
         operate.update_slam(drive_meas)
+        self_update_GUI()
 
+def self_pose_estimate():
+    print("\n---------------------------------\Enter self_pose_estimate---------------------------------\n")
+    temp_x,temp_y = 0.0,0.0 # store temporary fruit pose estimation result
+    temp_obstacle_detected = False
+
+    operate.take_pic()
+    operate.command['inference'] = True # trigger fruit detector
+    operate.detect_target() #detect the targets
+    operate.command['save_inference'] = True # save object detection outputs
+    operate.record_data() # save the pred image ('save_inference') for later poseEstimation  
+
+     # camera_matrix = np.ones((3,3))/2
+    fileK = "{}intrinsic.txt".format('./calibration/param/')
+    camera_matrix = np.loadtxt(fileK, delimiter=',')
+    base_dir = Path('./')
+
+    # a dictionary of all the saved detector outputs
+    image_poses = {}
+    with open(base_dir/'lab_output/images.txt') as fp:
+        for line in fp.readlines():
+            pose_dict = ast.literal_eval(line)
+            image_poses[pose_dict['imgfname']] = pose_dict['pose']
+    
+    # estimate pose of targets in each detector output
+    target_map = {}
+    print("image_poses is ", image_poses)
+    if image_poses: # image have been saved        
+        file_path  = list(image_poses.keys())[0] #receive the first image
+
+        completed_img_dict = get_image_info(base_dir, file_path, image_poses)
+        target_map[file_path] = estimate_pose(base_dir, camera_matrix, completed_img_dict)
+        target_est = merge_estimations(target_map) # {'redapple_0': {'x': 2.091210725333333, 'y': 0.27663994728373037}}
+        # print("operate.detector_output is", operate.detector_output)
+        # print("operate.detector_output is", np.bincount(operate.detector_output).argmax())
+        
+
+        if not (len(target_est) == 0): # no empty mean we have detect fruit
+            robot_pose = get_robot_pose() # get the robot position
+            print("Target_est's key is: ",list(target_est.keys()))
+            target_est_key = list(target_est.keys())[0] # 'orange_0','mango_0'.....
+            print("Target_est's key's x value is: ",target_est[target_est_key]["x"])
+            # dist2fruit = ((target_est["x"]-robot_pose[0])**2 + (target_est["x"]-robot_pose[1])**2)**0.5
+            dist2fruit = ((target_est[target_est_key]["x"]-robot_pose[0])**2 + (target_est[target_est_key]["y"]-robot_pose[1])**2)**0.5
+
+            print("Distance from robot to the fruit is : ",dist2fruit)
+
+            if dist2fruit < 0.3: #if distance between fruit and robot is less than 0.4m
+                
+                #TODO: need to cehck whether the fruit is our target fruit if yes then we dun set 
+                # temp_obstacle_detected = true
+
+
+                '''
+                operate.detector_output => 1-5 refer to which fruit
+                then we can loop fruit_tag_list , find the fruit that match the detector_output value
+                and identify we detect what fruit
+                '''
+                temp_obstacle_detected = True
+                print("obstacle_detected is : ",temp_obstacle_detected)
+                # temp_x = target_est["x"] # store the detected fruit position then later into the obstacle list
+                # temp_y = target_est["y"]
+                temp_x = target_est[target_est_key]["x"]
+                temp_y = target_est[target_est_key]["y"]
+
+    return temp_obstacle_detected,temp_x,temp_y
+
+def self_update_GUI():
+    operate.draw(canvas)
+    pygame.display.update()
 ######################## REPLACE WITH OUR OWN CODE #########################
 
 # main loop
@@ -404,17 +444,12 @@ if __name__ == "__main__":
     parser.add_argument("--map", type=str, default='M4_true_map.txt')
     parser.add_argument("--ip", metavar='', type=str, default='192.168.137.206')
     parser.add_argument("--port", metavar='', type=int, default=8000)
-    
-    ##################### REPLACE WITH OWN CODE #####################
-    
+
     # For creating Operate class purpose
     parser.add_argument("--calib_dir", type=str, default="calibration/param/")
     parser.add_argument("--save_data", action='store_true')
     parser.add_argument("--play_data", action='store_true')
     parser.add_argument("--ckpt", default='network/scripts/model/model.best.pth')
-
-    ##################### REPLACE WITH OWN CODE #####################
-    
 
     args, _ = parser.parse_known_args()
     ppi = Alphabot(args.ip,args.port)
@@ -430,10 +465,48 @@ if __name__ == "__main__":
     waypoint = [0.0,0.0]
     robot_pose = [0.0,0.0,0.0]
 
+    search_order = 0 # indicate search which fruit now
+
+    obstacle_detected = False # to check whether detect the obstac;e
+    detected_x = 0.0 # detected fruit position x (obstacle)
+    detected_y = 0.0 # detected fruit position y (obstacle)
+
+
+
     ############## REPLACE WITH OWN CODE #####################
     operate = Operate(args)
 
-    search_order = 0 # indicate search which fruit now
+        # The following code is only a skeleton code the semi-auto fruit searching task
+    pygame.font.init()     
+    
+    width, height = 902, 660
+    canvas = pygame.display.set_mode((width, height))
+    pygame.display.set_caption('ECE4078 2022 Lab')
+    pygame.display.set_icon(pygame.image.load('pics/8bit/pibot5.png'))
+    canvas.fill((0, 0, 0))
+    splash = pygame.image.load('pics/loading.png')
+    pibot_animate = [pygame.image.load('pics/8bit/pibot1.png'),
+                     pygame.image.load('pics/8bit/pibot2.png'),
+                     pygame.image.load('pics/8bit/pibot3.png'),
+                    pygame.image.load('pics/8bit/pibot4.png'),
+                     pygame.image.load('pics/8bit/pibot5.png')]
+    pygame.display.update()
+
+    start = False
+
+    counter = 40
+    while not start:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                start = True
+        canvas.blit(splash, (0, 0))
+        x_ = min(counter, 600)
+        if x_ < 600:
+            canvas.blit(pibot_animate[counter%10//2], (x_, 565))
+            pygame.display.update()
+            counter += 2
+
+
 
   
     # run SLAM (copy from operate.py update_keyboard() function)
@@ -456,17 +529,23 @@ if __name__ == "__main__":
             print('SLAM is paused')
 
     # update SLAM (TODO: can replace with self_update_slam() function)
-    operate.take_pic()
-    lv,rv = ppi.set_velocity([0, 0], tick=0.0, time=0.0)
-    drive_meas = measure.Drive(lv, rv, 0.0)
-    operate.update_slam(drive_meas)
+    self_update_slam([0,0],0.0,0.0)
 
+    #initialise slam state
     lms=[]
     for i,lm in enumerate(aruco_true_pos):
         measure_lm = measure.Marker(np.array([[lm[0]],[lm[1]]]),i+1)
         lms.append(measure_lm)
     operate.ekf.add_landmarks(lms)   
 
+    # store the obstacle fruit list
+    obstacle_fruit = []
+    fruit_tag_dict = {'redapple':1,'greenapple':2,'orange':3,'mango':4,'capsicum':5,}
+    for fruit in fruit_tag_dict.keys():
+        if fruit not in search_list:
+            obstacle_fruit.append(fruit_tag_dict[fruit])
+
+    print("Obstacle fruit is:",obstacle_fruit)
 
     ############## REPLACE WITH OWN CODE #####################
     while True:
@@ -478,7 +557,7 @@ if __name__ == "__main__":
         while search_order < 3: # loop search list
 
             #---------------- For path planning -----------------#
-            ox,oy = initialise_space(fruits_true_pos,aruco_true_pos,search_order) #recreate  space again
+            ox,oy = initialise_space(fruits_true_pos,aruco_true_pos,search_order,detected_x,detected_y) #recreate  space again
             rx,ry = path_planning(search_order)
              #---------------- For path planning -----------------#
 
@@ -493,12 +572,22 @@ if __name__ == "__main__":
                 # robot drives to the waypoint
                 waypoint = [x,y]
                 turn_to_point(waypoint,robot_pose)
+                obstacle_detected,detected_x,detected_y = self_pose_estimate() # after turning only estimate 
+
+                if (obstacle_detected):
+                    break
+
                 robot_pose = get_robot_pose()
+                obstacle_detected,detected_x,detected_y = self_pose_estimate() 
+                if (obstacle_detected):
+                    break
                 drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
-                # robot_pose = get_robot_pose()
-                # turn_to_point(waypoint,robot_pose)
-                print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
+
                 
+                print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
+                operate.notification = "Finished driving to waypoint: {};New robot pose: {:.2f}, {:.2f}, {:.2f}".format(waypoint,robot_pose[0][0],robot_pose[1][0],robot_pose[2][0])
+                self_update_GUI()
+
                 ############## REPLACE WITH OWN CODE #####################
                 # update SLAM again
                 # self_update_slam([0,0],0.0,0.0)
@@ -509,20 +598,20 @@ if __name__ == "__main__":
 
                 ############## REPLACE WITH OWN CODE #####################
 
-            print("Moving to the next fruit.")
-            time.sleep(2)
-            search_order= search_order + 1
-            print("search order is: ",search_order)
-            # uInput = input("Continue? [Y/y]")
-            # if uInput == 'Y' or uInput == 'y':
-            #     search_order= search_order + 1
-            #     print("search order is: ",search_order)
-            #     continue
-            # else:
-            #     break
+
+            if obstacle_detected: 
+                print("Detect obstacle. Repeat path planning again.")
+                operate.notification = "Detect obstacle. Repeat path planning again."
+                self_update_GUI()
+                obstacle_detected = False
+            else:
+                print("Moving to the next fruit.")
+                time.sleep(2)
+                operate.notification = "Moving to next fruit"
+                self_update_GUI()
+                search_order= search_order + 1
+                print("search order is: ",search_order)
 
         # exit
         ppi.set_velocity([0, 0])
-        uInput = input("Add a new waypoint? [Y/N]")
-        if uInput == 'N' or uInput == 'n':
-            break
+        start = False
