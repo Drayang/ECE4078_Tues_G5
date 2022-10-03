@@ -21,7 +21,7 @@ class EKF:
 
         # Covariance matrix
         self.P = np.zeros((3,3))
-        self.init_lm_cov = 1e3
+        self.init_lm_cov = 1e-4
         self.robot_init_state = None
         self.lm_pics = []
         for i in range(1, 11):
@@ -37,7 +37,8 @@ class EKF:
         self.taglist = []
         # Covariance matrix
         self.P = np.zeros((3,3))
-        self.init_lm_cov = 1e3
+        self.init_lm_cov = 1e3 # control circle size
+        # self.init_lm_cov = 0 # control circle size
         self.robot_init_state = None
 
     def number_landmarks(self):
@@ -51,7 +52,7 @@ class EKF:
     # update the state vector property(?) to "robot" state or "marker"
     def set_state_vector(self, state):
         self.robot.state = state[0:3,:]
-        self.markers = np.reshape(state[3:,:], (2,-1), order='F')
+        # self.markers = np.reshape(state[3:,:], (2,-1), order='F') # for m4 not to update the slam location
     
     def save_map(self, fname="slam_map.txt"):
         if self.number_landmarks() > 0:
@@ -320,17 +321,6 @@ class EKF:
                 canvas = cv2.ellipse(canvas, coor_, 
                     (int(axes_len[0]*m2pixel), int(axes_len[1]*m2pixel)),
                     angle, 0, 360, (244, 69, 96), 1)
-
-        # if self.number_fruits() > 0:
-        #     for i in range(len(self.fruits[0,:])):
-        #         xy = (f_xy[0, i], f_xy[1, i])
-        #         coor_ = self.to_im_coor(xy, res, m2pixel)
-        #         # plot covariance
-        #         Plmi = self.P[3+2*i:3+2*(i+1),3+2*i:3+2*(i+1)]
-        #         axes_len, angle = self.make_ellipse(Plmi)
-        #         canvas = cv2.ellipse(canvas, coor_, 
-        #             (int(axes_len[0]*m2pixel), int(axes_len[1]*m2pixel)),
-        #             angle, 0, 360, (244, 69, 96), 1)
 
         surface = pygame.surfarray.make_surface(np.rot90(canvas))
         surface = pygame.transform.flip(surface, True, False)

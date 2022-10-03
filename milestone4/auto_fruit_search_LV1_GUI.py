@@ -142,11 +142,11 @@ def drive_to_point(waypoint, robot_pose):
     # theta_goal = np.arctan2(waypoint[1]-robot_pose[1], waypoint[0]-robot_pose[0])
     # delta_theta = theta_goal - robot_pose[2]
 
-    # to handle robot turn 360 degree issue
-    # if delta_theta>np.pi:
-    #     delta_theta-=np.pi*2
-    # elif delta_theta<-np.pi:
-    #    delta_theta+=np.pi*2
+    # # to handle robot turn 360 degree issue
+    # # if delta_theta>np.pi:
+    # #     delta_theta-=np.pi*2
+    # # elif delta_theta<-np.pi:
+    # #    delta_theta+=np.pi*2
 
 
     # turn_time = float((abs(delta_theta)*baseline) / (2*wheel_vel*scale))
@@ -349,11 +349,10 @@ def self_update_slam(command,wheel_vel,turn_time):
     
     if not (command[0] == 0 and command[1] == 0): # skip stop ([0,0]) command
         if command[0] == 0: # turning command
-            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time + 0.02)    
+            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time)    
         else: # moving straight command
             lv,rv = ppi.set_velocity(command, tick=wheel_vel, time=turn_time)    
 
-        time.sleep(1)
         drive_meas = measure.Drive(lv, rv, turn_time)
         operate.take_pic()
         operate.update_slam(drive_meas)
@@ -396,10 +395,6 @@ if __name__ == "__main__":
     waypoint = [0.0,0.0]
     robot_pose = [0.0,0.0,0.0]
 
-    fileB = "calibration/param/baseline.txt"
-    baseline = np.loadtxt(fileB, delimiter=',')
-    fileS = "calibration/param/scale.txt"
-    scale = np.loadtxt(fileS, delimiter=',')
 
     search_order = 0 # indicate search which fruit now
 
@@ -470,78 +465,47 @@ if __name__ == "__main__":
         lms.append(measure_lm)
     operate.ekf.add_landmarks(lms)   
 
-
-    ############## REPLACE WITH OWN CODE #####################
+# The following code is only a skeleton code the semi-auto fruit searching task
     while True:
-        
         # enter the waypoints
         # instead of manually enter waypoints in command line, you can get coordinates by clicking on a map (GUI input), see camera_calibration.py
         x,y = 0.0,0.0
-        
-        while search_order < 3: # loop search list
-
-            
-
-            #---------------- For path planning -----------------#
-            ox,oy = initialise_space(fruits_true_pos,aruco_true_pos,search_order) #recreate  space again
-            rx,ry = path_planning(search_order)
-             #---------------- For path planning -----------------#
-
-            if not (search_order == 0): # first round dun turn
-                #rotate 360 degree
-                for i in range(8):
-                    turn_rad = 45*np.pi/180
-                    wheel_vel = 10*2.0
-                    turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
-                    self_update_slam([0, 1],wheel_vel,turn_time)
+        x = input("X coordinate of the waypoint: ")
+        try:
+            x = float(x)
+        except ValueError:
+            print("Please enter a number.")
+            continue
+        y = input("Y coordinate of the waypoint: ")
+        try:
+            y = float(y)
+        except ValueError:
+            print("Please enter a number.")
+            continue
 
 
+        # estimate the robot's pose
+        robot_pose = get_robot_pose()
 
-            for i in range(1,len(rx)-1): # loop the navigation waypoint, no reach the final goal to avoid hitting the fruit
-                # TODO: let rx,ry run many 
-                x = rx[-i-1]
-                y = ry[-i-1] 
-                
-                # estimate the robot's pose
-                robot_pose = get_robot_pose()
+        # robot drives to the waypoint
+        waypoint = [x,y]
+        drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
+        robot_pose = get_robot_pose()
+        print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
 
-                # robot drives to the waypoint
-                waypoint = [x,y]
-                turn_to_point(waypoint,robot_pose)
-                robot_pose = get_robot_pose()
-                drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
 
-                print("Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose))
-                # operate.notifiation="Finished driving to waypoint: {}; New robot pose: {}".format(waypoint,robot_pose)
-                operate.notification = "Finished driving to waypoint: {};New robot pose: {:.2f}, {:.2f}, {:.2f}".format(waypoint,robot_pose[0][0],robot_pose[1][0],robot_pose[2][0])
-                self_update_GUI()
-                ############## REPLACE WITH OWN CODE #####################
-                # update SLAM again
-                # self_update_slam([0,0],0.0,0.0)
-                operate.take_pic()
-                lv,rv = ppi.set_velocity([0, 0], turning_tick=0.0, time=0.0)
-                drive_meas = measure.Drive(lv, rv, 0.0)
-                operate.update_slam(drive_meas)
+        ############## REPLACE WITH OWN CODE #####################
+        # update SLAM again
+        operate.take_pic()
+        lv,rv = ppi.set_velocity([0, 0], turning_tick=0.0, time=0.0)
+        drive_meas = measure.Drive(lv, rv, 0.0)
+        operate.update_slam(drive_meas)
 
-                ############## REPLACE WITH OWN CODE #####################
+        ############## REPLACE WITH OWN CODE #####################
 
-            print("Moving to the next fruit.")
-            time.sleep(2)
-            operate.notification = "Moving to next fruit"
-            self_update_GUI()
-            search_order= search_order + 1
-            print("search order is: ",search_order)
-            # uInput = input("Continue? [Y/y]")
-            # if uInput == 'Y' or uInput == 'y':
-            #     search_order= search_order + 1
-            #     print("search order is: ",search_order)
-            #     continue
-            # else:
-            #     break
 
         # exit
         ppi.set_velocity([0, 0])
-        start = False
-        # uInput = input("Add a new waypoint? [Y/N]")
-        # if uInput == 'N' or uInput == 'n':
-        #     break
+        uInput = input("Add a new waypoint? [Y/N]")
+        if uInput == 'N' or uInput == 'n':
+            break

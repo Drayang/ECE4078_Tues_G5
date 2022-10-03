@@ -119,7 +119,8 @@ class Operate:
     # using computer vision to detect targets
     def detect_target(self):
         if self.command['inference'] and self.detector is not None:
-            self.detector_output, self.network_vis = self.detector.detect_single_image(self.img)
+            # self.detector_output, self.network_vis = self.detector.detect_single_image(self.img)
+            self.detector_output, self.network_vis = self.detector.yolo_detection(self.img)
             self.command['inference'] = False
             self.file_output = (self.detector_output, self.ekf)
             self.notification = f'{len(np.unique(self.detector_output))-1} target type(s) detected'
@@ -296,7 +297,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ip", metavar='', type=str, default='localhost')
+    parser.add_argument("--ip", metavar='', type=str, default='192.168.137.206')
     parser.add_argument("--port", metavar='', type=int, default=8000)
     parser.add_argument("--calib_dir", type=str, default="calibration/param/")
     parser.add_argument("--save_data", action='store_true')

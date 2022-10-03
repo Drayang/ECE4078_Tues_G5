@@ -350,10 +350,9 @@ def path_planning(search_order):
 ######################## REPLACE WITH OUR OWN CODE #########################
 #update the slam + take picture
 def self_update_slam(command,wheel_vel,turn_time):
-    operate.take_pic()
     if not (command[0] == 0 and command[1] == 0): # skip stop ([0,0]) command
         if command[0] == 0: # turning command
-            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time)    
+            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time  + 0.02 )    
         else: # moving straight command
             lv,rv = ppi.set_velocity(command, tick=wheel_vel, time=turn_time)    
 
@@ -363,11 +362,11 @@ def self_update_slam(command,wheel_vel,turn_time):
         # operate.detect_target() #detect the targets
         # operate.command['save_inference'] = True # save object detection outputs
         # operate.record_data() # save the pred image ('save_inference') for later poseEstimation
-
+        operate.take_pic()
         operate.update_slam(drive_meas)
         self_update_GUI()
 
-def self_pose_estimate():
+def self_pose_estimate(search_order):
     print("\n---------------------------------\Enter self_pose_estimate---------------------------------\n")
     temp_x,temp_y = 0.0,0.0 # store temporary fruit pose estimation result
     temp_obstacle_detected = False
@@ -424,12 +423,16 @@ def self_pose_estimate():
                 then we can loop fruit_tag_list , find the fruit that match the detector_output value
                 and identify we detect what fruit
                 '''
-                temp_obstacle_detected = True
+                if target_est_key == search_list[search_order]: # if detected fruit == target fruit
+                    temp_obstacle_detected = True
+                else:
+                    temp_obstacle_detected = False
+                    # temp_x = target_est["x"] # store the detected fruit position then later into the obstacle list
+                    # temp_y = target_est["y"]
+                    temp_x = target_est[target_est_key]["x"]
+                    temp_y = target_est[target_est_key]["y"]
+
                 print("obstacle_detected is : ",temp_obstacle_detected)
-                # temp_x = target_est["x"] # store the detected fruit position then later into the obstacle list
-                # temp_y = target_est["y"]
-                temp_x = target_est[target_est_key]["x"]
-                temp_y = target_est[target_est_key]["y"]
 
     return temp_obstacle_detected,temp_x,temp_y
 
@@ -465,13 +468,17 @@ if __name__ == "__main__":
     waypoint = [0.0,0.0]
     robot_pose = [0.0,0.0,0.0]
 
+    fileB = "calibration/param/baseline.txt"
+    baseline = np.loadtxt(fileB, delimiter=',')
+    fileS = "calibration/param/scale.txt"
+    scale = np.loadtxt(fileS, delimiter=',')
+
+
     search_order = 0 # indicate search which fruit now
 
     obstacle_detected = False # to check whether detect the obstac;e
     detected_x = 0.0 # detected fruit position x (obstacle)
     detected_y = 0.0 # detected fruit position y (obstacle)
-
-
 
     ############## REPLACE WITH OWN CODE #####################
     operate = Operate(args)
@@ -505,8 +512,6 @@ if __name__ == "__main__":
             canvas.blit(pibot_animate[counter%10//2], (x_, 565))
             pygame.display.update()
             counter += 2
-
-
 
   
     # run SLAM (copy from operate.py update_keyboard() function)
@@ -561,6 +566,13 @@ if __name__ == "__main__":
             rx,ry = path_planning(search_order)
              #---------------- For path planning -----------------#
 
+            # rotate 360 degree
+            for i in range(8):
+                turn_rad = 45*np.pi/180
+                wheel_vel = 10*2.0
+                turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
+                self_update_slam([0, 1],wheel_vel,turn_time)
+
             for i in range(1,len(rx)-1): # loop the navigation waypoint, no reach the final goal to avoid hitting the fruit
                 # TODO: let rx,ry run many 
                 x = rx[-i-1]
@@ -572,13 +584,13 @@ if __name__ == "__main__":
                 # robot drives to the waypoint
                 waypoint = [x,y]
                 turn_to_point(waypoint,robot_pose)
-                obstacle_detected,detected_x,detected_y = self_pose_estimate() # after turning only estimate 
+                obstacle_detected,detected_x,detected_y = self_pose_estimate(search_order) # after turning only estimate 
 
                 if (obstacle_detected):
                     break
 
                 robot_pose = get_robot_pose()
-                obstacle_detected,detected_x,detected_y = self_pose_estimate() 
+                obstacle_detected,detected_x,detected_y = self_pose_estimate(search_order) 
                 if (obstacle_detected):
                     break
                 drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose

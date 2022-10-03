@@ -380,20 +380,15 @@ def path_planning(search_order):
 ######################## REPLACE WITH OUR OWN CODE #########################
 #update the slam + take picture
 def self_update_slam(command,wheel_vel,turn_time):
-    operate.take_pic()
+    
     if not (command[0] == 0 and command[1] == 0): # skip stop ([0,0]) command
         if command[0] == 0: # turning command
             lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time)    
         else: # moving straight command
             lv,rv = ppi.set_velocity(command, tick=wheel_vel, time=turn_time)    
 
+        operate.take_pic()
         drive_meas = measure.Drive(lv, rv, turn_time)
-        # TODO: add code for fruit detection
-        # operate.command['inference'] = True # trigger fruit detector
-        # operate.detect_target() #detect the targets
-        # operate.command['save_inference'] = True # save object detection outputs
-        # operate.record_data() # save the pred image ('save_inference') for later poseEstimation
-
         operate.update_slam(drive_meas)
 
 ######################## REPLACE WITH OUR OWN CODE #########################

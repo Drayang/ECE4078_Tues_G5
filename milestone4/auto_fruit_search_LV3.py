@@ -291,7 +291,7 @@ def path_planning(search_order):
 ######################## REPLACE WITH OUR OWN CODE #########################
 #update slam and take picture
 def self_update_slam(command,wheel_vel,turn_time):
-    operate.take_pic()
+    
     lv,rv = 0.0,0.0
     print("Enter self updata slam")
     if not (command[0] == 0 and command[1] == 0): # skip stop ([0,0]) command
@@ -300,10 +300,9 @@ def self_update_slam(command,wheel_vel,turn_time):
             # self_pose_estimate() # capture image, detect fruit and estimate position
         else: # moving straight command
             lv,rv = ppi.set_velocity(command, tick=wheel_vel, time=turn_time)    
-
-    drive_meas = measure.Drive(lv, rv, turn_time)
-
-    operate.update_slam(drive_meas)
+        operate.take_pic()
+        drive_meas = measure.Drive(lv, rv, turn_time)
+        operate.update_slam(drive_meas)
 
 
 def self_pose_estimate():
