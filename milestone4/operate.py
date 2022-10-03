@@ -162,7 +162,7 @@ class Operate:
                 #image = cv2.cvtColor(self.file_output[0], cv2.COLOR_RGB2BGR)
                 self.pred_fname = self.output.write_image(self.file_output[0],
                                                         self.file_output[1])
-                self.notification = f'Prediction is saved to {operate.pred_fname}'
+                self.notification = f'Prediction is saved to {self.pred_fname}'
             else:
                 self.notification = f'No prediction in buffer, save ignored'
             self.command['save_inference'] = False

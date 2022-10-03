@@ -402,7 +402,7 @@ def self_update_slam(command,wheel_vel,turn_time):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Fruit searching")
     parser.add_argument("--map", type=str, default='M4_true_map.txt')
-    parser.add_argument("--ip", metavar='', type=str, default='192.168.137.156')
+    parser.add_argument("--ip", metavar='', type=str, default='192.168.137.206')
     parser.add_argument("--port", metavar='', type=int, default=8000)
     
     ##################### REPLACE WITH OWN CODE #####################
@@ -460,6 +460,13 @@ if __name__ == "__main__":
     lv,rv = ppi.set_velocity([0, 0], tick=0.0, time=0.0)
     drive_meas = measure.Drive(lv, rv, 0.0)
     operate.update_slam(drive_meas)
+
+
+    # for i,lm in enumerate(aruco_true_pos):
+    #     measure_lm = measure.Marker(np.array([[lm[0]],[lm[1]]]),i+1)
+    #     lms.append(measure_lm)
+    # operate.ekf.add_landmarks(lms)   
+
 
     ############## REPLACE WITH OWN CODE #####################
     while True:

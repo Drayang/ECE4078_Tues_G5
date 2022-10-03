@@ -141,7 +141,9 @@ class OutputWriter:
         img_dict = {"pose":slam.robot.state.tolist(),
                     "imgfname":img_fname}
         img_line = json.dumps(img_dict)
+        self.img_f.seek(0) # to overwrite the image.txt, so we only have one line
         self.img_f.write(img_line+'\n')
+        self.img_f.truncate() # to overwrite the image.txt, so we only have one line
         self.img_f.flush()
         cv2.imwrite(img_fname, image)
         return f'pred_{self.image_count}.png'
