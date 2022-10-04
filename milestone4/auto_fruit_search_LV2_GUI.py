@@ -348,7 +348,7 @@ def self_update_GUI():
 # main loop
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Fruit searching")
-    parser.add_argument("--map", type=str, default='M4_true_map.txt')
+    parser.add_argument("--map", type=str, default='tuesday_3_fruit.txt')
     parser.add_argument("--ip", metavar='', type=str, default='192.168.137.206')
     parser.add_argument("--port", metavar='', type=int, default=8000)
     
@@ -468,7 +468,7 @@ if __name__ == "__main__":
 
             if not (search_order == 0): # first round dun turn
                 #rotate 360 degree
-                for i in range(8):
+                for i in range(7):
                     turn_rad = 45*np.pi/180
                     wheel_vel = 10*2.0
                     turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
@@ -519,3 +519,4 @@ if __name__ == "__main__":
 
         ppi.set_velocity([0, 0])
         start = False
+

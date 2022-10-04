@@ -134,41 +134,6 @@ def drive_to_point(waypoint, robot_pose):
     # then drive straight to the way point
 
     wheel_vel = 10*2.5 # tick to move the robot,*2.5 is to map with the value we commonly put in operate.py slef.command['motion']
-
-    
-    # # turn towards the waypoint
-    # turn_time = 0.0 # replace with your calculation
-    # theta_goal = np.arctan2(waypoint[1]-robot_pose[1], waypoint[0]-robot_pose[0])
-    # delta_theta = theta_goal - robot_pose[2]
-
-    # # to handle robot turn 360 degree issue
-    # # if delta_theta>np.pi:
-    # #     delta_theta-=np.pi*2
-    # # elif delta_theta<-np.pi:
-    # #    delta_theta+=np.pi*2
-
-
-    # turn_time = float((abs(delta_theta)*baseline) / (2*wheel_vel*scale))
-    # print("Turning for {:.2f} seconds".format(turn_time))
-
-    
-    # if delta_theta == 0: # To handle 0 turning case
-    #     print("Not turning required!")
-
-    # else:
-    #     # operate.take_pic()
-    #     if delta_theta >0:
-    #         self_update_slam([0,1],wheel_vel,turn_time)
-    #         # lv,rv = ppi.set_velocity([0, 1], turning_tick=wheel_vel, time=turn_time)
-    #     else:
-    #         self_update_slam([0,-1],wheel_vel,turn_time)
-    #         # lv,rv = ppi.set_velocity([0, -1], turning_tick=wheel_vel, time=turn_time)
-        
-    #     # drive_meas = measure.Drive(lv, rv, turn_time)
-    #     # operate.update_slam(drive_meas)
-    #     # robot_pose = operate.ekf.get_state_vector()[0:3,:]
-
-    # robot_pose = get_robot_pose()
     
     # after turning, drive straight to the waypoint
     drive_time = 0.0 # replace with your calculation
@@ -176,13 +141,6 @@ def drive_to_point(waypoint, robot_pose):
     drive_time = float(delta_dist / (wheel_vel*scale))
     print("Driving for {:.2f} seconds".format(drive_time))
     self_update_slam([1,0],wheel_vel,drive_time)
-    # operate.take_pic()
-    # lv, rv = ppi.set_velocity([1, 0], tick=wheel_vel, time=drive_time)
-    
-    # # Update the slam while moving
-    # drive_meas = measure.Drive(lv, rv, drive_time)
-    # operate.update_slam(drive_meas)
-    ####################################################
 
     print("Arrived at [{}, {}]".format(waypoint[0], waypoint[1]))
 
@@ -208,10 +166,10 @@ def turn_to_point(waypoint,robot_pose):
     delta_theta = theta_goal - robot_pose[2]
 
     # to handle robot turn 360 degree issue
-    # if delta_theta>np.pi:
-    #     delta_theta-=np.pi*2
-    # elif delta_theta<-np.pi:
-    #    delta_theta+=np.pi*2
+    if delta_theta>np.pi:
+        delta_theta-=np.pi*2
+    elif delta_theta<-np.pi:
+       delta_theta+=np.pi*2
 
     turn_time = float((abs(delta_theta)*baseline) / (2*wheel_vel*scale))
     print("Turning for {:.2f} seconds".format(turn_time))
@@ -240,9 +198,6 @@ def get_robot_pose():
     ####################################################
 
     return robot_pose
-
-######################## REPLACE WITH OUR OWN CODE #########################
-
 
 #--------------------------------------- For path planning-------------------------------------#
 def initialise_space(fruits_true_pos,aruco_true_pos,search_order,detected_x,detected_y):
@@ -294,8 +249,7 @@ def path_planning(search_order):
 
     print("starting loation is: ",sx,",",sy)
     print("ending loation is: ",gx,",",gy)
-    
-#--------------------------------------- Using Dijkstra-------------------------------------#
+ =
     if True:  # pragma: no cover
         plt.figure(figsize=(9,9))
         plt.plot(ox, oy, ".k")
@@ -393,7 +347,7 @@ def self_pose_estimate(search_order):
 
             print("Distance from robot to the fruit is : ",dist2fruit)
 
-            if dist2fruit < 0.3: #if distance between fruit and robot is less than 0.4m
+            if dist2fruit < 0.4: #if distance between fruit and robot is less than 0.4m
                 
                 #TODO: need to cehck whether the fruit is our target fruit if yes then we dun set 
                 # temp_obstacle_detected = true
@@ -403,11 +357,14 @@ def self_pose_estimate(search_order):
                 operate.detector_output => 1-5 refer to which fruit
                 then we can loop fruit_tag_list , find the fruit that match the detector_output value
                 and identify we detect what fruit
+
+                search_list[search_order] -> "redapple","orange"..
+                target_est_key -> "redapple_0","orange_0"
                 '''
-                if target_est_key == search_list[search_order]: # if detected fruit == target fruit
-                    temp_obstacle_detected = True
-                else:
+                if target_est_key == (search_list[search_order]+"_0"): # if detected fruit == target fruit
                     temp_obstacle_detected = False
+                else:
+                    temp_obstacle_detected = True
                     # temp_x = target_est["x"] # store the detected fruit position then later into the obstacle list
                     # temp_y = target_est["y"]
                     temp_x = target_est[target_est_key]["x"]
@@ -425,7 +382,7 @@ def self_update_GUI():
 # main loop
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Fruit searching")
-    parser.add_argument("--map", type=str, default='M4_true_map.txt')
+    parser.add_argument("--map", type=str, default='tuesday_3_fruit.txt')
     parser.add_argument("--ip", metavar='', type=str, default='192.168.137.206')
     parser.add_argument("--port", metavar='', type=int, default=8000)
 
@@ -464,7 +421,7 @@ if __name__ == "__main__":
     ############## REPLACE WITH OWN CODE #####################
     operate = Operate(args)
 
-        # The following code is only a skeleton code the semi-auto fruit searching task
+#------------------------- FOR GUI --------------------------#
     pygame.font.init()     
     
     width, height = 902, 660
@@ -493,8 +450,9 @@ if __name__ == "__main__":
             canvas.blit(pibot_animate[counter%10//2], (x_, 565))
             pygame.display.update()
             counter += 2
+#------------------------- FOR GUI --------------------------#
 
-  
+#------------------------- FOR SLAM --------------------------#
     # run SLAM (copy from operate.py update_keyboard() function)
     n_observed_markers = len(operate.ekf.taglist)
     if n_observed_markers == 0:
@@ -513,6 +471,9 @@ if __name__ == "__main__":
             print('SLAM is running')
         else:
             print('SLAM is paused')
+
+#------------------------- FOR SLAM --------------------------#
+
 
     # update SLAM 
     self_update_slam([0,0],0.0,0.0)

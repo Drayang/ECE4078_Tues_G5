@@ -24,7 +24,7 @@ class Detector:
         self.model_directory = 'network/scripts/model/yolo_best.pt'
         self.yolo_model = torch.hub.load('ultralytics/yolov5', 'custom', path=self.model_directory,force_reload=True)
         self.yolo_model.cpu()
-        self.yolo_model.conf = 0.7 # confidence level
+        self.yolo_model.conf = 0.8 # confidence level
 
 
         cmd_printer.divider(text="warning")
