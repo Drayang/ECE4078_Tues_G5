@@ -6,7 +6,14 @@ import matplotlib.pyplot as plt
 
 def parse_groundtruth(fname : str) -> dict:
     with open(fname,'r') as f:
-        gt_dict = ast.literal_eval(f.readline())
+        try:
+            gt_dict = json.load(f)                   
+        except ValueError as e:
+            with open(fname, 'r') as f:
+                gt_dict = ast.literal_eval(f.readline())  
+        
+        # gt_dict = ast.literal_eval(f.readline())
+        
         
         aruco_dict = {}
         for key in gt_dict:
@@ -112,6 +119,8 @@ if __name__ == '__main__':
     diff = gt_vec - us_vec_aligned
     rmse = compute_rmse(us_vec, gt_vec)
     rmse_aligned = compute_rmse(us_vec_aligned, gt_vec)
+
+    print(us_aruco.keys())
     
     print()
     print("The following parameters optimally transform the estimated points to the ground truth.")

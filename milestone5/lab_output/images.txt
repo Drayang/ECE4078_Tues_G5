@@ -1,1 +1,0 @@
-{"pose": [[0.4], [1.2], [6.283185307179586]], "imgfname": "lab_output/pred_0.png"}

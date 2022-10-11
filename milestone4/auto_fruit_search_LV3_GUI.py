@@ -249,7 +249,7 @@ def path_planning(search_order):
 
     print("starting loation is: ",sx,",",sy)
     print("ending loation is: ",gx,",",gy)
- =
+ 
     if True:  # pragma: no cover
         plt.figure(figsize=(9,9))
         plt.plot(ox, oy, ".k")
@@ -291,7 +291,7 @@ def path_planning(search_order):
 def self_update_slam(command,wheel_vel,turn_time):
     if not (command[0] == 0 and command[1] == 0): # skip stop ([0,0]) command
         if command[0] == 0: # turning command
-            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time  + 0.02 )    
+            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time)    
         else: # moving straight command
             lv,rv = ppi.set_velocity(command, tick=wheel_vel, time=turn_time)    
 

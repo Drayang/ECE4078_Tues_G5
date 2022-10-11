@@ -16,7 +16,7 @@ import shutil # python package for file operations
 
 # import SLAM components you developed in M2
 sys.path.insert(0, "{}/slam".format(os.getcwd()))
-from slam.ekf import EKF
+from slam.ekf_m3 import EKF
 from slam.robot import Robot
 import slam.aruco_detector as aruco
 
