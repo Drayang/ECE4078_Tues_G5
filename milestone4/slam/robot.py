@@ -30,6 +30,8 @@ class Robot:
             self.state[0] += linear_velocity / angular_velocity * (np.sin(th+dt*angular_velocity) - np.sin(th)) #x
             self.state[1] += -linear_velocity / angular_velocity * (np.cos(th+dt*angular_velocity) - np.cos(th)) #y
             self.state[2] += dt*angular_velocity #angle theta
+        if (abs(self.state[2])>np.pi): # solve the robot turning over 360 degree-e.g give me 3.9radian 
+            self.state[2] = np.arctan2(np.sin(self.state[2]), np.cos(self.state[2]))
 
     def measure(self, markers, idx_list):
         # Markers are 2d landmarks in a 2xn structure where there are n landmarks.

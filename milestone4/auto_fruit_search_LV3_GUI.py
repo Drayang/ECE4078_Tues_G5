@@ -333,44 +333,70 @@ def self_pose_estimate(search_order):
         completed_img_dict = get_image_info(base_dir, file_path, image_poses)
         target_map[file_path] = estimate_pose(base_dir, camera_matrix, completed_img_dict)
         target_est = merge_estimations(target_map) # {'redapple_0': {'x': 2.091210725333333, 'y': 0.27663994728373037}}
-        # print("operate.detector_output is", operate.detector_output)
-        # print("operate.detector_output is", np.bincount(operate.detector_output).argmax())
         
-
         if not (len(target_est) == 0): # no empty mean we have detect fruit
             robot_pose = get_robot_pose() # get the robot position
+
+            #------------- CHange here for multiple fruit detected ---------------#
+            # target_est_key_list = list(target_est.keys())
             print("Target_est's key is: ",list(target_est.keys()))
-            target_est_key = list(target_est.keys())[0] # 'orange_0','mango_0'.....
-            print("Target_est's key's x value is: ",target_est[target_est_key]["x"])
-            # dist2fruit = ((target_est["x"]-robot_pose[0])**2 + (target_est["x"]-robot_pose[1])**2)**0.5
-            dist2fruit = ((target_est[target_est_key]["x"]-robot_pose[0])**2 + (target_est[target_est_key]["y"]-robot_pose[1])**2)**0.5
+            
+            dist2fruit = 100 # big number f
 
-            print("Distance from robot to the fruit is : ",dist2fruit)
+            for fruit in target_est.keys():
+                temp_dist2fruit = dist2fruit # initialise the previous distance value for comparison
+                dist2fruit = ((target_est[fruit]["x"]-robot_pose[0])**2 + (target_est[fruit]["y"]-robot_pose[1])**2)**0.5
 
-            if dist2fruit < 0.4: #if distance between fruit and robot is less than 0.4m
+                if dist2fruit < 0.4 and dist2fruit <= temp_dist2fruit : #if distance between fruit and robot is less than 0.4m, and is shorter than previous detected
                 
-                #TODO: need to cehck whether the fruit is our target fruit if yes then we dun set 
-                # temp_obstacle_detected = true
+                    '''
+                    operate.detector_output => 1-5 refer to which fruit
+                    then we can loop fruit_tag_list , find the fruit that match the detector_output value
+                    and identify we detect what fruit
+
+                    search_list[search_order] -> "redapple","orange"..
+                    target_est_key -> "redapple_0","orange_0"
+                    '''
+                    if fruit == (search_list[search_order]+"_0"): # if detected fruit == target fruit
+                        temp_obstacle_detected = False
+                    else:
+                        temp_obstacle_detected = True
+                        temp_x = target_est[fruit]["x"]
+                        temp_y = target_est[fruit]["y"]
+
+                    print("obstacle_detected is : ",temp_obstacle_detected)
+
+            # target_est_key = list(target_est.keys())[0] # 'orange_0','mango_0'.....
+            # print("Target_est's key's x value is: ",target_est[target_est_key]["x"])
+            # # dist2fruit = ((target_est["x"]-robot_pose[0])**2 + (target_est["x"]-robot_pose[1])**2)**0.5
+            # dist2fruit = ((target_est[target_est_key]["x"]-robot_pose[0])**2 + (target_est[target_est_key]["y"]-robot_pose[1])**2)**0.5
+
+            # print("Distance from robot to the fruit is : ",dist2fruit)
+
+            # if dist2fruit < 0.4: #if distance between fruit and robot is less than 0.4m
+                
+            #     #TODO: need to cehck whether the fruit is our target fruit if yes then we dun set 
+            #     # temp_obstacle_detected = true
 
 
-                '''
-                operate.detector_output => 1-5 refer to which fruit
-                then we can loop fruit_tag_list , find the fruit that match the detector_output value
-                and identify we detect what fruit
+            #     '''
+            #     operate.detector_output => 1-5 refer to which fruit
+            #     then we can loop fruit_tag_list , find the fruit that match the detector_output value
+            #     and identify we detect what fruit
 
-                search_list[search_order] -> "redapple","orange"..
-                target_est_key -> "redapple_0","orange_0"
-                '''
-                if target_est_key == (search_list[search_order]+"_0"): # if detected fruit == target fruit
-                    temp_obstacle_detected = False
-                else:
-                    temp_obstacle_detected = True
-                    # temp_x = target_est["x"] # store the detected fruit position then later into the obstacle list
-                    # temp_y = target_est["y"]
-                    temp_x = target_est[target_est_key]["x"]
-                    temp_y = target_est[target_est_key]["y"]
+            #     search_list[search_order] -> "redapple","orange"..
+            #     target_est_key -> "redapple_0","orange_0"
+            #     '''
+            #     if target_est_key == (search_list[search_order]+"_0"): # if detected fruit == target fruit
+            #         temp_obstacle_detected = False
+            #     else:
+            #         temp_obstacle_detected = True
+            #         # temp_x = target_est["x"] # store the detected fruit position then later into the obstacle list
+            #         # temp_y = target_est["y"]
+            #         temp_x = target_est[target_est_key]["x"]
+            #         temp_y = target_est[target_est_key]["y"]
 
-                print("obstacle_detected is : ",temp_obstacle_detected)
+            #     print("obstacle_detected is : ",temp_obstacle_detected)
 
     return temp_obstacle_detected,temp_x,temp_y
 
