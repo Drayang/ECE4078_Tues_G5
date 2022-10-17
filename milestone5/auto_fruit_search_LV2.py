@@ -299,12 +299,12 @@ def initialise_space(fruits_true_pos,aruco_true_pos,search_order):
     print("Number of obstacle is : ",len(ox))
 
     # show the space map
-    # plt.plot(ox, oy, ".k")
-    # plt.xlim([-2, 2])
-    # plt.ylim([-2, 2])
-    # plt.grid(True)
-    # plt.axis("equal")
-    # plt.show()
+    plt.plot(ox, oy, ".k")
+    plt.xlim([-2, 2])
+    plt.ylim([-2, 2])
+    plt.grid(True)
+    plt.axis("equal")
+    plt.show()
 
     return ox,oy
 
@@ -396,7 +396,7 @@ def self_update_slam(command,wheel_vel,turn_time):
 # main loop
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Fruit searching")
-    parser.add_argument("--map", type=str, default='M4_true_map.txt')
+    parser.add_argument("--map", type=str, default='TRUEMAP_m5.txt')
     parser.add_argument("--ip", metavar='', type=str, default='192.168.137.206')
     parser.add_argument("--port", metavar='', type=int, default=8000)
     

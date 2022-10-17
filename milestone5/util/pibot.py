@@ -13,13 +13,16 @@ class Alphabot:
 
     ##########################################
     # Change the robot velocity here
-    # tick = forward speed
-    # turning_tick = turning speed
-    #### TODO: add a offset argument to increase or decrease the offset
+    # tick = forward speed default -> 10
+    # turning_tick = turning speed default -> 10
     ########################################## 
-    def set_velocity(self, command, tick=10, turning_tick=5, time=0): 
-        l_vel = 1.07*command[0]*tick - command[1]*turning_tick
-        r_vel = command[0]*tick + command[1]*turning_tick
+    def set_velocity(self, command, tick=10, turning_tick=5, time=0):
+        if command[0] >= 0: 
+            l_vel = 1.10*command[0]*tick - command[1]*turning_tick
+            r_vel = command[0]*tick + command[1]*turning_tick
+        else:
+            l_vel = command[0]*tick - command[1]*turning_tick
+            r_vel = 1.10*command[0]*tick + command[1]*turning_tick
         self.wheel_vel = [l_vel, r_vel]
         if time == 0:
             requests.get(
@@ -32,6 +35,7 @@ class Alphabot:
                             +"&time="+str(time))
         
         l_vel = command[0]*tick - command[1]*turning_tick
+        r_vel = command[0]*tick + command[1]*turning_tick
         return l_vel, r_vel
         
     def get_image(self):

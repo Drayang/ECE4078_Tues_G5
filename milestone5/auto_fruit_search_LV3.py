@@ -375,7 +375,7 @@ def self_pose_estimate():
 # main loop
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Fruit searching")
-    parser.add_argument("--map", type=str, default='M4_true_map.txt')
+    parser.add_argument("--map", type=str, default='TRUEMAP_m5.txt')
     parser.add_argument("--ip", metavar='', type=str, default='192.168.137.206')
     parser.add_argument("--port", metavar='', type=int, default=8000)
     # For creating Operate class purpose

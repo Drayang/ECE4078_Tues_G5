@@ -105,8 +105,9 @@ def print_target_fruits_pos(search_list, fruit_list, fruit_true_pos):
 
     print("Search order:")
     n_fruit = 1
+
     for fruit in search_list:
-        for i in range(3):
+        for i in range(num_fruit_in_true_map):
             if fruit == fruit_list[i]:
                 print('{}) {} at [{}, {}]'.format(n_fruit,
                                                   fruit,
@@ -250,11 +251,11 @@ def initialise_space(fruits_true_pos,aruco_true_pos,search_order):
     ox,oy=[],[] # obstacle location
 
     # to get the fruit idx based on the search list
-    for i in range(3):
+    for i in range(num_fruit_in_true_map):
         if search_list[search_order] == fruits_list[i]:
             search_idx = i
     # define the obstacle location
-    for i in range(3):
+    for i in range(num_fruit_in_true_map):
         if i == search_idx: # do not include the current fruit goal as obstacle
             continue
         ox.append(fruits_true_pos[i][0])
@@ -281,7 +282,7 @@ def path_planning(search_order):
     sx,sy = float(robot_pose[0]),float(robot_pose[1]) # starting location
     # gx,gy = fruits_true_pos[search_order][0],fruits_true_pos[search_order][1] # goal position
 
-    for i in range(3): # to get the correct fruit idx based on the search list
+    for i in range(num_fruit_in_true_map): # to get the correct fruit idx based on the search list
         if search_list[search_order] == fruits_list[i]:
             gx,gy = fruits_true_pos[i][0],fruits_true_pos[i][1] # goal position
 
@@ -330,7 +331,7 @@ def self_update_slam(command,wheel_vel,turn_time):
     
     if not (command[0] == 0 and command[1] == 0): # skip stop ([0,0]) command
         if command[0] == 0: # turning command
-            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time + 0.02)    
+            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time )    
         else: # moving straight command
             lv,rv = ppi.set_velocity(command, tick=wheel_vel, time=turn_time)    
 
@@ -348,7 +349,7 @@ def self_update_GUI():
 # main loop
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Fruit searching")
-    parser.add_argument("--map", type=str, default='tuesday_3_fruit.txt')
+    parser.add_argument("--map", type=str, default='TRUEMAP_m5.txt')
     parser.add_argument("--ip", metavar='', type=str, default='192.168.137.206')
     parser.add_argument("--port", metavar='', type=int, default=8000)
     
@@ -369,6 +370,10 @@ if __name__ == "__main__":
 
     # read in the true map
     fruits_list, fruits_true_pos, aruco_true_pos = read_true_map(args.map)
+
+    #------------ For m4 we only got three fruit in the map, but now we can have five fruit ----------------#
+    # change the value to 3 or 5 based on our usage
+    num_fruit_in_true_map = 5
 
     search_list = read_search_list()
     print("SearchList is:",search_list)
@@ -468,13 +473,19 @@ if __name__ == "__main__":
 
             if not (search_order == 0): # first round dun turn
                 #rotate 360 degree
-                for i in range(7):
+                for i in range(8):
                     turn_rad = 45*np.pi/180
                     wheel_vel = 10*2.0
                     turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
                     self_update_slam([0, 1],wheel_vel,turn_time)
 
+            # for i in range(8):
+            #     turn_rad = 45*np.pi/180
+            #     wheel_vel = 10*2.0
+            #     turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
+            #     self_update_slam([0, 1],wheel_vel,turn_time)
 
+            # break
 
             for i in range(1,len(rx)-1): # loop the navigation waypoint, no reach the final goal to avoid hitting the fruit
                 # TODO: let rx,ry run many 

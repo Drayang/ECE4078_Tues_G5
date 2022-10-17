@@ -105,7 +105,9 @@ def print_target_fruits_pos(search_list, fruit_list, fruit_true_pos):
     print("Search order:")
     n_fruit = 1
     for fruit in search_list:
-        for i in range(3):
+        #------------ For m4 we only got three fruit, but now we can have 5 fruit ----------------#
+        # change the value to 3 or 5 based on our usage
+        for i in range(num_fruit_in_true_map):
             if fruit == fruit_list[i]:
                 print('{}) {} at [{}, {}]'.format(n_fruit,
                                                   fruit,
@@ -209,11 +211,11 @@ def initialise_space(fruits_true_pos,aruco_true_pos,search_order,detected_x,dete
         detected_x,detected_y = 0,0 # reinitialise
 
     # to get the fruit idx based on the search list
-    for i in range(3):
+    for i in range(num_fruit_in_true_map):
         if search_list[search_order] == fruits_list[i]:
             search_idx = i
     # define the obstacle location
-    for i in range(3):
+    for i in range(num_fruit_in_true_map):
         if i == search_idx: # do not include the current fruit goal as obstacle
             continue
         ox.append(fruits_true_pos[i][0])
@@ -241,7 +243,9 @@ def path_planning(search_order):
     sx,sy = float(robot_pose[0]),float(robot_pose[1]) # starting location
     # gx,gy = fruits_true_pos[search_order][0],fruits_true_pos[search_order][1] # goal position
 
-    for i in range(3): # to get the correct fruit idx based on the search list
+    #------------ For m4 we only got three fruit, but now we can have 5 fruit ----------------#
+    # change the value to 3 or 5 based on our usage
+    for i in range(num_fruit_in_true_map): # to get the correct fruit idx based on the search list
         print("search_list[search_order] =",search_list[search_order] )
         print("fruits_list[i]",fruits_list[i])
         if search_list[search_order] == fruits_list[i]:
@@ -249,7 +253,7 @@ def path_planning(search_order):
 
     print("starting loation is: ",sx,",",sy)
     print("ending loation is: ",gx,",",gy)
- =
+ 
     if True:  # pragma: no cover
         plt.figure(figsize=(9,9))
         plt.plot(ox, oy, ".k")
@@ -291,7 +295,7 @@ def path_planning(search_order):
 def self_update_slam(command,wheel_vel,turn_time):
     if not (command[0] == 0 and command[1] == 0): # skip stop ([0,0]) command
         if command[0] == 0: # turning command
-            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time  + 0.02 )    
+            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time +0.01)    
         else: # moving straight command
             lv,rv = ppi.set_velocity(command, tick=wheel_vel, time=turn_time)    
 
@@ -408,7 +412,7 @@ def self_update_GUI():
 # main loop
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Fruit searching")
-    parser.add_argument("--map", type=str, default='tuesday_3_fruit.txt')
+    parser.add_argument("--map", type=str, default='TRUEMAP_m5.txt')
     parser.add_argument("--ip", metavar='', type=str, default='192.168.137.206')
     parser.add_argument("--port", metavar='', type=int, default=8000)
 
@@ -424,6 +428,8 @@ if __name__ == "__main__":
 
     # read in the true map
     fruits_list, fruits_true_pos, aruco_true_pos = read_true_map(args.map)
+
+    num_fruit_in_true_map = 5
 
     search_list = read_search_list()
     print("SearchList is:",search_list)
@@ -481,6 +487,7 @@ if __name__ == "__main__":
 #------------------------- FOR SLAM --------------------------#
     # run SLAM (copy from operate.py update_keyboard() function)
     n_observed_markers = len(operate.ekf.taglist)
+
     if n_observed_markers == 0:
         if not operate.ekf_on:
             print('SLAM is running')
@@ -510,6 +517,8 @@ if __name__ == "__main__":
         measure_lm = measure.Marker(np.array([[lm[0]],[lm[1]]]),i+1)
         lms.append(measure_lm)
     operate.ekf.add_landmarks(lms)   
+    n_observed_markers = len(operate.ekf.taglist)
+    print("n_observed_markers:",operate.ekf.taglist)
 
     # store the obstacle fruit list
     obstacle_fruit = []
@@ -529,6 +538,7 @@ if __name__ == "__main__":
         
         while search_order < 3: # loop search list
 
+        # operate.ekf.markers
             #---------------- For path planning -----------------#
             ox,oy = initialise_space(fruits_true_pos,aruco_true_pos,search_order,detected_x,detected_y) #recreate  space again
             rx,ry = path_planning(search_order)

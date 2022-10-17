@@ -5,6 +5,7 @@ import numpy as np
 import cv2 
 import os, sys
 import time
+import json
 
 # import utility functions
 sys.path.insert(0, "{}/utility".format(os.getcwd()))
@@ -303,8 +304,16 @@ if __name__ == "__main__":
     parser.add_argument("--save_data", action='store_true')
     parser.add_argument("--play_data", action='store_true')
     parser.add_argument("--ckpt", default='network/scripts/model/model.best.pth')
+    parser.add_argument("--mode", default=0)
     args, _ = parser.parse_known_args()
     
+    print("mode =" ,args.mode)
+    if (args.mode):
+        print("Enter loop")
+        sys.path.insert(0, "{}/slam".format(os.getcwd()))
+        from slam.ekf import EKF
+
+
     pygame.font.init() 
     TITLE_FONT = pygame.font.Font('pics/8-BitMadness.ttf', 35)
     TEXT_FONT = pygame.font.Font('pics/8-BitMadness.ttf', 40)
@@ -337,6 +346,62 @@ if __name__ == "__main__":
             counter += 2
 
     operate = Operate(args)
+
+    if (args.mode):
+        # run SLAM (copy from operate.py update_keyboard() function)
+        n_observed_markers = len(operate.ekf.taglist)
+        print("n_observed_markers:",n_observed_markers)
+        if n_observed_markers == 0:
+            if not operate.ekf_on:
+                print('SLAM is running')
+                operate.ekf_on = True
+            else:
+                print('> 2 landmarks is required for pausing')
+        elif n_observed_markers < 3:
+            print('> 2 landmarks is required for pausing')
+        else:
+            if not operate.ekf_on:
+                operate.request_recover_robot = True
+            operate.ekf_on = not operate.ekf_on
+            if operate.ekf_on:
+                print('SLAM is running')
+            else:
+                print('SLAM is paused')
+
+
+        fname = "TRUEMAP_m5_temp.txt"
+        with open(fname, 'r') as f:
+            try:
+                gt_dict = json.load(f)                   
+            except ValueError as e:
+                with open(fname, 'r') as f:
+                    gt_dict = ast.literal_eval(f.readline())   
+            aruco_true_pos = np.empty([10, 2])
+
+            # remove unique id of targets of the same type
+            for key in gt_dict:
+                x = np.round(gt_dict[key]['x'], 1)
+                y = np.round(gt_dict[key]['y'], 1)
+
+                if key.startswith('aruco'):
+                    if key.startswith('aruco10'):
+                        aruco_true_pos[9][0] = x
+                        aruco_true_pos[9][1] = y
+                    else:
+                        marker_id = int(key[5])
+                        aruco_true_pos[marker_id-1][0] = x
+                        aruco_true_pos[marker_id-1][1] = y
+
+        print("aruco_true_pos=",aruco_true_pos )
+        #initialise slam state
+        lms=[]
+        for i,lm in enumerate(aruco_true_pos):
+            measure_lm = measure.Marker(np.array([[lm[0]],[lm[1]]]),i+1)
+            lms.append(measure_lm)
+        operate.ekf.add_landmarks(lms)      
+        n_observed_markers = len(operate.ekf.taglist)
+        print("n_observed_markers:",n_observed_markers) 
+
 
     while start:
         operate.update_keyboard()

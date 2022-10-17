@@ -21,7 +21,7 @@ class EKF:
 
         # Covariance matrix
         self.P = np.zeros((3,3))
-        self.init_lm_cov = 1e-4
+        self.init_lm_cov = 1e-2
         self.robot_init_state = None
         self.lm_pics = []
         for i in range(1, 11):
@@ -52,7 +52,7 @@ class EKF:
     # update the state vector property(?) to "robot" state or "marker"
     def set_state_vector(self, state):
         self.robot.state = state[0:3,:]
-        # self.markers = np.reshape(state[3:,:], (2,-1), order='F') # for m4 not to update the slam location
+        self.markers = np.reshape(state[3:,:], (2,-1), order='F') # for m4 not to update the slam location
     
     def save_map(self, fname="slam_map.txt"):
         if self.number_landmarks() > 0:
@@ -233,6 +233,14 @@ class EKF:
         y_im = int(-y*m2pixel+h/2.0)
         return (x_im, y_im)
 
+    @ staticmethod
+    def to_im_coor_ori(xy, res, m2pixel):
+        w, h = res
+        x, y = xy
+        x_im = int(-x*m2pixel+w/2.0)
+        y_im = int(y*m2pixel+h/2.0)
+        return (x_im, y_im)
+
     def draw_slam_state(self, res = (320, 500), not_pause=True):
         # Draw landmarks
         m2pixel = 100
@@ -248,7 +256,7 @@ class EKF:
         robot_xy = robot_xy*0
         robot_theta = self.robot.state[2,0]
         # plot robot
-        start_point_uv = self.to_im_coor((0, 0), res, m2pixel)
+        start_point_uv = self.to_im_coor_ori((0, 0), res, m2pixel)
         
         p_robot = self.P[0:2,0:2]
         axes_len,angle = self.make_ellipse(p_robot)
@@ -259,7 +267,7 @@ class EKF:
         if self.number_landmarks() > 0:
             for i in range(len(self.markers[0,:])):
                 xy = (lms_xy[0, i], lms_xy[1, i])
-                coor_ = self.to_im_coor(xy, res, m2pixel)
+                coor_ = self.to_im_coor_ori(xy, res, m2pixel)
                 # plot covariance
                 Plmi = self.P[3+2*i:3+2*(i+1),3+2*i:3+2*(i+1)]
                 axes_len, angle = self.make_ellipse(Plmi)
@@ -269,12 +277,12 @@ class EKF:
 
         surface = pygame.surfarray.make_surface(np.rot90(canvas))
         surface = pygame.transform.flip(surface, True, False)
-        surface.blit(self.rot_center(self.pibot_pic, robot_theta*57.3),
+        surface.blit(self.rot_center(self.pibot_pic, (robot_theta)*57.3),
                     (start_point_uv[0]-15, start_point_uv[1]-15))
         if self.number_landmarks() > 0:
             for i in range(len(self.markers[0,:])):
                 xy = (lms_xy[0, i], lms_xy[1, i])
-                coor_ = self.to_im_coor(xy, res, m2pixel)
+                coor_ = self.to_im_coor_ori(xy, res, m2pixel)
                 try:
                     surface.blit(self.lm_pics[self.taglist[i]-1],
                     (coor_[0]-5, coor_[1]-5))

@@ -22,15 +22,23 @@ def parse_groundtruth(fname : str) -> dict:
                 aruco_dict[aruco_num] = np.reshape([gt_dict[key]["x"], gt_dict[key]["y"]], (2,1))
     return aruco_dict
 
+### read the robot pose from the slam state also
 def parse_user_map(fname : str) -> dict:
     with open(fname, 'r') as f:
         usr_dict = ast.literal_eval(f.read())
         aruco_dict = {}
+        final_robot_pose = []
         for (i, tag) in enumerate(usr_dict["taglist"]):
             aruco_dict[tag] = np.reshape([usr_dict["map"][0][i],usr_dict["map"][1][i]], (2,1))
-    return aruco_dict
+    
+        for (i, tag) in enumerate(usr_dict["final_robot_pose"]):
+            final_robot_pose.append(tag[0])
+    
+    return aruco_dict,np.hstack(final_robot_pose)
 
 def match_aruco_points(aruco0 : dict, aruco1 : dict):
+    # aruco0 - user de aruco dict, aruco1 - truemap de
+
     points0 = []
     points1 = []
     keys = []
@@ -38,15 +46,16 @@ def match_aruco_points(aruco0 : dict, aruco1 : dict):
         if not key in aruco1:
             continue
         
-        points0.append(aruco0[key])
+        points0.append(aruco0[key]) # read aruco0 dictionary - e.g key = 'aruco1_0'
         points1.append(aruco1[key])
         keys.append(key)
     return keys, np.hstack(points0), np.hstack(points1)
 
+
 def solve_umeyama2d(points1, points2):
     # Solve the optimal transform such that
     # R(theta) * p1_i + t = p2_i
-
+    # points1 - user de slam, points2 - truemap de slam
     assert(points1.shape[0] == 2)
     assert(points1.shape[0] == points2.shape[0])
     assert(points1.shape[1] == points2.shape[1])
@@ -80,6 +89,9 @@ def apply_transform(theta, x, points):
     c, s = np.cos(theta), np.sin(theta)
     R = np.array(((c, -s), (s, c)))
 
+    points_transformed =  R @ np.array([[final_robot_pose[0] ],[final_robot_pose[1]]]) + x
+    print("\n",points_transformed, (final_robot_pose[2] + theta), "robot pose")
+
     points_transformed =  R @ points + x
     return points_transformed
 
@@ -99,23 +111,32 @@ def compute_rmse(points1, points2):
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser("Matching the estimated map and the true map")
-    parser.add_argument("groundtruth", type=str, help="The ground truth file name.")
-    parser.add_argument("estimate", type=str, help="The estimate file name.")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser("Matching the estimated map and the true map")
+    # parser.add_argument("groundtruth", type=str, help="The ground truth file name.")
+    # parser.add_argument("estimate", type=str, help="The estimate file name.")
+    # args = parser.parse_args()
 
-    gt_aruco = parse_groundtruth(args.groundtruth)
-    us_aruco = parse_user_map(args.estimate)
+    groundtruth = "TRUEMAP.txt"
+    gt_aruco = parse_groundtruth(groundtruth)
+    estimate = "lab_output/slam.txt"
+    us_aruco,final_robot_pose = parse_user_map(estimate)
 
     taglist, us_vec, gt_vec = match_aruco_points(us_aruco, gt_aruco)
+    print("Taglist :",taglist)
+    print("us_vec :",us_vec)
+    print("gt_vec :",gt_vec)
+    print("us_vec shape: ",us_vec.shape) # ( 2,10) -(x,y)
     idx = np.argsort(taglist)
-    taglist = np.array(taglist)[idx]
+    taglist = np.array(taglist)[idx] # sorted de tag - [1 2 3 4 5.... 10]
+    print("taglist:",taglist)
     us_vec = us_vec[:,idx]
     gt_vec = gt_vec[:, idx] 
 
+
     theta, x = solve_umeyama2d(us_vec, gt_vec)
     us_vec_aligned = apply_transform(theta, x, us_vec)
-    
+
+
     diff = gt_vec - us_vec_aligned
     rmse = compute_rmse(us_vec, gt_vec)
     rmse_aligned = compute_rmse(us_vec_aligned, gt_vec)

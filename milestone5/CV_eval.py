@@ -6,7 +6,13 @@ import json
 # read in the object poses
 def parse_map(fname: str) -> dict:
     with open(fname,'r') as f:
-        gt_dict = ast.literal_eval(f.readline())        
+        try:
+            gt_dict = json.load(f)                   
+        except ValueError as e:
+            with open(fname, 'r') as f:
+                gt_dict = ast.literal_eval(f.readline())  
+        
+
         redapple_gt, greenapple_gt, orange_gt, mango_gt, capsicum_gt = [], [], [], [], []
 
         # remove unique id of targets of the same type 
@@ -58,14 +64,24 @@ def compute_dist(gt_list, est_list):
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser("Matching the estimated map and the true map")
-    parser.add_argument("truth", type=str, help="The ground truth file name.")
-    parser.add_argument("est", type=str, help="The estimate file name.")
-    args, _ = parser.parse_known_args()
+    #-------- original----------#
+    # parser = argparse.ArgumentParser("Matching the estimated map and the true map")
+    # parser.add_argument("truth", type=str, help="The ground truth file name.")
+    # parser.add_argument("est", type=str, help="The estimate file name.")
+    # args, _ = parser.parse_known_args()
 
+    # redapple_gt, greenapple_gt, orange_gt, mango_gt, capsicum_gt = parse_map(args.truth)
+    # redapple_est, greenapple_est, orange_est, mango_est, capsicum_est = parse_map(args.est)
+    
+    #-------- original----------#
+
+    #   TRUTH -> TRUEMAP.txt
+    #   EST -> TRUEMAP_m5.txt
     # read in ground truth and estimations
-    redapple_gt, greenapple_gt, orange_gt, mango_gt, capsicum_gt = parse_map(args.truth)
-    redapple_est, greenapple_est, orange_est, mango_est, capsicum_est = parse_map(args.est)
+    truth = "TRUEMAP.txt"
+    est = "TRUEMAP_m5.txt"
+    redapple_gt, greenapple_gt, orange_gt, mango_gt, capsicum_gt = parse_map(truth)
+    redapple_est, greenapple_est, orange_est, mango_est, capsicum_est = parse_map(est)
     
     # compute average distance between a target and its closest estimation
     redapple_dist = compute_dist(redapple_gt,redapple_est)

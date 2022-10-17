@@ -119,7 +119,8 @@ class OutputWriter:
     def write_map(self, slam):
         map_dict = {"taglist":slam.taglist,
                     "map":slam.markers.tolist(),
-                    "covariance":slam.P[3:,3:].tolist()}
+                    "covariance":slam.P[3:,3:].tolist(),
+                    "final_robot_pose":slam.robot.state.tolist()} # to save robot last position
         with open(self.map_f, 'w') as map_f:
             json.dump(map_dict, map_f, indent=2)
             
