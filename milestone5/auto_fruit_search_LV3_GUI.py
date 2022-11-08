@@ -130,11 +130,6 @@ def drive_to_point(waypoint, robot_pose):
     fileB = "calibration/param/baseline.txt"
     baseline = np.loadtxt(fileB, delimiter=',')
     
-    ####################################################
-    # TODO: replace with your codes to make the robot drive to the waypoint
-    # One simple strategy is to first turn on the spot facing the waypoint,
-    # then drive straight to the way point
-
     wheel_vel = 10*2.5 # tick to move the robot,*2.5 is to map with the value we commonly put in operate.py slef.command['motion']
     
     # after turning, drive straight to the waypoint
@@ -154,13 +149,8 @@ def turn_to_point(waypoint,robot_pose):
     fileB = "calibration/param/baseline.txt"
     baseline = np.loadtxt(fileB, delimiter=',')
     
-    ####################################################
-    # TODO: replace with your codes to make the robot drive to the waypoint
-    # One simple strategy is to first turn on the spot facing the waypoint,
-    # then drive straight to the way point
-
+    # if follow pibot.py then i should put 5*2.5
     wheel_vel = 10*2.0 # tick to move the robot,*2.5 is to map with the value we commonly put in operate.py slef.command['motion']
-
     
     # turn towards the waypoint
     turn_time = 0.0 # replace with your calculation
@@ -187,17 +177,13 @@ def turn_to_point(waypoint,robot_pose):
             self_update_slam([0,-1],wheel_vel,turn_time)
 
 def get_robot_pose():
-    ####################################################
-    # TODO: replace with your codes to estimate the pose of the robot
-    # We STRONGLY RECOMMEND you to use your SLAM code from M2 here
-
     # get robot state
     robot_state = operate.ekf.get_state_vector()
 
     # update the robot pose [x,y,theta]
     robot_pose = [0.0,0.0,0.0] # replace with your calculation
     robot_pose = robot_state[0:3,:]
-    ####################################################
+
 
     return robot_pose
 
@@ -237,7 +223,7 @@ def path_planning(search_order):
     
     fileB = "calibration/param/baseline.txt"
     robot_radius = np.loadtxt(fileB, delimiter=',')*2 # robot radius = baseline of the robot/2.0
-    robot_radius = 0.2
+    robot_radius = 0.15
     robot_pose = get_robot_pose() # estimate the robot's pose
     print("Search order is:", search_order)
     sx,sy = float(robot_pose[0]),float(robot_pose[1]) # starting location
@@ -295,7 +281,10 @@ def path_planning(search_order):
 def self_update_slam(command,wheel_vel,turn_time):
     if not (command[0] == 0 and command[1] == 0): # skip stop ([0,0]) command
         if command[0] == 0: # turning command
-            lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time +0.01)    
+            if command[1] > 0: # turn left
+                lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time + 0.02 )
+            else:
+                lv,rv = ppi.set_velocity(command, turning_tick=wheel_vel, time=turn_time + 0.03 )
         else: # moving straight command
             lv,rv = ppi.set_velocity(command, tick=wheel_vel, time=turn_time)    
 
@@ -306,9 +295,9 @@ def self_update_slam(command,wheel_vel,turn_time):
         self_update_GUI()
 
 def self_pose_estimate(search_order):
-    print("\n---------------------------------\Enter self_pose_estimate---------------------------------\n")
     temp_x,temp_y = 0.0,0.0 # store temporary fruit pose estimation result
     temp_obstacle_detected = False
+    temp_target_detected = False
 
     operate.take_pic()
     operate.command['inference'] = True # trigger fruit detector
@@ -363,6 +352,7 @@ def self_pose_estimate(search_order):
                     '''
                     if fruit == (search_list[search_order]+"_0"): # if detected fruit == target fruit
                         temp_obstacle_detected = False
+                        temp_target_detected = True
                     else:
                         temp_obstacle_detected = True
                         temp_x = target_est[fruit]["x"]
@@ -370,39 +360,9 @@ def self_pose_estimate(search_order):
 
                     print("obstacle_detected is : ",temp_obstacle_detected)
 
-            # target_est_key = list(target_est.keys())[0] # 'orange_0','mango_0'.....
-            # print("Target_est's key's x value is: ",target_est[target_est_key]["x"])
-            # # dist2fruit = ((target_est["x"]-robot_pose[0])**2 + (target_est["x"]-robot_pose[1])**2)**0.5
-            # dist2fruit = ((target_est[target_est_key]["x"]-robot_pose[0])**2 + (target_est[target_est_key]["y"]-robot_pose[1])**2)**0.5
+        
 
-            # print("Distance from robot to the fruit is : ",dist2fruit)
-
-            # if dist2fruit < 0.4: #if distance between fruit and robot is less than 0.4m
-                
-            #     #TODO: need to cehck whether the fruit is our target fruit if yes then we dun set 
-            #     # temp_obstacle_detected = true
-
-
-            #     '''
-            #     operate.detector_output => 1-5 refer to which fruit
-            #     then we can loop fruit_tag_list , find the fruit that match the detector_output value
-            #     and identify we detect what fruit
-
-            #     search_list[search_order] -> "redapple","orange"..
-            #     target_est_key -> "redapple_0","orange_0"
-            #     '''
-            #     if target_est_key == (search_list[search_order]+"_0"): # if detected fruit == target fruit
-            #         temp_obstacle_detected = False
-            #     else:
-            #         temp_obstacle_detected = True
-            #         # temp_x = target_est["x"] # store the detected fruit position then later into the obstacle list
-            #         # temp_y = target_est["y"]
-            #         temp_x = target_est[target_est_key]["x"]
-            #         temp_y = target_est[target_est_key]["y"]
-
-            #     print("obstacle_detected is : ",temp_obstacle_detected)
-
-    return temp_obstacle_detected,temp_x,temp_y
+    return temp_obstacle_detected,temp_target_detected,temp_x,temp_y
 
 def self_update_GUI():
     operate.draw(canvas)
@@ -411,6 +371,7 @@ def self_update_GUI():
 
 # main loop
 if __name__ == "__main__":
+#------------------------- FOR initialisation --------------------------#
     parser = argparse.ArgumentParser("Fruit searching")
     parser.add_argument("--map", type=str, default='TRUEMAP_m5.txt')
     parser.add_argument("--ip", metavar='', type=str, default='192.168.137.206')
@@ -449,10 +410,10 @@ if __name__ == "__main__":
     obstacle_detected = False # to check whether detect the obstac;e
     detected_x = 0.0 # detected fruit position x (obstacle)
     detected_y = 0.0 # detected fruit position y (obstacle)
-
+    target_detected = False # to check whether detect the target fruit
     ############## REPLACE WITH OWN CODE #####################
     operate = Operate(args)
-
+#------------------------- FOR initialisation --------------------------#
 #------------------------- FOR GUI --------------------------#
     pygame.font.init()     
     
@@ -505,8 +466,6 @@ if __name__ == "__main__":
         else:
             print('SLAM is paused')
 
-#------------------------- FOR SLAM --------------------------#
-
 
     # update SLAM 
     self_update_slam([0,0],0.0,0.0)
@@ -529,6 +488,8 @@ if __name__ == "__main__":
 
     print("Obstacle fruit is:",obstacle_fruit)
 
+#------------------------- FOR SLAM --------------------------#
+    rotate = 0 # ask the robot to rotate
     ############## REPLACE WITH OWN CODE #####################
     while True:
         
@@ -542,21 +503,42 @@ if __name__ == "__main__":
             #---------------- For path planning -----------------#
             ox,oy = initialise_space(fruits_true_pos,aruco_true_pos,search_order,detected_x,detected_y) #recreate  space again
             rx,ry = path_planning(search_order)
+            time.sleep(1)
              #---------------- For path planning -----------------#
 
-            
-            if not (search_order == 0): # first round dun turn
-                #rotate 360 degree
-                for i in range(8):
-                    turn_rad = 45*np.pi/180
-                    wheel_vel = 10*2.0
-                    turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
-                    self_update_slam([0, 1],wheel_vel,turn_time)
+            # if not (search_order == 0): # first round dun turn
+            #     #rotate 360 degree
+            #     for i in range(8):
+            #         turn_rad = 45*np.pi/180
+            #         wheel_vel = 10*2.0
+            #         turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
+            #         self_update_slam([0, 1],wheel_vel,turn_time)
 
 
+            # for checking turn precision only, comment when no need -------------- #
+            # for i in range(8):
+            #     turn_rad = 45*np.pi/180
+            #     wheel_vel = 10*2.0
+            #     turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
+            #     self_update_slam([0, 1],wheel_vel,turn_time)
+            # break
+            #-------------------------------------------------------------------#
 
             for i in range(1,len(rx)-1): # loop the navigation waypoint, no reach the final goal to avoid hitting the fruit
-                # TODO: let rx,ry run many 
+                if (len(rx) > 6):
+                    print("size of rx :",len(rx))
+                    rotate = rotate + 1
+                
+                if (rotate == 4):
+                    rotate = 0
+                    print("Jump into the rotation")
+                    #rotate 360 degree after moving 3 waypoint
+                    for j in range(8):
+                        turn_rad = 45*np.pi/180
+                        wheel_vel = 10*2.0
+                        turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
+                        self_update_slam([0, 1],wheel_vel,turn_time)
+
                 x = rx[-i-1]
                 y = ry[-i-1] 
                 
@@ -566,14 +548,18 @@ if __name__ == "__main__":
                 # robot drives to the waypoint
                 waypoint = [x,y]
                 turn_to_point(waypoint,robot_pose)
-                obstacle_detected,detected_x,detected_y = self_pose_estimate(search_order) # after turning only estimate 
+                obstacle_detected,target_detected,detected_x,detected_y = self_pose_estimate(search_order) # after turning only estimate 
 
                 if (obstacle_detected):
                     break
+                if (target_detected):
+                    break
 
                 robot_pose = get_robot_pose()
-                obstacle_detected,detected_x,detected_y = self_pose_estimate(search_order) 
+                obstacle_detected,target_detected,detected_x,detected_y = self_pose_estimate(search_order) 
                 if (obstacle_detected):
+                    break
+                if (target_detected):
                     break
                 drive_to_point(waypoint,robot_pose) ###### add return to drive_to_point function to get updatee pose
                 robot_pose = get_robot_pose()
@@ -586,11 +572,27 @@ if __name__ == "__main__":
                 self_update_slam([0,0],0.0,0.0)
 
 
+
+            #rotate 360 degree
+            for i in range(8):
+                turn_rad = 45*np.pi/180
+                wheel_vel = 10*2.0
+                turn_time = ((abs(turn_rad)*baseline) / (2*wheel_vel*scale))
+                self_update_slam([0, 1],wheel_vel,turn_time)
+
             if obstacle_detected: 
                 print("Detect obstacle. Repeat path planning again.")
                 operate.notification = "Detect obstacle. Repeat path planning again."
                 self_update_GUI()
                 obstacle_detected = False
+            elif target_detected:
+                print("Detect target. Move to the next fruit .")
+                operate.notification = "Detect Target. Move to the next fruit "
+                self_update_GUI()
+                target_detected = False
+                search_order= search_order + 1
+                print("search order is: ",search_order)
+
             else:
                 print("Moving to the next fruit.")
                 time.sleep(2)

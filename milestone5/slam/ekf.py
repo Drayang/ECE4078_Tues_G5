@@ -21,7 +21,7 @@ class EKF:
 
         # Covariance matrix
         self.P = np.zeros((3,3))
-        self.init_lm_cov = 1e-2
+        self.init_lm_cov = 1e-3
         self.robot_init_state = None
         self.lm_pics = []
         for i in range(1, 11):
@@ -52,7 +52,7 @@ class EKF:
     # update the state vector property(?) to "robot" state or "marker"
     def set_state_vector(self, state):
         self.robot.state = state[0:3,:]
-        self.markers = np.reshape(state[3:,:], (2,-1), order='F') # for m4 not to update the slam location
+        # self.markers = np.reshape(state[3:,:], (2,-1), order='F') # for m4 not to update the slam location
     
     def save_map(self, fname="slam_map.txt"):
         if self.number_landmarks() > 0:

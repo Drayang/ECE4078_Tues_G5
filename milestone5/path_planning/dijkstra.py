@@ -65,11 +65,13 @@ class Dijkstra:
 
         start_node = self.Node(self.calc_xy_index(sx, self.min_x),
                                self.calc_xy_index(sy, self.min_y), 0.0, -1)
+        print("start_node:",start_node)
         goal_node = self.Node(self.calc_xy_index(gx, self.min_x),
                               self.calc_xy_index(gy, self.min_y), 0.0, -1)
 
         open_set, closed_set = dict(), dict()
         open_set[self.calc_index(start_node)] = start_node
+        # print("open set",open_set[252.0].cost)
 
         while 1:
             c_id = min(open_set, key=lambda o: open_set[o].cost)

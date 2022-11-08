@@ -213,9 +213,10 @@ if __name__ == '__main__':
 
     us_vec_aligned = apply_transform(theta, x, us_vec)
 
+
     # for fruit 
-    fruit_vec_aligned = apply_transform(theta, x, fruit_vec)
-    # fruit_vec_aligned = fruit_vec
+    # fruit_vec_aligned = apply_transform(theta, x, fruit_vec)
+    fruit_vec_aligned = fruit_vec
 
 
     diff = gt_vec - us_vec_aligned
